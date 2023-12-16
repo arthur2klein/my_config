@@ -15,6 +15,8 @@ Plug 'junegunn/vim-easy-align'
 Plug 'tpope/vim-surround'
 " Comment line
 Plug 'tpope/vim-commentary'
+" Formatting
+Plug 'vim-autoformat/vim-autoformat'
 
 "------------------------------------------------------------------------------
 " File gestion
@@ -150,6 +152,7 @@ xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
 nmap <F8> :TagbarToggle<CR>
+nmap <F3> :Autoformat<CR>
 
 nnoremap <silent> <C-m> :FZF<CR>
 
