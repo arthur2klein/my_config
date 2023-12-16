@@ -13,12 +13,18 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/vim-easy-align'
 " Surround expression
 Plug 'tpope/vim-surround'
+" Comment line
+Plug 'tpope/vim-commentary'
+" Formatting
+Plug 'vim-autoformat/vim-autoformat'
 
 "------------------------------------------------------------------------------
 " File gestion
 "------------------------------------------------------------------------------
 " Fzzy searching
 Plug 'junegunn/fzf', {'do': './install --all' }
+" List content of file
+Plug 'preservim/tagbar'
 
 "------------------------------------------------------------------------------
 " Syntax color
@@ -37,15 +43,35 @@ Plug 'andreshazard/vim-freemarker'
 "------------------------------------------------------------------------------
 " Theme
 "------------------------------------------------------------------------------
+" Molokai
 Plug 'tomasr/molokai'
+" For airline
+Plug 'vim-airline/vim-airline-themes'
 
 "------------------------------------------------------------------------------
 " Misc
 "------------------------------------------------------------------------------
 "loremipsum
 Plug 'vim-scripts/loremipsum'
+" Start screen
+Plug 'mhinz/vim-startify'
+" Airline
+Plug 'vim-airline/vim-airline'
+" Git
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
+
+function! Is_wsl()
+  if has("unix")
+    let lines = readfile("/proc/version")
+    if lines[0] =~ "Microsoft"
+      return 1
+    endif
+  endif
+  return 0
+endfunction
 
 syntax enable
 set expandtab
@@ -66,10 +92,16 @@ if has('mouse')
   set mouse=a
 endif
 
+if Is_wsl()
+  set visualbell
+  set t_u7=
+endif
+
 " Appearance
 set termguicolors
 set bg=dark
 colorscheme molokai
+let g:airline_themes='molokai'
 
 " Move line
 execute "set <M-j>=\ej"
@@ -81,6 +113,34 @@ inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
+" Startify
+" returns all modified files of the current git repo
+" `2>/dev/null` makes the command fail quietly, so that when we are not
+" in a git repo, the list will be empty
+function! s:gitModified()
+  let files = systemlist('git ls-files -m 2>/dev/null')
+  return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+ " same as above, but show untracked files, honouring .gitignore
+ function! s:gitUntracked()
+   let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+   return map(files, "{'line': v:val, 'path': v:val}")
+ endfunction
+
+ let g:startify_lists = [
+   \ { 'type': 'files',     'header': ['   MRU']                        },
+   \ { 'type': 'dir',       'header': ['   MRU '. getcwd()]             },
+   \ { 'type': 'sessions',  'header': ['   Sessions']                   },
+   \ { 'type': 'bookmarks', 'header': ['   Bookmarks']                  },
+   \ { 'type': function('s:gitModified'), 'header': ['   git modified'] },
+   \ { 'type': function('s:gitUntracked'), 'header': [' git untracked'] },
+   \ { 'type': 'commands', 'header': [' Commands']                      },
+   \ ]
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -90,6 +150,9 @@ nmap ga <Plug>(EasyAlign)
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
+
+nmap <F8> :TagbarToggle<CR>
+nmap <F3> :Autoformat<CR>
 
 nnoremap <silent> <C-m> :FZF<CR>
 
