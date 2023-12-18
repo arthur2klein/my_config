@@ -25,6 +25,8 @@ Plug 'vim-autoformat/vim-autoformat'
 Plug 'junegunn/fzf', {'do': './install --all' }
 " List content of file
 Plug 'preservim/tagbar'
+" File tree
+Plug 'preservim/nerdtree'
 
 "------------------------------------------------------------------------------
 " Syntax color
@@ -60,6 +62,8 @@ Plug 'vim-airline/vim-airline'
 " Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+" Tmux
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
@@ -153,6 +157,7 @@ omap <leader><tab> <plug>(fzf-maps-o)
 
 nmap <F8> :TagbarToggle<CR>
 nmap <F3> :Autoformat<CR>
+nnoremap <F2> :NERDTreeToggle<CR>
 
 nnoremap <silent> <C-m> :FZF<CR>
 
