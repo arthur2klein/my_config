@@ -143,6 +143,7 @@ let g:startify_lists = [
       \ ]
 
 " Airline
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
