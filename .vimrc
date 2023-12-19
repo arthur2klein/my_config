@@ -126,21 +126,21 @@ function! s:gitModified()
   return map(files, "{'line': v:val, 'path': v:val}")
 endfunction
 
- " same as above, but show untracked files, honouring .gitignore
- function! s:gitUntracked()
-   let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
-   return map(files, "{'line': v:val, 'path': v:val}")
- endfunction
+" same as above, but show untracked files, honouring .gitignore
+function! s:gitUntracked()
+  let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+  return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
 
- let g:startify_lists = [
-   \ { 'type': 'files',     'header': ['   MRU']                        },
-   \ { 'type': 'dir',       'header': ['   MRU '. getcwd()]             },
-   \ { 'type': 'sessions',  'header': ['   Sessions']                   },
-   \ { 'type': 'bookmarks', 'header': ['   Bookmarks']                  },
-   \ { 'type': function('s:gitModified'), 'header': ['   git modified'] },
-   \ { 'type': function('s:gitUntracked'), 'header': [' git untracked'] },
-   \ { 'type': 'commands', 'header': [' Commands']                      },
-   \ ]
+let g:startify_lists = [
+      \ { 'type': 'files',     'header': ['   MRU']                        },
+      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()]             },
+      \ { 'type': 'sessions',  'header': ['   Sessions']                   },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']                  },
+      \ { 'type': function('s:gitModified'), 'header': ['   git modified'] },
+      \ { 'type': function('s:gitUntracked'), 'header': [' git untracked'] },
+      \ { 'type': 'commands', 'header': [' Commands']                      },
+      \ ]
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -178,7 +178,7 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <c-@> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
