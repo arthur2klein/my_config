@@ -1,3 +1,5 @@
+set term=xterm-256color
+
 call plug#begin()
 
 "------------------------------------------------------------------------------
@@ -45,8 +47,10 @@ Plug 'andreshazard/vim-freemarker'
 "------------------------------------------------------------------------------
 " Theme
 "------------------------------------------------------------------------------
-" Molokai
-Plug 'tomasr/molokai'
+" Tokyo night
+Plug 'ghifarit53/tokyonight-vim'
+" Sonokai
+Plug 'sainnhe/sonokai'
 " For airline
 Plug 'vim-airline/vim-airline-themes'
 
@@ -95,6 +99,22 @@ set hlsearch
 if has('mouse')
   set mouse=a
 endif
+" Ps = 0  -> blinking block.
+" Ps = 1  -> blinking block (default).
+" Ps = 2  -> steady block.
+" Ps = 3  -> blinking underline.
+" Ps = 4  -> steady underline.
+" Ps = 5  -> blinking bar (xterm).
+" Ps = 6  -> steady bar (xterm).
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+let &t_SR = "\e[4 q"
+" Fix the delay when exiting insertion mode
+set ttimeout
+set ttimeoutlen=1
+set ttyfast
+" Change C-c to Esc to have the desire output when using <n>i or C-v i
+imap <C-c> <Esc>
 
 if Is_wsl()
   set visualbell
@@ -103,9 +123,13 @@ endif
 
 " Appearance
 set termguicolors
-set bg=dark
-colorscheme molokai
-let g:airline_themes='molokai'
+" Available values: 'default', 'atlantis', 'andromeda', 'shusia', 'maia',
+" 'espresso'
+let g:sonokai_style = 'atlantis'
+" Available values: 'night', 'storm'
+let g:tokyonight_style = 'storm'
+colorscheme tokyonight
+let g:airline_theme='tokyonight'
 
 " Move line
 execute "set <M-j>=\ej"
@@ -306,3 +330,6 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+"Stops the cursor from going black when encountering a matching character
+highlight MatchParen cterm=bold ctermbg=NONE ctermfg=yellow guibg=NONE guifg=yellow
