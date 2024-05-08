@@ -10,6 +10,8 @@ call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Debugging
 Plug 'puremourning/vimspector'
+" Test
+Plug 'vim-test/vim-test'
 
 "------------------------------------------------------------------------------
 " Wrinting
@@ -79,6 +81,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 " Tmux
 Plug 'christoomey/vim-tmux-navigator'
+" Show marks in gutter
+Plug 'kshenoy/vim-signature'
 
 call plug#end()
 
@@ -148,10 +152,14 @@ execute "set <M-j>=\ej"
 execute "set <M-k>=\ek"
 nnoremap <M-j> :m .+1<CR>==
 nnoremap <M-k> :m .-2<CR>==
-inoremap <M-j> <Esc>:m .+1<CR>==gi
-inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
+
+" Spelling correction
+imap <c-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+nmap <c-l> [s1z=<c-o>
+
+let NERDTreeQuitOnOpen=1
 
 " Startify
 " returns all modified files of the current git repo
@@ -199,12 +207,27 @@ nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <silent> <C-m> :FZF<CR>
 
 " Latex
-" nmap <leader>ml <Plug>vimtex-compile
-" nmap <leader>mk <Plug>vimtex-stop
+" nmap <leader>ll <Plug>vimtex-compile
+" nmap <leader>lk <Plug>vimtex-stop
 
 " Markdown
 nmap <leader>ml <Plug>MarkdownPreview
 nmap <leader>mk <Plug>MarkdownPreviewStop
+
+"------------------------------------------------------------------------------
+"TLDR for Coc
+"C-space for auto-complete
+"tab to switch between suggestions
+"K for documentation
+"[g and ]g to navigate between errors
+"\rn to rename variable
+"\a for code actions
+"\r for refactor actions
+"\cl for code lens
+"\qf for quick fix
+"space+c for search commands
+"space+a for search diagnostics
+"------------------------------------------------------------------------------
 
 highlight CocFloating ctermbg=8
 
@@ -353,3 +376,15 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
 "Stops the cursor from going black when encountering a matching character
 highlight MatchParen cterm=bold ctermbg=NONE ctermfg=yellow guibg=NONE guifg=yellow
+
+"""
+" Tests
+"""
+nmap <silent> <leader>tn :TestNearest<CR>
+nmap <silent> <leader>ta :TestFile<CR>
+nmap <silent> <leader>ts :TestSuite<CR>
+nmap <silent> <leader>tl :TestLast<CR>
+nmap <silent> <leader>tg :TestVisit<CR>
+
+" Change the color of the mark in the gutter to show git status
+let g:SignatureMarkTextHLDynamic = 1
