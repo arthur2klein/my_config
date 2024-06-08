@@ -17,6 +17,6 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag kleinarthu/docker-config:latest
     - name: Login to docker registry
-      run: docker login -u kleinarthu -p ${{ env.DOCKER_TOKEN }}$
+      run: docker login -u kleinarthu -p "${{ secrets.DOCKER_TOKEN }}"
     - name: Publish new image
       run: docker push kleinarthu/docker-config:latest
