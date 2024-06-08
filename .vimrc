@@ -1,8 +1,8 @@
 set term=xterm-256color
+set nocompatible
 filetype plugin indent on
 
 call plug#begin()
-
 "------------------------------------------------------------------------------
 " Languages
 "------------------------------------------------------------------------------
@@ -144,7 +144,10 @@ set termguicolors
 let g:sonokai_style = 'atlantis'
 " Available values: 'night', 'storm'
 let g:tokyonight_style = 'storm'
-colorscheme tokyonight
+try
+  colorscheme tokyonight
+catch
+endtry
 let g:airline_theme='tokyonight'
 
 " Move line

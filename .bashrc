@@ -120,9 +120,10 @@ alias obsidian=/home/cytech/bin/Obsidian-1.4.13.AppImage
 alias postman=/home/cytech/bin/Postman/Postman
 alias neo4j=/home/cytech/bin/neo4j-desktop-1.5.9.AppImage
 alias inkscape=/home/cytech/bin/Inkscape.AppImage
+alias android-studio="sh /opt/android-studio/bin/studio.sh"
 alias protege="bash /home/cytech/bin/Protege-5.5.0/run.sh"
 alias apup="sudo apt update && sudo apt upgrade -y"
-alias docker_rm_all="docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)"
+alias kubectl="minikube kubectl --"
 
 compile_asm() {
 	nasm -f elf64 -o "$1.o" "$1.s"
@@ -150,3 +151,4 @@ export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]$ "
 
 # To install a theme for the terminal
 # bash -c "$(wget -qO- https://git.io/vQgMr)"
+export PATH="$PATH:/opt/mssql-tools18/bin"
