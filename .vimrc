@@ -8,8 +8,6 @@ call plug#begin()
 "------------------------------------------------------------------------------
 " LSP
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Debugging
-Plug 'puremourning/vimspector'
 " Test
 Plug 'vim-test/vim-test'
 
@@ -102,7 +100,7 @@ set softtabstop=2
 set tabstop=2
 set shiftwidth=2
 set number relativenumber
-set cc=80
+set cc=100
 set noerrorbells
 set nobackup
 set nowritebackup
@@ -216,6 +214,8 @@ nnoremap <silent> <C-m> :FZF<CR>
 " Markdown
 nmap <leader>ml <Plug>MarkdownPreview
 nmap <leader>mk <Plug>MarkdownPreviewStop
+" let g:markdown_folding = 1
+" set fdm=syntax
 
 "------------------------------------------------------------------------------
 "TLDR for Coc
