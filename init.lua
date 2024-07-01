@@ -60,7 +60,6 @@ require("lazy").setup({
 
     -- Misc
     'vim-scripts/loremipsum',
-    'mhinz/vim-startify',
     'vim-airline/vim-airline',
     'tpope/vim-fugitive',
     'airblade/vim-gitgutter',
@@ -101,43 +100,43 @@ require("lazy").setup({
 
         metals_config.on_attach = function(client, bufnr)
           -- LSP mappings
-          map("n", "gD", vim.lsp.buf.definition)
-          map("n", "K", vim.lsp.buf.hover)
-          map("n", "gi", vim.lsp.buf.implementation)
-          map("n", "gr", vim.lsp.buf.references)
-          map("n", "gds", vim.lsp.buf.document_symbol)
-          map("n", "gws", vim.lsp.buf.workspace_symbol)
-          map("n", "<leader>cl", vim.lsp.codelens.run)
-          map("n", "<leader>sh", vim.lsp.buf.signature_help)
-          map("n", "<leader>rn", vim.lsp.buf.rename)
-          map("n", "<leader>f", vim.lsp.buf.format)
-          map("n", "<leader>ca", vim.lsp.buf.code_action)
+          vim.keymap.set("n", "gD", vim.lsp.buf.definition)
+          vim.keymap.set("n", "K", vim.lsp.buf.hover)
+          vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+          vim.keymap.set("n", "gr", vim.lsp.buf.references)
+          vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
+          vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
+          vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run)
+          vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help)
+          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
+          vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+          vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
 
-          map("n", "<leader>ws", function()
+          vim.keymap.set("n", "<leader>ws", function()
             require("metals").hover_worksheet()
           end)
 
           -- all workspace diagnostics
-          map("n", "<leader>aa", vim.diagnostic.setqflist)
+          vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist)
 
           -- all workspace errors
-          map("n", "<leader>ae", function()
+          vim.keymap.set("n", "<leader>ae", function()
             vim.diagnostic.setqflist({ severity = "E" })
           end)
 
           -- all workspace warnings
-          map("n", "<leader>aw", function()
+          vim.keymap.set("n", "<leader>aw", function()
             vim.diagnostic.setqflist({ severity = "W" })
           end)
 
           -- buffer diagnostics only
-          map("n", "<leader>d", vim.diagnostic.setloclist)
+          vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist)
 
-          map("n", "[c", function()
+          vim.keymap.set("n", "[c", function()
             vim.diagnostic.goto_prev({ wrap = false })
           end)
 
-          map("n", "]c", function()
+          vim.keymap.set("n", "]c", function()
             vim.diagnostic.goto_next({ wrap = false })
           end)
 
@@ -290,7 +289,15 @@ lsp.jsonls.setup(coq.lsp_ensure_capabilities{})
 lsp.tsserver.setup(coq.lsp_ensure_capabilities{})
 lsp.kotlin_language_server.setup(coq.lsp_ensure_capabilities{})
 lsp.ltex.setup(coq.lsp_ensure_capabilities{})
-lsp.lua_ls.setup(coq.lsp_ensure_capabilities{})
+lsp.lua_ls.setup(coq.lsp_ensure_capabilities{
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = {'vim'},
+      },
+    },
+  },
+})
 lsp.markdown_oxide.setup(coq.lsp_ensure_capabilities{})
 lsp.intelephense.setup(coq.lsp_ensure_capabilities{})
 lsp.pyright.setup(coq.lsp_ensure_capabilities{})
@@ -298,7 +305,7 @@ lsp.rust_analyzer.setup(coq.lsp_ensure_capabilities{})
 lsp.sqlls.setup(coq.lsp_ensure_capabilities{})
 lsp.terraformls.setup(coq.lsp_ensure_capabilities{})
 
--- telescope
+-- telescopie
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
