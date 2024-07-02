@@ -41,7 +41,10 @@ require("lazy").setup({
       'nvim-telescope/telescope.nvim', tag = '0.1.8',
       dependencies = { 'nvim-lua/plenary.nvim' },
     },
-    'nvim-treesitter/nvim-treesitter',
+    {
+      'nvim-treesitter/nvim-treesitter',
+      build = ":TSUpdate",
+    },
 
     'preservim/tagbar',
     'preservim/nerdtree',
@@ -94,9 +97,6 @@ require("lazy").setup({
         -- a have settings to capture this in your statusline or else you'll not see
         -- any messages from metals. There is more info in the help docs about this
         metals_config.init_options.statusBarProvider = "off"
-
-        -- Example if you are using cmp how to make sure the correct capabilities for snippets are set
-        metals_config.capabilities = require("cmp_nvim_lsp").default_capabilities()
 
         metals_config.on_attach = function(client, bufnr)
           -- LSP mappings
@@ -269,6 +269,7 @@ require('mason-lspconfig').setup {
     "rust_analyzer",
     "sqlls",
     "terraformls",
+    "gitlab_ci_ls",
   },
 }
 
@@ -304,6 +305,7 @@ lsp.pyright.setup(coq.lsp_ensure_capabilities{})
 lsp.rust_analyzer.setup(coq.lsp_ensure_capabilities{})
 lsp.sqlls.setup(coq.lsp_ensure_capabilities{})
 lsp.terraformls.setup(coq.lsp_ensure_capabilities{})
+lsp.gitlab_ci_ls.setup(coq.lsp_ensure_capabilities{})
 
 -- telescopie
 local builtin = require('telescope.builtin')
@@ -311,6 +313,19 @@ vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
+vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
+
+local actions = require('telescope.actions')
+require("telescope").setup({
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<C-j>"] = actions.move_selection_next,
+      }
+    }
+  }
+})
 
 -- lsp keymaps
 
