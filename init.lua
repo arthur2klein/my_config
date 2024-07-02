@@ -63,17 +63,17 @@ require("lazy").setup({
     -- Misc
     'vim-scripts/loremipsum',
     'vim-airline/vim-airline',
-		"sindrets/diffview.nvim",        -- optional - Diff integration
+    "sindrets/diffview.nvim",        -- optional - Diff integration
     'tpope/vim-fugitive',
     'airblade/vim-gitgutter',
     {
-        "NeogitOrg/neogit",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-	    "sindrets/diffview.nvim",
-	    "nvim-telescope/telescope.nvim",
-        },
-        config = true
+      "NeogitOrg/neogit",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "sindrets/diffview.nvim",
+        "nvim-telescope/telescope.nvim",
+      },
+      config = true
     },
 
     'christoomey/vim-tmux-navigator',
