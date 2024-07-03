@@ -31,10 +31,16 @@ require("lazy").setup({
     -- Writing
     'lervag/vimtex',
 
-    -- Edition
     'junegunn/vim-easy-align',
-    'tpope/vim-surround',
-    'tpope/vim-commentary',
+    {
+      "kylechui/nvim-surround",
+      version = "*", -- Use for stability; omit to use `main` branch for the latest features
+      event = "VeryLazy",
+      config = function()
+        require("nvim-surround").setup({})
+      end
+    },
+    'numToStr/Comment.nvim',
 
     -- File management
     {
@@ -60,12 +66,21 @@ require("lazy").setup({
     'ghifarit53/tokyonight-vim',
     'sainnhe/sonokai',
     'vim-airline/vim-airline-themes',
+    {
+			'nvimdev/dashboard-nvim',
+			event = 'VimEnter',
+			config = function()
+				require('dashboard').setup {
+				}
+			end,
+			dependencies = { {'nvim-tree/nvim-web-devicons'}}
+		},
 
     -- Misc
     'vim-scripts/loremipsum',
     'vim-airline/vim-airline',
+    'lewis6991/gitsigns.nvim',
     "sindrets/diffview.nvim",
-    'tpope/vim-fugitive',
     {
       "NeogitOrg/neogit",
       dependencies = {
@@ -350,6 +365,8 @@ require("telescope").setup({
 vim.g.rnvimr_enable_ex = 1
 vim.g.rnvimr_enable_picker = 1
 vim.api.nvim_set_keymap('n', '<F2>', ':RnvimrToggle<CR>', { noremap = true, silent = true })
+
+require('gitsigns').setup {}
 
 -- lsp keymaps
 
