@@ -15,6 +15,7 @@ vim.g.maplocalleader = "\\"
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
+    'nvim-tree/nvim-web-devicons',
     -- Language Server Protocol
     'neovim/nvim-lspconfig',
     'williamboman/mason.nvim',
@@ -63,9 +64,8 @@ require("lazy").setup({
     -- Misc
     'vim-scripts/loremipsum',
     'vim-airline/vim-airline',
-    "sindrets/diffview.nvim",        -- optional - Diff integration
+    "sindrets/diffview.nvim",
     'tpope/vim-fugitive',
-    'airblade/vim-gitgutter',
     {
       "NeogitOrg/neogit",
       dependencies = {
@@ -320,6 +320,10 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
+vim.api.nvim_set_keymap('n', '<leader>fs', ':Telescope git_status<CR>', { noremap = true, silent = true })
+
+local neogit = require('neogit')
+vim.keymap.set('n', '<leader>g', neogit.open, {})
 
 local actions = require('telescope.actions')
 
@@ -341,7 +345,6 @@ require("telescope").setup({
     },
   }
 })
-vim.api.nvim_set_keymap('n', '<leader>fs', ':Telescope git_status<CR>', { noremap = true, silent = true })
 
 
 vim.g.rnvimr_enable_ex = 1
