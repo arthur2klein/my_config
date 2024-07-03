@@ -30,11 +30,15 @@ require("lazy").setup({
 
     -- Writing
     'lervag/vimtex',
+    {
+      'nvim-lualine/lualine.nvim',
+      dependencies = { 'nvim-tree/nvim-web-devicons' },
+    },
 
     'junegunn/vim-easy-align',
     {
       "kylechui/nvim-surround",
-      version = "*", -- Use for stability; omit to use `main` branch for the latest features
+      version = "*",
       event = "VeryLazy",
       config = function()
         require("nvim-surround").setup({})
@@ -63,22 +67,24 @@ require("lazy").setup({
     'andreshazard/vim-freemarker',
 
     -- Theme
-    'ghifarit53/tokyonight-vim',
-    'sainnhe/sonokai',
-    'vim-airline/vim-airline-themes',
     {
-			'nvimdev/dashboard-nvim',
-			event = 'VimEnter',
-			config = function()
-				require('dashboard').setup {
-				}
-			end,
-			dependencies = { {'nvim-tree/nvim-web-devicons'}}
-		},
+      "folke/tokyonight.nvim",
+      lazy = false,
+      priority = 1000,
+      opts = {},
+    },
+    {
+      'nvimdev/dashboard-nvim',
+      event = 'VimEnter',
+      config = function()
+        require('dashboard').setup {
+        }
+      end,
+      dependencies = { {'nvim-tree/nvim-web-devicons'}}
+    },
 
     -- Misc
     'vim-scripts/loremipsum',
-    'vim-airline/vim-airline',
     'lewis6991/gitsigns.nvim',
     "sindrets/diffview.nvim",
     {
@@ -183,7 +189,7 @@ require("lazy").setup({
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
+  install = { colorscheme = { "tokyonight" } },
   -- automatically check for plugin updates
   checker = { enabled = true },
 })
@@ -247,10 +253,7 @@ end
 vim.opt.termguicolors = true
 
 -- Set colorschemes and theme options
-vim.g.sonokai_style = 'atlantis'
-vim.g.tokyonight_style = 'storm'
-vim.cmd('try | colorscheme tokyonight | catch | endtry')
-vim.g.airline_theme = 'tokyonight'
+vim.cmd('try | colorscheme tokyonight-moon | catch | endtry')
 
 -- Plugin specific settings
 vim.g.airline_powerline_fonts = 1
@@ -327,6 +330,10 @@ lsp.rust_analyzer.setup(coq.lsp_ensure_capabilities {})
 lsp.sqlls.setup(coq.lsp_ensure_capabilities {})
 lsp.terraformls.setup(coq.lsp_ensure_capabilities {})
 lsp.gitlab_ci_ls.setup(coq.lsp_ensure_capabilities {})
+
+require('lualine').setup {
+  options = { theme = 'palenight' },
+}
 
 -- telescopie
 local builtin = require('telescope.builtin')
