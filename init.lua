@@ -12,6 +12,57 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
+vim.g.coq_settings = { auto_start = 'shut-up' }
+
+-- General settings
+
+-- Enable syntax highlighting
+vim.cmd('syntax enable')
+
+-- Set basic options
+vim.opt.expandtab = true
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.colorcolumn = "100"
+vim.opt.errorbells = false
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.encoding = "utf-8"
+vim.opt.updatetime = 300
+vim.opt.signcolumn = "yes"
+vim.opt.incsearch = true
+vim.opt.hlsearch = true
+vim.opt.swapfile = false
+
+-- Check for mouse support and enable it
+if vim.fn.has('mouse') == 1 then
+  vim.opt.mouse = 'a'
+end
+
+-- Set terminal codes for different modes
+vim.opt.guicursor = "n-v-c:block,i:ver25,r:hor20"
+vim.opt.ttimeout = true
+vim.opt.ttimeoutlen = 1
+vim.opt.ttyfast = true
+
+
+-- WSL specific settings
+if vim.fn.has("unix") == 1 then
+  local lines = vim.fn.readfile("/proc/version")
+  if lines[1]:match("Microsoft") then
+    vim.opt.visualbell = true
+    vim.opt.t_u7 = ''
+  end
+end
+
+-- Enable true color support
+vim.opt.termguicolors = true
+
+
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
@@ -194,43 +245,6 @@ require("lazy").setup({
   checker = { enabled = true },
 })
 
-vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
-vim.g.coq_settings = { auto_start = 'shut-up' }
-
--- General settings
-
--- Enable syntax highlighting
-vim.cmd('syntax enable')
-
--- Set basic options
-vim.opt.expandtab = true
-vim.opt.softtabstop = 2
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.colorcolumn = "100"
-vim.opt.errorbells = false
-vim.opt.backup = false
-vim.opt.writebackup = false
-vim.opt.encoding = "utf-8"
-vim.opt.updatetime = 300
-vim.opt.signcolumn = "yes"
-vim.opt.incsearch = true
-vim.opt.hlsearch = true
-vim.opt.swapfile = false
-
--- Check for mouse support and enable it
-if vim.fn.has('mouse') == 1 then
-  vim.opt.mouse = 'a'
-end
-
--- Set terminal codes for different modes
-vim.opt.guicursor = "n-v-c:block,i:ver25,r:hor20,v:ver25"
-vim.opt.ttimeout = true
-vim.opt.ttimeoutlen = 1
-vim.opt.ttyfast = true
-
 -- Remap keys
 vim.api.nvim_set_keymap('i', '<C-c>', '<Esc>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<M-j>', ':m .+1<CR>==', { noremap = true })
@@ -239,20 +253,8 @@ vim.api.nvim_set_keymap('v', '<M-j>', ':m \'>+1<CR>gv=gv', { noremap = true })
 vim.api.nvim_set_keymap('v', '<M-k>', ':m \'<-2<CR>gv=gv', { noremap = true })
 vim.api.nvim_set_keymap('i', '<c-l>', '<c-g>u<Esc>[s1z=]a<c-g>u', { noremap = true })
 vim.api.nvim_set_keymap('n', '<c-l>', '[s1z=<c-o>', { noremap = true })
-
--- WSL specific settings
-if vim.fn.has("unix") == 1 then
-  local lines = vim.fn.readfile("/proc/version")
-  if lines[1]:match("Microsoft") then
-    vim.opt.visualbell = true
-    vim.opt.t_u7 = ''
-  end
-end
-
--- Enable true color support
-vim.opt.termguicolors = true
-
 -- Set colorschemes and theme options
+
 vim.cmd('try | colorscheme tokyonight-moon | catch | endtry')
 
 -- Plugin specific settings
