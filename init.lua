@@ -80,7 +80,13 @@ require("lazy").setup({
     'vim-test/vim-test',
 
     -- Writing
-    'lervag/vimtex',
+    {
+      'lervag/vimtex',
+      lazy = false,
+      init = function()
+        vim.g.vimtex_view_method = "zathura"
+      end
+    },
     {
       'nvim-lualine/lualine.nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -147,6 +153,15 @@ require("lazy").setup({
       },
       config = true
     },
+		{
+			"iamcco/markdown-preview.nvim",
+			cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+			build = "cd app && yarn install",
+			init = function()
+				vim.g.mkdp_filetypes = { "markdown" }
+			end,
+			ft = { "markdown" },
+		},
 
     'christoomey/vim-tmux-navigator',
     'kshenoy/vim-signature',
@@ -266,8 +281,6 @@ vim.g.SignatureMarkTextHLDynamic = 1
 vim.api.nvim_set_keymap('x', 'ga', '<Plug>(EasyAlign)', {})
 vim.api.nvim_set_keymap('n', 'ga', '<Plug>(EasyAlign)', {})
 vim.api.nvim_set_keymap('n', '<F8>', ':TagbarToggle<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>ml', '<Plug>MarkdownPreview', {})
-vim.api.nvim_set_keymap('n', '<leader>mk', '<Plug>MarkdownPreviewStop', {})
 vim.api.nvim_set_keymap('n', '<silent> <leader>tn', ':TestNearest<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<silent> <leader>ta', ':TestFile<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<silent> <leader>ts', ':TestSuite<CR>', { noremap = true })
