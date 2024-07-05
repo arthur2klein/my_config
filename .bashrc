@@ -1,6 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
+export TERM=tmux-256color
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
@@ -127,7 +128,6 @@ parse_git_branch() {
 }
 export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]$ "
 
-export TERM=xterm-256color
 
 # fnm
 FNM_PATH="/home/arthur2klein/.local/share/fnm"
@@ -135,3 +135,19 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   eval "`fnm env`"
 fi
+. "$HOME/.cargo/env"
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/root/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/root/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<
