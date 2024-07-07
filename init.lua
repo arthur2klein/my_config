@@ -71,13 +71,41 @@ require("lazy").setup({
     'neovim/nvim-lspconfig',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
+    'mfussenegger/nvim-dap',
+    'folke/neodev.nvim',
 
     -- Completion framework
     'ms-jpq/coq_nvim',
-    'ms-jpq/coq.artifacts',
+    { "rcarriga/nvim-dap-ui", dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"} },
 
-    -- Test
-    'vim-test/vim-test',
+    'ms-jpq/coq.artifacts',
+    {
+      "nvim-neotest/neotest",
+      dependencies = {
+        "nvim-neotest/nvim-nio",
+        "nvim-lua/plenary.nvim",
+        "antoinemadec/FixCursorHold.nvim",
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-neotest/neotest-python",
+        "nvim-neotest/neotest-jest",
+        "sidlatau/neotest-dart",
+        "olimorris/neotest-phpunit",
+        "stevanmilic/neotest-scala",
+        "rcasia/neotest-java",
+      }
+    },
+
+    {
+      "michaelb/sniprun",
+      branch = "master",
+
+      build = "sh install.sh",
+
+      config = function()
+        require("sniprun").setup({
+        })
+      end,
+    },
 
     -- Writing
     {
@@ -153,15 +181,15 @@ require("lazy").setup({
       },
       config = true
     },
-		{
-			"iamcco/markdown-preview.nvim",
-			cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-			build = "cd app && yarn install",
-			init = function()
-				vim.g.mkdp_filetypes = { "markdown" }
-			end,
-			ft = { "markdown" },
-		},
+    {
+      "iamcco/markdown-preview.nvim",
+      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+      build = "cd app && yarn install",
+      init = function()
+        vim.g.mkdp_filetypes = { "markdown" }
+      end,
+      ft = { "markdown" },
+    },
 
     'christoomey/vim-tmux-navigator',
     'kshenoy/vim-signature',
@@ -203,11 +231,11 @@ require("lazy").setup({
           vim.keymap.set("n", "gr", vim.lsp.buf.references)
           vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
           vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
-          vim.keymap.set("n", "<leader>cl", vim.lsp.codelens.run)
-          vim.keymap.set("n", "<leader>sh", vim.lsp.buf.signature_help)
-          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename)
-          vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
-          vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action)
+          vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run)
+          vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help)
+          vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename)
+          vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
+          vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action)
 
           vim.keymap.set("n", "<leader>ws", function()
             require("metals").hover_worksheet()
@@ -421,3 +449,47 @@ end)
 vim.keymap.set("n", "]c", function()
   vim.diagnostic.goto_next({ wrap = false })
 end)
+
+require("neotest").setup({
+  adapters = {
+    require("neotest-python"),
+    require("neotest-jest"),
+    require("neotest-dart"),
+    require("neotest-phpunit"),
+    require("neotest-scala"),
+    require("neotest-java"),
+  },
+})
+
+require("sniprun").setup({
+  repl_enable = {"Python3_original"},
+})
+
+vim.api.nvim_set_keymap('v', '<leader>r', '<Plug>SnipRun', {silent = true})
+vim.api.nvim_set_keymap('n', '<leader>r', '<Plug>SnipRunOperator', {silent = true})
+vim.api.nvim_set_keymap('n', '<leader>rr', '<Plug>SnipRun', {silent = true})
+
+require('nvim-treesitter.configs').setup({
+  ensure_installed = {
+    'bash',
+    'bibtex',
+    'c',
+    'cpp',
+    'dart',
+    'html',
+    'latex',
+    'java',
+    'javascript',
+    'lua',
+    'markdown',
+    'markdown_inline',
+    'php',
+    'python',
+    'query',
+    'rust',
+    'scala',
+    'typescript',
+    'vim',
+    'vimdoc',
+  }
+})
