@@ -155,7 +155,7 @@ require("lazy").setup({
           group = nvim_metals_group,
         })
       end
-    }
+    },
     
     -- DAP config
     'mfussenegger/nvim-dap',
