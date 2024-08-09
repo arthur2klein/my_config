@@ -185,7 +185,6 @@ require("lazy").setup({
     },
     {
       "iamcco/markdown-preview.nvim",
-      cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
       build = "cd app && yarn install",
       init = function()
         vim.g.mkdp_filetypes = { "markdown" }
@@ -330,6 +329,7 @@ require('mason-lspconfig').setup {
 }
 
 local lsp = require('lspconfig')
+lsp.scala_language_server = nil
 local coq = require('coq')
 lsp.pyright.setup(coq.lsp_ensure_capabilities {})
 lsp.tsserver.setup(coq.lsp_ensure_capabilities {})
@@ -388,6 +388,33 @@ end)
 
 require('lualine').setup {
   options = { theme = 'palenight' },
+}
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+})
+
+require'lspconfig'.ltex.setup{
+  settings = {
+    ltex = {
+      language = "fr",
+      diagnosticSeverity = "information",
+      set = {
+        grammar = true,
+        punctuation = true,
+        spell = true,
+        typography = true,
+      },
+      completionEnabled = true,
+      additionalRules = {
+        enablePickyRules = true,
+        motherTongue = "fr",
+      },
+    },
+  },
 }
 
 -- DAP config
