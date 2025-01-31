@@ -32,14 +32,14 @@ gaps:
   scale_with_dpi: true
 
   # Gap between adjacent windows.
-  inner_gap: '10px'
+  inner_gap: '15px'
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: '50px'
-    right: '1px'
-    bottom: '10px'
-    left: '10px'
+    top: '55px'
+    right: '15px'
+    bottom: '15px'
+    left: '15px'
 
 window_effects:
   # Visual effects to apply to the focused window.
@@ -65,7 +65,7 @@ window_effects:
   # Visual effects to apply to non-focused windows.
   other_windows:
     border:
-      enabled: true
+      enabled: false
       color: '#a1a1a1'
     hide_title_bar:
       enabled: false
@@ -99,15 +99,25 @@ window_behavior:
 
 workspaces:
   - name: '1'
+    bind_to_monitor: 0
   - name: '2'
+    bind_to_monitor: 0
   - name: '3'
+    bind_to_monitor: 0
   - name: '4'
+    bind_to_monitor: 0
   - name: '5'
+    bind_to_monitor: 2
   - name: '6'
+    bind_to_monitor: 2
   - name: '7'
+    bind_to_monitor: 2
   - name: '8'
+    bind_to_monitor: 1
   - name: '9'
+    bind_to_monitor: 1
   - name: '10'
+    bind_to_monitor: 1
 
 window_rules:
   - commands: ['ignore']

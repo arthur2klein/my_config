@@ -116,6 +116,7 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export PATH="/root/.local/share/coursier/bin:$PATH"
 export PATH="$PATH:/opt/nvim-linux64/bin"
+export PATH="$PATH:/root/.local/bin"
 
 alias _db='docker build -t "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")" .'
 alias _dr='docker run "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")"'
@@ -131,10 +132,17 @@ alias vim='nvim'
 alias zshrc='nvim ~/.zshrc'
 alias sourcez='source ~/.zshrc'
 alias rgf='rg --files | rg'
+alias explorer='/mnt/c/Windows/explorer.exe'
 cl() {
   cd "$@" && ls -a;
 }
+alias pipeline='wslview "https://gitlab.com/aqs3/$(git remote get-url origin | xargs basename -s .git)/-/pipelines?username=aklein_anaqua"'
+eval "$(zoxide init zsh --cmd cd)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 POWERLEVEL9K_ENABLE_FLOATING_PROMPT=true
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
