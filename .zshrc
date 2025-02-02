@@ -127,7 +127,11 @@ alias _ta='tmux a -t `basename $PWD`'
 alias _tk='tmux kill-session `basename $PWD`'
 alias ls='exa --icons --group-directories-first'
 alias muttmail='mutt -f "$MAIL_CONNECTION"'
-alias cat='batcat --theme=Dracula'
+if grep -qi 'arch' /etc/os-release; then
+  alias cat='bat --theme=Dracula'
+elif grep -qi 'debian' /etc/os-release; then
+  alias cat='batcat --theme=Dracula'
+fi
 alias vim='nvim'
 alias zshrc='nvim ~/.zshrc'
 alias sourcez='source ~/.zshrc'

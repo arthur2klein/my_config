@@ -1,0 +1,28 @@
+{
+    "wallpaper": "/home/arthurk/.config/theme/background.jpg",
+    "alpha": "100",
+
+    "special": {
+        "background": "#05060A",
+        "foreground": "#dee8ef",
+        "cursor": "#dee8ef"
+    },
+    "colors": {
+        "color0": "#05060A",
+        "color1": "#596F95",
+        "color2": "#7287A5",
+        "color3": "#6996D2",
+        "color4": "#8E9FB3",
+        "color5": "#9AB5D2",
+        "color6": "#AFCDE6",
+        "color7": "#dee8ef",
+        "color8": "#9ba2a7",
+        "color9": "#596F95",
+        "color10": "#7287A5",
+        "color11": "#6996D2",
+        "color12": "#8E9FB3",
+        "color13": "#9AB5D2",
+        "color14": "#AFCDE6",
+        "color15": "#dee8ef"
+    }
+}
