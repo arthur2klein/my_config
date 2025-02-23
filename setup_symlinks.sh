@@ -11,3 +11,4 @@ ln -snf ~/my_config/rofi/ ~/.config/rofi
 ln -snf ~/my_config/scripts/ ~/.config/scripts
 ln -snf ~/my_config/theme/ ~/.config/theme
 ln -snf ~/my_config/waybar/ ~/.config/waybar
+ln -snf ~/my_config/.prettierrc.json ~/.prettierrc.json

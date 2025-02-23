@@ -117,6 +117,7 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 export PATH="/root/.local/share/coursier/bin:$PATH"
 export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/root/.local/bin"
+export PATH="$PATH:/usr/local/go/bin"
 
 alias _db='docker build -t "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")" .'
 alias _dr='docker run "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")"'

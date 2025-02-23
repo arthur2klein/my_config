@@ -1,0 +1,11 @@
+{
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "experimentalOperatorPosition": "start",
+  "insertPragma": false,
+  "jsxBracketSameLine": false,
+  "jsxSingleQuote": false,
+  "objectWrap": "collapse",
+  "printWidth": 100,
+  "semi": true
+}

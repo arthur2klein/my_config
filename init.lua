@@ -235,40 +235,40 @@ require("lazy").setup({
 
 				metals_config.init_options.statusBarProvider = "off"
 
-				metals_config.on_attach = function(client, bufnr)
-					local neogen = require("neogen")
-					vim.keymap.set("n", "gD", vim.lsp.buf.definition)
-					vim.keymap.set("n", "K", vim.lsp.buf.hover)
-					vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-					vim.keymap.set("n", "gr", vim.lsp.buf.references)
-					vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
-					vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
-					vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run)
-					vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help)
-					vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename)
-					vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
-					vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action)
-					vim.keymap.set("n", "<leader>lg", neogen.generate)
-					vim.keymap.set("n", "<leader>le", require("metals").run_scalafix())
-					vim.keymap.set("n", "<leader>ws", function()
-						require("metals").hover_worksheet()
-					end)
-					vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist)
-					vim.keymap.set("n", "<leader>ae", function()
-						vim.diagnostic.setqflist({ severity = "E" })
-					end)
-					vim.keymap.set("n", "<leader>aw", function()
-						vim.diagnostic.setqflist({ severity = "W" })
-					end)
-					vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist)
-					vim.keymap.set("n", "[c", function()
-						vim.diagnostic.goto_prev({ wrap = false })
-					end)
-					vim.keymap.set("n", "]c", function()
-						vim.diagnostic.goto_next({ wrap = false })
-					end)
-					return metals_config
-				end
+				-- metals_config.on_attach = function(client, bufnr)
+				-- 	local neogen = require("neogen")
+				-- 	vim.keymap.set("n", "gD", vim.lsp.buf.definition)
+				-- 	vim.keymap.set("n", "K", vim.lsp.buf.hover)
+				-- 	vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
+				-- 	vim.keymap.set("n", "gr", vim.lsp.buf.references)
+				-- 	vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
+				-- 	vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
+				-- 	vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run)
+				-- 	vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help)
+				-- 	vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename)
+				-- 	vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
+				-- 	vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action)
+				-- 	vim.keymap.set("n", "<leader>lg", neogen.generate)
+				-- 	vim.keymap.set("n", "<leader>le", require("metals").run_scalafix())
+				-- 	vim.keymap.set("n", "<leader>ws", function()
+				-- 		require("metals").hover_worksheet()
+				-- 	end)
+				-- 	vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist)
+				-- 	vim.keymap.set("n", "<leader>ae", function()
+				-- 		vim.diagnostic.setqflist({ severity = "E" })
+				-- 	end)
+				-- 	vim.keymap.set("n", "<leader>aw", function()
+				-- 		vim.diagnostic.setqflist({ severity = "W" })
+				-- 	end)
+				-- 	vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist)
+				-- 	vim.keymap.set("n", "[c", function()
+				-- 		vim.diagnostic.goto_prev({ wrap = false })
+				-- 	end)
+				-- 	vim.keymap.set("n", "]c", function()
+				-- 		vim.diagnostic.goto_next({ wrap = false })
+				-- 	end)
+				-- 	return metals_config
+				-- end
 			end,
 			config = function(self, metals_config)
 				local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
@@ -437,7 +437,7 @@ require("lazy").setup({
 		"kshenoy/vim-signature",
 	},
 	install = { colorscheme = { "tokyonight" } },
-	checker = { enabled = true },
+	checker = { enabled = true, notify = false },
 })
 
 -- General mappings
@@ -460,6 +460,7 @@ require("nvim-treesitter.configs").setup({
 		"dart",
 		"html",
 		"glsl",
+		"go",
 		"latex",
 		"java",
 		"javascript",
@@ -567,6 +568,7 @@ require("mason-lspconfig").setup({
 		"cssls",
 		"dockerls",
 		"glsl_analyzer",
+		"gopls",
 		"html",
 		"intelephense",
 		"jsonls",
@@ -593,6 +595,7 @@ lsp.html.setup({})
 lsp.intelephense.setup({})
 lsp.jsonls.setup({})
 lsp.kotlin_language_server.setup({})
+lsp.gopls.setup({})
 lsp.ltex.setup({
 	settings = {
 		ltex = {
@@ -646,6 +649,7 @@ require("sonarlint").setup({
 			vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
 			vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
 			vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+			vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar"),
 			vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarphp.jar"),
 		},
 	},
@@ -653,6 +657,7 @@ require("sonarlint").setup({
 		"python",
 		"cpp",
 		"java",
+		"go",
 		"py",
 		"js",
 		"ts",
@@ -726,14 +731,15 @@ conform.setup({
 		rust = { "rustfmt" },
 		tex = { "latexindent" },
 		markdown = { "markdownlint", "doctoc" },
-		javascript = { "prettierd", "prettier", stop_after_first = true },
+		typescript = { "prettier", stop_after_first = true },
+		javascript = { "prettier", stop_after_first = true },
 	},
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
 	callback = function()
-		conform.format({ async = false })
+		conform.format({ async = false, lsp_fallback = true })
 	end,
 })
 
@@ -820,7 +826,15 @@ vim.keymap.set("n", "<leader>fr", builtin.lsp_references, {})
 vim.keymap.set("n", "<leader>fk", require("telescope").extensions.conventional_commits.conventional_commits, {})
 vim.keymap.set("n", "<leader>fq", require("telescope").extensions.macroscope.default, {})
 vim.keymap.set("n", "<leader>fy", require("telescope").extensions.neoclip.default, {})
-vim.keymap.set("n", "<leader>fe", builtin.symbols, {})
+vim.keymap.set("n", "<leader>fe", function()
+	builtin.symbols({ sources = { "emoji", "kaomoji", "gitmoji" } })
+end, {})
+vim.keymap.set("n", "<leader>fm", function()
+	builtin.symbols({ sources = { "math", "latex" } })
+end, {})
+vim.keymap.set("n", "<leader>fo", function()
+	builtin.symbols({ sources = { "julia", "nerd" } })
+end, {})
 
 vim.keymap.set("n", "<leader>fda", telescope_dap.commands, {})
 vim.keymap.set("n", "<leader>fdc", telescope_dap.configurations, {})
@@ -878,6 +892,7 @@ require("telescope").setup({
 		},
 		find_files = {
 			hidden = true,
+			file_ignore_patterns = { ".git/" },
 		},
 	},
 })
