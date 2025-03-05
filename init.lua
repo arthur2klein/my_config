@@ -106,7 +106,7 @@ require("lazy").setup({
 			---@type blink.cmp.Config
 			opts = {
 				keymap = {
-					preset = "default",
+					preset = "super-tab",
 					["<C-\\>"] = { "accept" },
 				},
 
@@ -458,6 +458,7 @@ require("nvim-treesitter.configs").setup({
 		"cmake",
 		"cpp",
 		"dart",
+		"elixir",
 		"html",
 		"glsl",
 		"go",
@@ -567,6 +568,7 @@ require("mason-lspconfig").setup({
 		"clangd",
 		"cssls",
 		"dockerls",
+		"elixirls",
 		"glsl_analyzer",
 		"gopls",
 		"html",
@@ -590,6 +592,7 @@ lsp.bashls.setup({})
 lsp.clangd.setup({})
 lsp.cssls.setup({})
 lsp.dockerls.setup({})
+lsp.elixirls.setup({})
 lsp.glsl_analyzer.setup({})
 lsp.html.setup({})
 lsp.intelephense.setup({})
@@ -731,8 +734,10 @@ conform.setup({
 		rust = { "rustfmt" },
 		tex = { "latexindent" },
 		markdown = { "markdownlint", "doctoc" },
-		typescript = { "prettier", stop_after_first = true },
 		javascript = { "prettier", stop_after_first = true },
+		typescript = { "prettier", stop_after_first = true },
+		typescriptreact = { "prettier", stop_after_first = true },
+		javascriptreact = { "prettier", stop_after_first = true },
 	},
 })
 

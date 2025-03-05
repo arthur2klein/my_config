@@ -1,8 +1,9 @@
 {
   "arrowParens": "always",
-  "bracketSpacing": true,
+  "bracketSpacing": false,
   "experimentalOperatorPosition": "start",
   "insertPragma": false,
+  "tabWidth": 4,
   "jsxBracketSameLine": false,
   "jsxSingleQuote": false,
   "objectWrap": "collapse",
