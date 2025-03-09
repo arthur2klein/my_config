@@ -418,7 +418,26 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			dependencies = { "nvim-treesitter/nvim-treesitter" },
 		},
-		"kevinhwang91/rnvimr",
+		{
+			"stevearc/oil.nvim",
+			---@module 'oil'
+			---@type oil.SetupOpts
+			opts = {},
+			-- Optional dependencies
+			dependencies = { { "echasnovski/mini.icons", opts = {} } },
+			-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+			-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+			lazy = false,
+			config = function()
+				require("oil").setup({
+					default_file_explorer = true,
+					view_options = {
+						show_hidden = true,
+					},
+				})
+				vim.keymap.set("n", "è", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+			end,
+		},
 
 		-- Syntax highlighting (vim settings)
 		"udalov/kotlin-vim",
@@ -592,7 +611,9 @@ lsp.bashls.setup({})
 lsp.clangd.setup({})
 lsp.cssls.setup({})
 lsp.dockerls.setup({})
-lsp.elixirls.setup({})
+lsp.elixirls.setup({
+	filetypes = { "elixir", "eelixir", "heex" },
+})
 lsp.glsl_analyzer.setup({})
 lsp.html.setup({})
 lsp.intelephense.setup({})
@@ -670,6 +691,11 @@ require("sonarlint").setup({
 lsp.sqlls.setup({})
 lsp.terraformls.setup({})
 lsp.ts_ls.setup({})
+lsp.eslint.setup({
+	settings = {
+		format = false,
+	},
+})
 
 local neogen = require("neogen")
 vim.keymap.set("n", "gD", vim.lsp.buf.definition)
@@ -901,10 +927,6 @@ require("telescope").setup({
 		},
 	},
 })
-
-vim.g.rnvimr_enable_ex = 1
-vim.g.rnvimr_enable_picker = 1
-vim.api.nvim_set_keymap("n", "<F2>", ":RnvimrToggle<CR>", { noremap = true, silent = true })
 
 -- Syntax highlighting (vim settings)
 -- Git integration
