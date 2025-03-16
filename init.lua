@@ -367,7 +367,7 @@ require("lazy").setup({
 			dependencies = { "nvim-tree/nvim-web-devicons" },
 		},
 		{
-			"folke/tokyonight.nvim",
+			"catppuccin/nvim",
 			lazy = false,
 			priority = 1000,
 			opts = {},
@@ -455,7 +455,7 @@ require("lazy").setup({
 		"christoomey/vim-tmux-navigator",
 		"kshenoy/vim-signature",
 	},
-	install = { colorscheme = { "tokyonight" } },
+	install = { colorscheme = { "catppuccin" } },
 	checker = { enabled = true, notify = false },
 })
 
@@ -831,7 +831,7 @@ require("sniprun").setup({
 -- Text edition
 
 -- Theme
-vim.cmd("try | colorscheme tokyonight-moon | catch | endtry")
+vim.cmd("try | colorscheme catppuccin-mocha | catch | endtry")
 vim.g.airline_powerline_fonts = 1
 vim.g["airline#extensions#tabline#enabled"] = 1
 vim.g.SignatureMarkTextHLDynamic = 1

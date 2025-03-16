@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc0
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -15,7 +8,9 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+ZSH_THEME="catppuccin"
+CATPUCCIN_FLAVOR="mocha"
+CATPUCCIN_SHOW_TIME=true
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -129,9 +124,9 @@ alias _tk='tmux kill-session `basename $PWD`'
 alias ls='exa --icons --group-directories-first'
 alias muttmail='mutt -f "$MAIL_CONNECTION"'
 if grep -qi 'arch' /etc/os-release; then
-  alias cat='bat --theme=Dracula'
+  alias cat='bat --theme="Catppuccin Mocha"'
 elif grep -qi 'debian' /etc/os-release; then
-  alias cat='batcat --theme=Dracula'
+  alias cat='batcat --theme="Catppuccin Mocha"'
 fi
 alias vim='nvim'
 alias zshrc='nvim ~/.zshrc'
@@ -144,10 +139,7 @@ cl() {
 alias pipeline='wslview "https://gitlab.com/aqs3/$(git remote get-url origin | xargs basename -s .git)/-/pipelines?username=aklein_anaqua"'
 eval "$(zoxide init zsh --cmd cd)"
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-POWERLEVEL9K_ENABLE_FLOATING_PROMPT=true
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+eval "$(starship init zsh)"
