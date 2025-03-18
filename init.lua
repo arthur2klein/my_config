@@ -380,7 +380,6 @@ require("lazy").setup({
       "catppuccin/nvim",
       lazy = false,
       priority = 1000,
-      opts = {},
     },
     {
       "nvimdev/dashboard-nvim",
