@@ -149,6 +149,16 @@ require("lazy").setup({
 				vim.g.db_ui_use_nerd_fonts = 1
 			end,
 		},
+		{
+			"rest-nvim/rest.nvim",
+			dependencies = {
+				"nvim-treesitter/nvim-treesitter",
+				opts = function(_, opts)
+					opts.ensure_installed = opts.ensure_installed or {}
+					table.insert(opts.ensure_installed, "http")
+				end,
+			},
+		},
 		"https://gitlab.com/schrieveslaach/sonarlint.nvim",
 		{
 			"danymat/neogen",
@@ -479,6 +489,7 @@ require("nvim-treesitter.configs").setup({
 		"dart",
 		"elixir",
 		"html",
+		"http",
 		"glsl",
 		"go",
 		"latex",
@@ -1007,5 +1018,6 @@ end
 -- Create a floating window with default dimensions
 vim.api.nvim_create_user_command("Floaterminal", toggle_terminal, {})
 vim.api.nvim_set_keymap("n", "<F3>", ":Floaterminal<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>c", ":Rest run<CR>", { noremap = true })
 vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
 vim.cmd("highlight NonText guibg=NONE ctermbg=NONE")
