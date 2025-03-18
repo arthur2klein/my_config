@@ -1007,3 +1007,5 @@ end
 -- Create a floating window with default dimensions
 vim.api.nvim_create_user_command("Floaterminal", toggle_terminal, {})
 vim.api.nvim_set_keymap("n", "<F3>", ":Floaterminal<CR>", { noremap = true })
+vim.cmd("highlight Normal guibg=NONE ctermbg=NONE")
+vim.cmd("highlight NonText guibg=NONE ctermbg=NONE")
