@@ -26,4 +26,4 @@ configuration{
     kb-move-char-forward: "Control+f";
     kb-mode-complete: "Control+o";
 }
-@theme "~/.config/rofi/catppuccin-mocha.rasi"
+@theme "~/.config/rofi/catppuccin-default.rasi"

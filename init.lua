@@ -502,6 +502,7 @@ require("nvim-treesitter.configs").setup({
     "query",
     "rust",
     "scala",
+    "slint",
     "typescript",
     "vim",
     "vimdoc",
@@ -621,6 +622,9 @@ lsp.bashls.setup({})
 lsp.clangd.setup({})
 lsp.cssls.setup({})
 lsp.dockerls.setup({})
+lsp.slint_lsp.setup({
+  filetypes = { "slint", },
+})
 lsp.elixirls.setup({
   filetypes = { "elixir", "eelixir", "heex" },
 })
