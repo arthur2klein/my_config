@@ -109,7 +109,7 @@ source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-sy
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-export PATH="/root/.local/share/coursier/bin:$PATH"
+export PATH="$HOME/.local/share/coursier/bin:$PATH"
 export PATH="$PATH:/opt/nvim-linux64/bin"
 export PATH="$PATH:/root/.local/bin"
 export PATH="$PATH:/usr/local/go/bin"
