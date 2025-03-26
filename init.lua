@@ -294,6 +294,7 @@ require("lazy").setup({
 								vim.lsp.buf.format()
 							end,
 						})
+						lsp_key_mapping()
 						require("metals").initialize_or_attach(metals_config)
 					end,
 					group = nvim_metals_group,
@@ -755,6 +756,7 @@ conform.setup({
 		glsl = { "clang_format" },
 		php = { "pretty-php" },
 		rust = { "rustfmt" },
+		sql = { "sql-formatter" },
 		tex = { "latexindent" },
 		markdown = { "markdownlint", "doctoc" },
 		javascript = { "prettier", stop_after_first = true },
