@@ -1008,8 +1008,10 @@ vim.cmd("highlight NonText guibg=NONE ctermbg=NONE")
 -- Conventional commit
 -----------------------------------------------------------
 local commit_data = {}
+local temp_file = vim.fn.tempname()
+local buf, win
 
-local function confirm_commit()
+local function get_message()
   local message = string.format("%s%s%s: %s%s",
     commit_data.type,
     commit_data.scope and "(" .. commit_data.scope .. ")" or "",
@@ -1023,30 +1025,71 @@ local function confirm_commit()
   if commit_data.footers and #commit_data.footers > 0 then
     message = message .. "\n\n" .. table.concat(commit_data.footers, "\n")
   end
+  return message
+end
 
-  -- Create a temporary file
-  local temp_file = vim.fn.tempname()
+local function cancel_commit()
+  -- Close buffer & window without committing
+  os.remove(temp_file)
+  vim.api.nvim_win_close(win, true)
+  vim.api.nvim_buf_delete(buf, { force = true })
+
+  print("❌ Commit cancelled.")
+end
+
+local function confirm_commit()
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  local final_message = table.concat(lines, "\n")
+
+  -- Overwrite temp file with final message
+  local file = io.open(temp_file, "w")
+  if file then
+    file:write(final_message)
+    file:close()
+  end
+
+  -- Run git commit
+  vim.fn.system("git commit -F " .. temp_file)
+  os.remove(temp_file)
+
+  -- Close buffer & window
+  vim.api.nvim_win_close(win, true)
+  vim.api.nvim_buf_delete(buf, { force = true })
+
+  print("✅ Commit created!")
+end
+
+local function open_commit_buffer()
+  local message = get_message()
+
+  -- Write to temporary file
   local file = io.open(temp_file, "w")
   if file then
     file:write(message)
     file:close()
   end
 
-  -- Open a buffer for user review
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(message, "\n"))
-  vim.api.nvim_open_win(buf, true, { relative = "editor", row = 10, col = 10, width = 80, height = 10 })
-
-  -- Handle commit on buffer close
-  vim.api.nvim_set_option_value("buftype", "acwrite", { buf = buf })
-  vim.api.nvim_create_autocmd("BufUnload", {
-    buffer = buf,
-    callback = function()
-      vim.fn.system("git commit -F " .. temp_file)
-      os.remove(temp_file)
-      print("✅ Commit created!")
-    end
+  -- Create floating buffer
+  buf = vim.api.nvim_create_buf(false, true)
+  win = vim.api.nvim_open_win(buf, true, {
+    relative = "editor",
+    width = 80,
+    height = 15,
+    row = math.floor((vim.o.lines - 15) / 2),
+    col = math.floor((vim.o.columns - 80) / 2),
+    style = "minimal",
+    border = "rounded"
   })
+
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(message, "\n"))
+  vim.api.nvim_buf_set_option(buf, "modifiable", true)
+  vim.api.nvim_buf_set_option(buf, "buftype", "acwrite")
+
+  -- Keybindings
+  vim.keymap.set("n", "<leader>yy", confirm_commit)
+  vim.keymap.set("n", "<leader>yn", cancel_commit)
+
+  print("Press <leader>yy to commit, <leader>yn to cancel")
 end
 
 local function add_footer()
@@ -1059,7 +1102,7 @@ local function add_footer()
       end
       add_footer()
     else
-      confirm_commit()
+      open_commit_buffer()
     end
   end)
 end
