@@ -1093,7 +1093,7 @@ local function open_commit_buffer()
 end
 
 local function add_footer()
-  vim.ui.input({ prompt = "Add a footer (key=value) or leave empty to continue:" }, function(footer)
+  vim.ui.input({ prompt = "Add a footer (key: value) or leave empty to continue:" }, function(footer)
     if footer and footer ~= "" then
       if commit_data.footers == nil then
         commit_data.footers = { footer }
@@ -1136,7 +1136,7 @@ local function enter_subject()
 end
 
 local function select_scope()
-  local scopes = vim.fn.systemlist("git diff --name-only --cached | sort -u")
+  local scopes = vim.fn.systemlist("git diff --name-only --cached | sed 's:/:\\n:g' | sort -u")
   table.insert(scopes, "none")
   vim.ui.select(scopes, { prompt = "Select scope (or none):" }, function(choice)
     commit_data.scope = choice ~= "none" and choice or nil
