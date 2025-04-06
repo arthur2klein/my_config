@@ -1145,12 +1145,17 @@ local function select_scope()
 end
 
 local function select_commit_type()
-  local commit_types = { "feat", "fix", "chore", "docs", "style", "refactor", "test", "perf" }
+  local commit_types = { "build", "chore", "ci", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test" }
   vim.ui.select(commit_types, { prompt = "Select commit type:" }, function(choice)
     commit_data.type = choice
     select_scope()
   end)
 end
 
+local function create_commit()
+  commit_data = {}
+  select_commit_type()
+end
+
 -- Run the function
-vim.keymap.set("n", "<leader>g", select_commit_type)
+vim.keymap.set("n", "<leader>g", create_commit)
