@@ -1041,7 +1041,6 @@ local function confirm_commit()
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
   local final_message = table.concat(lines, "\n")
 
-  -- Overwrite temp file with final message
   local file = io.open(temp_file, "w")
   if file then
     file:write(final_message)
