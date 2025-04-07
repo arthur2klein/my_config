@@ -199,50 +199,6 @@ return {
 		end,
 	},
 	{
-		"michaelb/sniprun",
-		branch = "master",
-
-		build = "sh install.sh",
-
-		config = function()
-			require("sniprun").setup({
-				repl_enable = { "Python3_original" },
-			})
-			vim.api.nvim_set_keymap("v", "<leader>r", "<Plug>SnipRun", { silent = true })
-			vim.api.nvim_set_keymap("n", "<leader>r", "<Plug>SnipRun", { silent = true })
-		end,
-		{
-			"https://gitlab.com/schrieveslaach/sonarlint.nvim",
-			config = function()
-				require("sonarlint").setup({
-					server = {
-						cmd = {
-							"sonarlint-language-server",
-							"-stdio",
-							"-analyzers",
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarpython.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarcfamily.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjava.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonargo.jar"),
-							vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarphp.jar"),
-						},
-					},
-					filetypes = {
-						"python",
-						"cpp",
-						"java",
-						"go",
-						"py",
-						"js",
-						"ts",
-						"tsx",
-					},
-				})
-			end,
-		},
-	},
-	{
 		"L3MON4D3/LuaSnip",
 		dependencies = { "rafamadriz/friendly-snippets" },
 		version = "v2.*",
