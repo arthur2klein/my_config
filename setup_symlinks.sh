@@ -3,6 +3,8 @@ ln -snf ~/my_config/.zshrc ~/.zshrc
 ln -snf ~/my_config/.p10k.zsh ~/.p10k.zsh
 mkdir -p ~/.config/nvim/
 ln -snf ~/my_config/init.lua ~/.config/nvim/init.lua
+ln -snf ~/my_config/lua/plugins ~/.config/nvim/lua/plugins
+ln -snf ~/my_config/lua/custom ~/.config/nvim/lua/custom
 ln -snf ~/my_config/.tmux.conf ~/.tmux.conf
 ln -snf ~/my_config/.vimrc ~/.vimrc
 ln -snf ~/my_config/hypr/ ~/.config/hypr
