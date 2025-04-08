@@ -10,6 +10,7 @@ return {
 		name = "convcommit",
 		lazy = false,
 		dir = "~/.config/nvim/lua/custom/convcommit",
+		dependencies = { "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim" },
 		config = function()
 			local convcommit = require("custom.convcommit")
 			vim.keymap.set("n", "<leader>gg", convcommit.create_commit)
