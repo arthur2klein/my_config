@@ -10,10 +10,9 @@ ln -snf ~/my_config/.vimrc ~/.vimrc
 ln -snf ~/my_config/hypr/ ~/.config/hypr
 ln -snf ~/my_config/kitty/ ~/.config/kitty
 ln -snf ~/my_config/rofi/ ~/.config/rofi
-ln -snf ~/my_config/scripts/ ~/.config/scripts
+[ ! -h ~/.config/scripts ] && ln -snf ~/my_config/scripts/ ~/.config/scripts
 ln -snf ~/my_config/theme/ ~/.config/theme
 ln -snf ~/my_config/themes/* ~/.oh-my-zsh/themes/.
 ln -snf ~/my_config/bat/ ~/.config/bat
-ln -snf ~/my_config/scripts/ ~/.config/scripts/
 ln -snf ~/my_config/waybar/ ~/.config/waybar
 ln -snf ~/my_config/.prettierrc.json ~/.prettierrc.json
