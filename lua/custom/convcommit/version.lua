@@ -2,7 +2,7 @@ local M = {}
 
 local function get_latest_tag()
 	local tag = vim.fn.system("git describe --tags --abbrev=0"):gsub("%s+", "")
-	if tag ~= "" then
+	if tag ~= "" and tag:sub(0, 5) ~= "fatal" then
 		return tag
 	else
 		return "v0.0.0"
@@ -11,6 +11,9 @@ end
 
 local function get_commits_since(tag)
 	local cmd = string.format("git log %s..HEAD --pretty=format:%%s", tag)
+	if tag == "v0.0.0" then
+		cmd = "git log HEAD --pretty=format:%s"
+	end
 	return vim.fn.systemlist(cmd)
 end
 
@@ -50,7 +53,7 @@ local function write_changelog(new_version, commits)
 		return
 	end
 
-	f:write("\n## " .. new_version .. " - " .. os.date("%Y-%m-%d") .. "\n")
+	f:write("## " .. new_version .. " - " .. os.date("%Y-%m-%d") .. "\n\n")
 	for _, c in ipairs(commits) do
 		f:write("- " .. c .. "\n")
 	end
