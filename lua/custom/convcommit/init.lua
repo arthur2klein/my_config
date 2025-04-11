@@ -1,12 +1,10 @@
 local M = {}
 
-local input = require("lua.custom.convcommit.input").input
-local multiline = require("lua.custom.convcommit.input").multiline_input
-local select = require("lua.custom.convcommit.select").select
+local input = require("custom.convcommit.input").input
+local multiline = require("custom.convcommit.input").multiline_input
+local select = require("custom.convcommit.select").select
 
 local commit_data = {}
-local temp_file = vim.fn.tempname()
-local buf, win
 
 local function get_message()
   local message = string.format(
