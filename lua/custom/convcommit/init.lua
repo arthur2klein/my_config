@@ -33,8 +33,8 @@ end
 local function open_commit_buffer()
 	multiline({ prompt = "Confirm message:", default = get_message() }, function(message)
 		vim.fn.system('git commit -m "' .. message .. '"')
-		create_version_tag()
 		print("✅ Commit created!")
+		create_version_tag()
 	end)
 end
 

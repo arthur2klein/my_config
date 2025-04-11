@@ -58,6 +58,7 @@ local function write_changelog(new_version, commits)
 		f:write("- " .. c .. "\n")
 	end
 	f:close()
+	vim.fn.system("git add CHANGELOG.md && git commit --amend --no-edit")
 end
 
 local function confirm(prompt)
@@ -69,7 +70,6 @@ function M.create_version_tag()
 	local latest_tag = get_latest_tag()
 	print(latest_tag)
 	local commits = get_commits_since(latest_tag)
-	print(commits)
 
 	if #commits == 0 then
 		print("No new commits since " .. latest_tag)
