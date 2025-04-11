@@ -9,7 +9,8 @@ local commit_data = {}
 
 local function get_message()
   local message = string.format(
-    "%s%s%s: %s",
+    "%s%s%s%s: %s",
+    commit_data.firstInfo and commit_data.firstInfo .. ": " or "",
     commit_data.type,
     commit_data.scope and "(" .. commit_data.scope .. ")" or "",
     commit_data.breaking and "!" or "",
@@ -118,9 +119,17 @@ local function select_commit_type()
   end)
 end
 
+local function select_first_info()
+  input({ prompt = "First info (optional)" }, function(info)
+    if not info then info = "" end
+    commit_data.firstInfo = info
+    select_commit_type()
+  end)
+end
+
 function M.create_commit()
   commit_data = {}
-  select_commit_type()
+  select_first_info()
 end
 
 return M
