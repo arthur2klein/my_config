@@ -166,6 +166,7 @@ M.create_version_tag = require("custom.convcommit.version").create_version_tag
 
 function M.push()
 	vim.fn.system("git pull --rebase && git push")
+	print("✅ Push successful!")
 end
 
 return M

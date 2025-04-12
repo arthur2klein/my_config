@@ -34,6 +34,7 @@ return {
 			vim.keymap.set("n", "<leader>gg", convcommit.create_commit)
 			vim.keymap.set("n", "<leader>gv", convcommit.create_version_tag)
 			vim.keymap.set("n", "<leader>gp", convcommit.push)
+			vim.keymap.set("n", "<leader>gf", convcommit.search_footer)
 		end,
 	},
 	"kshenoy/vim-signature",
