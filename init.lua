@@ -67,46 +67,6 @@ if vim.fn.has("unix") == 1 then
 	end
 end
 
-vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true })
-vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true })
-vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true })
-
-function lsp_key_mapping()
-	vim.keymap.set("n", "gD", vim.lsp.buf.definition)
-	vim.keymap.set("n", "K", vim.lsp.buf.hover)
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-	vim.keymap.set("n", "gr", vim.lsp.buf.references)
-	vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
-	vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
-	vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run)
-	vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help)
-	vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename)
-	vim.keymap.set("n", "<leader>lf", vim.lsp.buf.format)
-	vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action)
-	vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist)
-	vim.keymap.set("n", "<leader>ae", function()
-		vim.diagnostic.setqflist({ severity = "E" })
-	end)
-	vim.keymap.set("n", "<leader>aw", function()
-		vim.diagnostic.setqflist({ severity = "W" })
-	end)
-	vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist)
-	vim.keymap.set("n", "[c", function()
-		vim.diagnostic.goto_prev({ wrap = false })
-	end)
-	vim.keymap.set("n", "]c", function()
-		vim.diagnostic.goto_next({ wrap = false })
-	end)
-end
-
-vim.api.nvim_create_autocmd("LspAttach", {
-	callback = function(args)
-		if vim.lsp.get_client_by_id(args.data.client_id).name ~= "metals" then
-			lsp_key_mapping()
-		end
-	end,
-})
-
 -- Setup lazy.nvim
 require("lazy").setup({
 	specs = {},

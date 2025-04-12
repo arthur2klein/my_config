@@ -1,5 +1,16 @@
+vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true })
+vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true })
+vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true })
+
 return {
-	"vim-scripts/loremipsum",
+	{
+		"vim-scripts/loremipsum",
+		config = function()
+			vim.keymap.set("n", "gl", function()
+				vim.cmd("Loremipsum")
+			end)
+		end,
+	},
 	{
 		"junegunn/vim-easy-align",
 		config = function()
