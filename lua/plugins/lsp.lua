@@ -260,4 +260,32 @@ return {
 			require("luasnip.loaders.from_vscode").lazy_load()
 		end,
 	},
+	{ "davidmh/cspell.nvim" },
+	{
+		"nvimtools/none-ls.nvim",
+		event = "VeryLazy",
+		depends = { "davidmh/cspell.nvim" },
+		opts = function(_, opts)
+			local cspell = require("cspell")
+			opts.sources = opts.sources or {}
+			table.insert(
+				opts.sources,
+				cspell.diagnostics.with({
+					diagnostics_postprocess = function(diagnostic)
+						diagnostic.severity = vim.diagnostic.severity.HINT
+					end,
+				})
+			)
+			table.insert(opts.sources, cspell.code_actions)
+		end,
+		config = function()
+			local cspell = require("cspell")
+			require("null-ls").setup({
+				sources = {
+					cspell.diagnostics,
+					cspell.code_actions,
+				},
+			})
+		end,
+	},
 }
