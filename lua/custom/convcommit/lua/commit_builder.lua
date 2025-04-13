@@ -7,7 +7,7 @@ local CommitBuilder = {}
 ---@field subject string Main, short description of the commit.
 ---@field body string|nil Longer optional description of the commit.
 ---@field footers string[] Footers of the commit.
----@field breaking string|nil Informations about the breaking nature of the commit, if any.
+---@field breaking string|nil Information about the breaking nature of the commit, if any.
 ---@field ticket_id string|nil Id of the related ticket if any.
 ---@field ticket_link string|nil Link of the related ticket if any.
 
@@ -79,7 +79,7 @@ function CommitBuilder.build(self)
 	end
 	if self.breaking then
 		self.type = self.type .. "!"
-		table.insert(self.footers, string.format("\nBREAKING CHANGE: : %s\n", self.breaking))
+		table.insert(self.footers, 1, string.format("BREAKING CHANGE: %s\n", self.breaking))
 	end
 	local message = string.format("%s: %s", self.type, self.subject)
 	if self.body and #self.body > 0 then

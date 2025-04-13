@@ -74,7 +74,7 @@ Example interaction:
     Add a footer (key: value):
     Confirm message:
     ```text
-    feat(core): [123] add new command parser
+    feat(core)!: [123] add new command parser
 
     Allow to build more complete and responsive apis using our tool.
 

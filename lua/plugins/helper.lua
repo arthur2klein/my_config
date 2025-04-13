@@ -4,4 +4,5 @@ return {
 		"stevearc/dressing.nvim",
 		opts = {},
 	},
+	"nvim-lua/plenary.nvim",
 }
