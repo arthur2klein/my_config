@@ -8,7 +8,7 @@ local CommitBuilder = require("commit_builder")
 ---@type CommitBuilder
 local commit_builder
 
---- Displays the commit message a last time, allowing for medifications before creating the commit.
+--- Displays the commit message a last time, allowing for modifications before creating the commit.
 local function preview()
 	multiline({ prompt = "Confirm message:", default = CommitBuilder.build(commit_builder) }, function(message)
 		vim.fn.system('git commit -m "' .. message .. '"')
@@ -28,7 +28,7 @@ local function add_footer()
 	end)
 end
 
---- Asks if the commit is breaking, and asks for additional informations.
+--- Asks if the commit is breaking, and asks for additional information.
 --- This will add a ! in the first line, as well as a BREAKING CHANGE footer.
 local function ask_breaking_change()
 	select({ "No", "Yes" }, { prompt = "Is this a breaking change?" }, function(choice)
@@ -137,7 +137,7 @@ local function get_ticket_info()
 	end)
 end
 
---- Ask for informations to build a commit for the currently staged changes.
+--- Ask for information to build a commit for the currently staged changes.
 function M.create_commit()
 	commit_builder = CommitBuilder.new()
 	get_ticket_info()

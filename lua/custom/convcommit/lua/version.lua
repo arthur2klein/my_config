@@ -43,7 +43,7 @@ end
 
 --- Determines the type of version bump from the given list of commit.
 ---@param commits string[] List of commits for the new version.
----@return string: Type of version bump amongs patch, minor and major.
+---@return string: Type of version bump amongst patch, minor and major.
 local function determine_bump(commits)
 	local bump = "patch"
 	for _, c in ipairs(commits) do
@@ -92,7 +92,7 @@ local function build_changelog(new_version, entries)
 	return message
 end
 
---- Creates a CHANGELOG.md file for the given version and appends the given conent.
+--- Creates a CHANGELOG.md file for the given version and appends the given content.
 ---@param content string Content to add to the file.
 local function write_changelog(content)
 	local f = io.open("CHANGELOG.md", "a")
@@ -123,7 +123,7 @@ local function create_tag(tag, remote)
 	return vim.fn.system(string.format("git tag %s && git push %s %s", tag, remote, tag))
 end
 
---- Displays informations about the tag creation.
+--- Displays information about the tag creation.
 ---@param version string New version tag to create.
 ---@param entries string[] List of entries to add in the CHANGELOG.md file.
 local function ask_for_confirmation(version, entries)

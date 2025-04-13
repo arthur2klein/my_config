@@ -40,11 +40,11 @@ function M.input(opts, on_submit)
 	input:mount()
 end
 
---- Allows the user to input mutliple lines of informations.
+--- Allows the user to input multiple lines of information.
 --- Pressing <leader><cr> in insert mode insert a line break.
 --- Pressing C-c will cancel the input as well as the on_submit call.
 ---@param opts InputOptions Props of the field.
----@param on_submit fun(value: string): nil Action that requires the inputed value.
+---@param on_submit fun(value: string): nil Action that requires the inputted value.
 function M.multiline_input(opts, on_submit)
 	local default = opts.default or ""
 	local lines = vim.split(default, "\n")
