@@ -149,6 +149,4 @@ function M.create_version_tag()
 	ask_for_confirmation(new_version, commits)
 end
 
-M.create_version_tag()
-
 return M
