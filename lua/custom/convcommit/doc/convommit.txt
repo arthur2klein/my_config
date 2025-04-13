@@ -110,3 +110,5 @@ As an example, here is a configuration of the plugin using Lazy.
   end,
 }
 ```
+
+vim:tw=78:ts=8:ft=help:norl:
