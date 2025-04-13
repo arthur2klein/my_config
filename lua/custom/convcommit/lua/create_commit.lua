@@ -3,14 +3,14 @@ local M = {}
 local input = require("input").input
 local multiline = require("input").multiline_input
 local select = require("select").select
-local CommitBuilder = require("commit_builder")
+local commit_builder = require("commit_builder")
 
 ---@type CommitBuilder
-local commit_builder
+local builder
 
 --- Displays the commit message a last time, allowing for modifications before creating the commit.
 local function preview()
-	multiline({ prompt = "Confirm message:", default = CommitBuilder.build(commit_builder) }, function(message)
+	multiline({ prompt = "Confirm message:", default = commit_builder.build(builder) }, function(message)
 		vim.fn.system('git commit -m "' .. message .. '"')
 		print("✅ Commit created!")
 	end)
@@ -20,7 +20,7 @@ end
 local function add_footer()
 	input({ prompt = "Add a footer (key: value) or leave empty to continue:" }, function(footer)
 		if footer and footer ~= "" then
-			CommitBuilder.add_footer(commit_builder, footer)
+			commit_builder.add_footer(builder, footer)
 			add_footer()
 		else
 			preview()
@@ -34,11 +34,11 @@ local function ask_breaking_change()
 	select({ "No", "Yes" }, { prompt = "Is this a breaking change?" }, function(choice)
 		if choice == "Yes" then
 			input({ prompt = "Describe the breaking change:" }, function(breaking_desc)
-				commit_builder.breaking = breaking_desc
+				builder.breaking = breaking_desc
 				add_footer()
 			end)
 		else
-			commit_builder.breaking = nil
+			builder.breaking = nil
 			add_footer()
 		end
 	end)
@@ -47,7 +47,7 @@ end
 --- Enters the longer optional commit description.
 local function enter_body()
 	multiline({ prompt = "Enter commit body (optional):", default = "" }, function(body)
-		commit_builder.body = body
+		builder.body = body
 		ask_breaking_change()
 	end)
 end
@@ -58,7 +58,7 @@ local function enter_subject()
 		if not subject or subject == "" then
 			print("❌ Commit cancelled.")
 		end
-		commit_builder.subject = subject
+		builder.subject = subject
 		enter_body()
 	end)
 end
@@ -70,9 +70,9 @@ local function select_scope()
 	table.insert(scopes, "none")
 	select(scopes, { prompt = "Select scope (or none):" }, function(choice)
 		if choice ~= "none" then
-			commit_builder.scope = choice
+			builder.scope = choice
 		else
-			commit_builder.scope = nil
+			builder.scope = nil
 		end
 		enter_subject()
 	end)
@@ -101,7 +101,7 @@ local function select_commit_type()
 		if not choice or choice == "" then
 			print("❌ Commit cancelled.")
 		else
-			commit_builder.type = choice
+			builder.type = choice
 			select_scope()
 		end
 	end)
@@ -114,7 +114,7 @@ local function input_ticket(type)
 		if not link or link == "" then
 			print("❌ Commit cancelled.")
 		end
-		CommitBuilder.setTicket(commit_builder, link, type)
+		commit_builder.setTicket(builder, link, type)
 		select_commit_type()
 	end)
 end
@@ -139,7 +139,7 @@ end
 
 --- Ask for information to build a commit for the currently staged changes.
 function M.create_commit()
-	commit_builder = CommitBuilder.new()
+	builder = commit_builder.new()
 	get_ticket_info()
 end
 
