@@ -6,8 +6,37 @@ M.create_commit = require("create_commit").create_commit
 --- Pushes the local commits.
 --- Also pull remote changes if any.
 function M.push()
-	print(vim.fn.system("git pull --rebase && git push"))
-	print("✅ Push successful!")
+	local function run_git_cmd(cmd, desc, on_done)
+		local stdout = {}
+		vim.system(cmd, {
+			text = true,
+			stdout = function(_, data)
+				if data then
+					table.insert(stdout, data)
+					print(data) -- live feedback
+				end
+			end,
+			stderr = function(_, data)
+				if data then
+					vim.schedule(function()
+						vim.notify(data, vim.log.levels.ERROR)
+					end)
+				end
+			end,
+		}, function(obj)
+			if obj.code == 0 then
+				print("✅ " .. desc .. " succeeded")
+			else
+				print("❌ " .. desc .. " failed (exit code " .. obj.code .. ")")
+			end
+			if on_done then
+				on_done()
+			end
+		end)
+	end
+	run_git_cmd({ "git", "pull", "--rebase" }, "Git pull", function()
+		run_git_cmd({ "git", "push" }, "Git push")
+	end)
 end
 
 return M
