@@ -18,7 +18,7 @@ end
 ---@param tag string|nil: Tag after which to return commits, or nil to take all.
 ---@return string[]: List of changelog entries or commit subjects.
 local function get_changelog_entries_since(tag)
-	local delimiter = "====BETWEEN-COMMITS===="
+	local delimiter = "====BETWEEN_COMMITS===="
 	local range
 	if tag == nil or tag == "v0.0.0" then
 		range = "HEAD"
@@ -29,12 +29,12 @@ local function get_changelog_entries_since(tag)
 	local cmd = string.format("git log --no-merges %s --pretty=format:%s", range, format)
 	local raw_output = vim.fn.system(cmd)
 	local entries = {}
-	for commit in string.gmatch(raw_output, "(.-)\n" .. delimiter) do
+	for commit in string.gmatch(raw_output, "(.-)" .. delimiter) do
 		local changelog_entry = commit:match("[Cc]hangelog%-[Ee]ntry:%s*(.+)")
 		if changelog_entry then
 			table.insert(entries, changelog_entry)
 		else
-			local subject = commit:match("^(.-)\n") or commit
+			local subject = commit:match("([^%s].-)\n") or commit
 			table.insert(entries, subject)
 		end
 	end
@@ -141,12 +141,14 @@ function M.create_version_tag()
 	local latest_tag = get_latest_tag()
 	local commits = get_changelog_entries_since(latest_tag)
 	if #commits == 0 then
-		print("No new commits since " .. latest_tag)
+		print("No new commits since " .. (latest_tag or "nil"))
 		return
 	end
 	local bump = determine_bump(commits)
 	local new_version = bump_version(latest_tag, bump)
 	ask_for_confirmation(new_version, commits)
 end
+
+M.create_version_tag()
 
 return M
