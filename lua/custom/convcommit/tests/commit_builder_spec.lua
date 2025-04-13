@@ -19,10 +19,10 @@ describe("commit_builder", function()
 		assert.are.same("PROJ-123", commit.ticket_id)
 		assert.are.same("https://<domain>.atlassian.net/browse/PROJ-123", commit.ticket_link)
 		commit_builder.setTicket(commit, "https://gitlab.com/<group>/<project>/-/issues/456", "gitlab")
-		assert.are.same("456", commit.ticket_id)
+		assert.are.same("#456", commit.ticket_id)
 		assert.are.same("https://gitlab.com/<group>/<project>/-/issues/456", commit.ticket_link)
 		commit_builder.setTicket(commit, "https://github.com/<user>/<repo>/issues/789", "github")
-		assert.are.same("789", commit.ticket_id)
+		assert.are.same("#789", commit.ticket_id)
 		assert.are.same("https://github.com/<user>/<repo>/issues/789", commit.ticket_link)
 	end)
 
@@ -39,7 +39,7 @@ describe("commit_builder", function()
 		---@type CommitBuilder
 		local commit = {
 			ticket_link = "https://github.com/example/repo/issues/123",
-			ticket_id = "123",
+			ticket_id = "#123",
 			type = "feat",
 			scope = "core",
 			subject = "add new command parser",
@@ -48,14 +48,14 @@ describe("commit_builder", function()
 			footers = { "Changelog-Entry: new command parser" },
 		}
 		local message = commit_builder.build(commit)
-		local expected = "feat(core)!: [123] add new command parser\
+		local expected = "feat(core)!: [#123] add new command parser\
 \
 Allow to build more complete and responsive apis using our tool.\
 \
 BREAKING CHANGE: removed old parser system\
 \
 Changelog-Entry: new command parser\
-Ticket-Id: 123\
+Ticket-Id: #123\
 Ticket-Link: https://github.com/example/repo/issues/123"
 		assert.equal(expected, message)
 	end)

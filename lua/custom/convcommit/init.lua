@@ -13,7 +13,7 @@ function M.push()
 			stdout = function(_, data)
 				if data then
 					table.insert(stdout, data)
-					print(data) -- live feedback
+					print(data)
 				end
 			end,
 			stderr = function(_, data)

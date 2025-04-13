@@ -37,10 +37,10 @@ local function ticket_id_from_link(link, type)
 		return link:match("/browse/([A-Z]+%-%d+)")
 	elseif type == "gitlab" then
 		-- Example: https://gitlab.com/<group>/<project>/-/issues/456
-		return link:match("/issues/(%d+)")
+		return "#" .. link:match("/issues/(%d+)")
 	elseif type == "github" then
 		-- Example: https://github.com/<user>/<repo>/issues/789
-		return link:match("/issues/(%d+)")
+		return "#" .. link:match("/issues/(%d+)")
 	else
 		return nil
 	end
