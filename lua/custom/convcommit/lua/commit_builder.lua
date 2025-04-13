@@ -79,7 +79,7 @@ function CommitBuilder.build(self)
 	end
 	if self.breaking then
 		self.type = self.type .. "!"
-		table.insert(self.footers, string.format("\nBREAKING CHANGE: : %s", self.breaking))
+		table.insert(self.footers, string.format("\nBREAKING CHANGE: : %s\n", self.breaking))
 	end
 	local message = string.format("%s: %s", self.type, self.subject)
 	if self.body and #self.body > 0 then
