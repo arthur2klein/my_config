@@ -96,7 +96,7 @@ local git = require("convcommit")
 git.push()
 ```
 ==============================================================================
-INSTALLATION & CONFIGURATION                              * convommit-config *
+INSTALLATION & CONFIGURATION                              *convommit-config*
 As an example, here is a configuration of the plugin using Lazy.
 ```lua
 {
