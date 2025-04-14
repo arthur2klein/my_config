@@ -1,20 +1,20 @@
-*convcommit.txt*  Plugin for git-related workflow commands              *convcommit*
+*convcommit.txt*  Plugin for git-related workflow commands            *convcommit*
 
-================================================================================
-INTRODUCTION                                                    *convcommit-intro*
+==============================================================================
+INTRODUCTION                                                  *convcommit-intro*
 
 This plugin provides custom git-related workflow commands for version tagging,
 committing, and pushing changes.
-It is designed for projects requiring guided conventional commits and changelog
-construction.
+It is designed for projects requiring guided conventional commits and
+changelog construction.
 
-================================================================================
-COMMANDS & FUNCTIONS                                              *convcommit-api*
+==============================================================================
+COMMANDS & FUNCTIONS                                            *convcommit-api*
 
 The following Lua functions are exposed:
 
---------------------------------------------------------------------------------
-`require('convcommit').create_version_tag()`       *convcommit.create_version_tag()*
+------------------------------------------------------------------------------
+`require('convcommit').create_version_tag()`     *convcommit.create_version_tag()*
 
 Creates a new version tag based on commit messages since the latest tag.
 
@@ -29,21 +29,21 @@ Creates a new version tag based on commit messages since the latest tag.
 Uses the `Changelog-Entry:` commit footer if available, or falls back to the
 first line of the commit message.
 
---------------------------------------------------------------------------------
-`require('convcommit').git_add()`                             *convcommit.git_add()*
+------------------------------------------------------------------------------
+`require('convcommit').git_add()`                           *convcommit.git_add()*
 
 Displays every not git-ignored changed files, removing the entry if n is
 pressed, and removing it while staging the change if y is pressed.
 
---------------------------------------------------------------------------------
-`require('convcommit').push()`                                   *convcommit.push()*
+------------------------------------------------------------------------------
+`require('convcommit').push()`                                 *convcommit.push()*
 
 Pulls remote changes and pushes local commits.
 
 git pull --rebase && git push
 
---------------------------------------------------------------------------------
-`require('convcommit').create_commit()`                 *convcommit.create_commit()*
+------------------------------------------------------------------------------
+`require('convcommit').create_commit()`               *convcommit.create_commit()*
 
 Launches an interactive prompt to help build a Conventional Commit message.
 
@@ -58,8 +58,8 @@ This function walks the user through:
 5. Indicating if the commit is a BREAKING CHANGE, with a description.
 6. Optionally adding any number of key-value footers.
 
-Finally, the user is shown the generated commit message and can confirm/edit it
-before it's used to create the Git commit.
+Finally, the user is shown the generated commit message and can confirm/edit
+it before it's used to create the Git commit.
 
 The commit follows the Conventional Commits format and can automatically
 include:
@@ -76,8 +76,8 @@ Example interaction:
     `Select commit type`: feat
     `Select scope (or none)`: core
     `Enter subject`: add new command parser
-    `Enter commit body (optional)`: Allow to build more complete and responsive
-    apis using our tool.
+    `Enter commit body (optional)`: Allow to build more complete and
+    responsive apis using our tool.
     `Is this a breaking change?` Yes
     `Describe the breaking change`: removed old parser system
     `Add a footer (key: value)`: Changelog-Entry: new command parser
@@ -96,8 +96,8 @@ Example interaction:
     ```
 
 
-================================================================================
-USAGE                                                           *convcommit-usage*
+==============================================================================
+USAGE                                                         *convcommit-usage*
 
 To use this plugin, require it in your config:
 
@@ -105,8 +105,8 @@ To use this plugin, require it in your config:
 local git = require("convcommit")
 git.push()
 ```
-================================================================================
-INSTALLATION & CONFIGURATION                                    *convommit-config*
+==============================================================================
+INSTALLATION & CONFIGURATION                                  *convommit-config*
 As an example, here is a configuration of the plugin using Lazy.
 ```lua
 {
