@@ -148,4 +148,5 @@ return {
 			vim.keymap.set("n", "<leader>lg", neogen.generate)
 		end,
 	},
+	"mg979/vim-visual-multi",
 }
