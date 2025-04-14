@@ -1,9 +1,10 @@
 convcommit	convommit.txt	/*convcommit*
 convcommit-api	convommit.txt	/*convcommit-api*
-convcommit-create_commit	convommit.txt	/*convcommit-create_commit*
-convcommit-create_version_tag	convommit.txt	/*convcommit-create_version_tag*
 convcommit-intro	convommit.txt	/*convcommit-intro*
-convcommit-push	convommit.txt	/*convcommit-push*
 convcommit-usage	convommit.txt	/*convcommit-usage*
+convcommit.create_commit()	convommit.txt	/*convcommit.create_commit()*
+convcommit.create_version_tag()	convommit.txt	/*convcommit.create_version_tag()*
+convcommit.git_add()	convommit.txt	/*convcommit.git_add()*
+convcommit.push()	convommit.txt	/*convcommit.push()*
 convcommit.txt	convommit.txt	/*convcommit.txt*
 convommit-config	convommit.txt	/*convommit-config*

@@ -2,6 +2,7 @@ local M = {}
 
 M.create_version_tag = require("version").create_version_tag
 M.create_commit = require("create_commit").create_commit
+M.git_add = require("git_add").git_add
 
 --- Pushes the local commits.
 --- Also pull remote changes if any.

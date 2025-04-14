@@ -28,12 +28,13 @@ return {
 		name = "convcommit",
 		lazy = false,
 		dir = "~/.config/nvim/lua/custom/convcommit",
-		dependencies = { "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim" },
+		dependencies = { "MunifTanjim/nui.nvim", "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 		config = function()
 			local convcommit = require("custom.convcommit")
 			vim.keymap.set("n", "<leader>gg", convcommit.create_commit)
 			vim.keymap.set("n", "<leader>gv", convcommit.create_version_tag)
 			vim.keymap.set("n", "<leader>gp", convcommit.push)
+			vim.keymap.set("n", "<leader>ga", convcommit.git_add)
 		end,
 	},
 	"kshenoy/vim-signature",
