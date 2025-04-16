@@ -26,9 +26,9 @@ function M.push()
       end,
     }, function(obj)
       if obj.code == 0 then
-        vim.notify("✅ " .. desc .. " succeeded", vim.log.levels.INFO)
+        print("✅ " .. desc .. " succeeded")
       else
-        vim.notify("❌ " .. desc .. " failed (exit code " .. obj.code .. ")", vim.log.levels.ERROR)
+        print("❌ " .. desc .. " failed (exit code " .. obj.code .. ")")
       end
       if on_done then
         on_done()
