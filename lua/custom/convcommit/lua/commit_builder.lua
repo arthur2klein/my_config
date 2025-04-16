@@ -93,7 +93,4 @@ function CommitBuilder.build(self)
   return message
 end
 
-local test = "https://anaquaservices.atlassian.net/issues/RD-172"
-print(test:match("/(browse|issues)/([A-Z]+%-%d+)"))
-
 return CommitBuilder
