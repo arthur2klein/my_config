@@ -1,11 +1,37 @@
 local M = {}
 
+local bit = require("bit")
+
 --- Checks whether the given flag is set in a value.
 ---@param value integer Value to search the flag in.
 ---@param flag integer Flag to check in the value.
 ---@return boolean: True iff the given flag is set in the value.
 local function check_flag(value, flag)
-	return bit.band(value, flag) == value
+	return bit.band(value, flag) == flag
+end
+
+--- Parse a remote url to determine its hosting site, the user and the name of the repo.
+---@param remote string Remote to parse.
+---@return string?, string?, string?: "github", "gitlab" or nil for the first argument, followed
+---by the user and the repo of the project if hosting site not nil.
+local function parse_remote(remote)
+	local user, repo = remote:match("git@github%.com:(.-)/(.-)%.git")
+	if user and repo then
+		return "github", user, repo
+	end
+	user, repo = remote:match("https://github%.com/(.-)/(.-)%.git")
+	if user and repo then
+		return "github", user, repo
+	end
+	user, repo = remote:match("git@gitlab%.com:(.-)/(.-)%.git")
+	if user and repo then
+		return "gitlab", user, repo
+	end
+	user, repo = remote:match("https://gitlab%.com/(.-)/(.-)%.git")
+	if user and repo then
+		return "gitlab", user, repo
+	end
+	return nil, nil, nil
 end
 
 --- Returns the pipeline url of the current commit.
@@ -15,14 +41,11 @@ end
 local function get_commit_pipeline_url()
 	local remote = vim.fn.system("git remote get-url origin"):gsub("\n", "")
 	local sha = vim.fn.system("git rev-parse HEAD"):gsub("\n", "")
-	local github_pattern = "[/:]github%.com[:/](.-)/(.-)%.git"
-	local gitlab_pattern = "[/:]gitlab%.com[:/](.-)/(.-)%.git"
-	local user, repo = remote:match(github_pattern)
-	if user and repo then
+	local source, user, repo = parse_remote(remote)
+	if source == "github" then
 		return string.format("https://github.com/%s/%s/commit/%s/checks", user, repo, sha)
 	end
-	user, repo = remote:match(gitlab_pattern)
-	if user and repo then
+	if source == "gitlab" then
 		return string.format("https://gitlab.com/%s/%s/-/commit/%s/pipelines", user, repo, sha)
 	end
 	vim.notify("❓ Could not determine commit-specific pipeline URL", vim.log.levels.WARN)
