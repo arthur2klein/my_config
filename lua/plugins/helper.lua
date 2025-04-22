@@ -5,4 +5,8 @@ return {
 		opts = {},
 	},
 	"nvim-lua/plenary.nvim",
+	{
+		"rcarriga/nvim-notify",
+		config = true,
+	},
 }

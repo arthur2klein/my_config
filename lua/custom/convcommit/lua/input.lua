@@ -1,6 +1,7 @@
 local Input = require("nui.input")
 local Popup = require("nui.popup")
 local event = require("nui.utils.autocmd").event
+local notify = require("notify")
 
 local M = {}
 
@@ -36,7 +37,7 @@ function M.input(opts, on_submit)
 	})
 	input:map("n", "<C-c>", function()
 		input:unmount()
-		print("❌ Cancelled.")
+		notify("❌ Cancelled.", vim.log.levels.WARN)
 	end)
 	vim.schedule(function()
 		input:mount()
@@ -88,7 +89,7 @@ function M.multiline_input(opts, on_submit)
 	end, { buffer = popup.bufnr })
 	vim.keymap.set("n", "<C-c>", function()
 		popup:unmount()
-		print("❌ Cancelled.")
+		notify("❌ Cancelled.", vim.log.levels.WARN)
 	end, { buffer = popup.bufnr })
 	popup:on(event.BufEnter, function()
 		vim.cmd("startinsert")

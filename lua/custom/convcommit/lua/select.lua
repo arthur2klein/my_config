@@ -3,6 +3,7 @@ local finders = require("telescope.finders")
 local conf = require("telescope.config").values
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
+local notify = require("notify")
 
 local M = {}
 
@@ -30,7 +31,7 @@ function M.select(items, opts, on_choice)
 					if selection then
 						on_choice(selection[1])
 					else
-						print("❌ Cancelled.")
+						notify("❌ Cancelled.", vim.logs.levels.WARN)
 					end
 				end)
 				map("i", "<C-c>", actions.close)
