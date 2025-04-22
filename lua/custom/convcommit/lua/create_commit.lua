@@ -15,13 +15,13 @@ local function preview()
 		vim.fn.system('git commit -m "' .. message .. '"')
 		local status = vim.v.shell_error
 		if status == 0 then
-			notify("✅ Commit created!", vim.logs.levels.INFO)
+			notify("✅ Commit created!", vim.log.levels.INFO)
 		elseif status == 1 then
-			notify("❌ Commit received failure!", vim.logs.levels.ERROR)
+			notify("❌ Commit received failure!", vim.log.levels.ERROR)
 		elseif status == 128 then
-			notify("❌ Commit received fatal error!", vim.logs.levels.ERROR)
+			notify("❌ Commit received fatal error!", vim.log.levels.ERROR)
 		else
-			notify("❌ Commit received an other error!", vim.logs.levels.ERROR)
+			notify("❌ Commit received an other error!", vim.log.levels.ERROR)
 		end
 	end)
 end
@@ -66,7 +66,7 @@ end
 local function enter_subject()
 	input({ prompt = "Enter commit subject:" }, function(subject)
 		if not subject or subject == "" then
-			notify("❌ Commit cancelled.", vim.logs.levels.ERROR)
+			notify("❌ Commit cancelled.", vim.log.levels.ERROR)
 		end
 		builder.subject = subject
 		enter_body()
@@ -109,7 +109,7 @@ local function select_commit_type()
 	}
 	select(commit_types, { prompt = "Select commit type:" }, function(choice)
 		if not choice or choice == "" then
-			notify("❌ Commit cancelled.", vim.logs.levels.ERROR)
+			notify("❌ Commit cancelled.", vim.log.levels.ERROR)
 		else
 			builder.type = choice
 			select_scope()
@@ -122,7 +122,7 @@ end
 local function input_ticket(type)
 	input({ prompt = string.format("Enter %s ticket link:", type) }, function(link)
 		if not link or link == "" then
-			notify("❌ Commit cancelled.", vim.logs.levels.ERROR)
+			notify("❌ Commit cancelled.", vim.log.levels.ERROR)
 		end
 		commit_builder.setTicket(builder, link, type)
 		select_commit_type()

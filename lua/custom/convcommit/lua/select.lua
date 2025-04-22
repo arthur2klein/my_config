@@ -31,7 +31,7 @@ function M.select(items, opts, on_choice)
 					if selection then
 						on_choice(selection[1])
 					else
-						notify("❌ Cancelled.", vim.logs.levels.WARN)
+						notify("❌ Cancelled.", vim.log.levels.WARN)
 					end
 				end)
 				map("i", "<C-c>", actions.close)

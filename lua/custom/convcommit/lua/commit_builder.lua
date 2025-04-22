@@ -14,17 +14,17 @@ local CommitBuilder = {}
 --- Creates a new empty commit.
 ---@return CommitBuilder: Empty commit with required fields initialized.
 function CommitBuilder.new()
-  local self = {
-    type = "feat",
-    subject = "No message",
-    footers = {},
-    scope = nil,
-    body = nil,
-    breaking = nil,
-    ticket_id = nil,
-    ticket_link = nil,
-  }
-  return self
+	local self = {
+		type = "feat",
+		subject = "No message",
+		footers = {},
+		scope = nil,
+		body = nil,
+		breaking = nil,
+		ticket_id = nil,
+		ticket_link = nil,
+	}
+	return self
 end
 
 --- Extracts and returns the ticket id from the given ticket link.
@@ -32,20 +32,20 @@ end
 ---@param type string: Type of the ticket amongst jira, gitlab and github.
 ---@return string|nil: Id of the ticket, or nil if unrecognized type.
 local function ticket_id_from_link(link, type)
-  if type == "jira" then
-    -- Example: https://<domain>.atlassian.net/browse/PROJ-123
-    -- Example: https://<domain>.atlassian.net/issues/PROJ-123
-    local value = link:match("/browse/([A-Z]+%-%d+)")
-    return (value and #value > 0) and value or link:match("/issues/([A-Z]+%-%d+)")
-  elseif type == "gitlab" then
-    -- Example: https://gitlab.com/<group>/<project>/-/issues/456
-    return "#" .. link:match("/issues/(%d+)")
-  elseif type == "github" then
-    -- Example: https://github.com/<user>/<repo>/issues/789
-    return "#" .. link:match("/issues/(%d+)")
-  else
-    return nil
-  end
+	if type == "jira" then
+		-- Example: https://<domain>.atlassian.net/browse/PROJ-123
+		-- Example: https://<domain>.atlassian.net/issues/PROJ-123
+		local value = link:match("/browse/([A-Z]+%-%d+)")
+		return (value and #value > 0) and value or link:match("/issues/([A-Z]+%-%d+)")
+	elseif type == "gitlab" then
+		-- Example: https://gitlab.com/<group>/<project>/-/issues/456
+		return "#" .. link:match("/issues/(%d+)")
+	elseif type == "github" then
+		-- Example: https://github.com/<user>/<repo>/issues/789
+		return "#" .. link:match("/issues/(%d+)")
+	else
+		return nil
+	end
 end
 
 --- Sets the link and ticket id of the given commit.
@@ -54,43 +54,43 @@ end
 ---@param type string: Type of the ticket amongst jira, gitlab and github.
 ---@return nil
 function CommitBuilder.setTicket(self, link, type)
-  self.ticket_link = link
-  self.ticket_id = ticket_id_from_link(link, type)
+	self.ticket_link = link
+	self.ticket_id = ticket_id_from_link(link, type)
 end
 
 --- Adds a footer the the given commit.
 ---@param self CommitBuilder: Commit to add a footer to.
 ---@param footer string: Footer to add.
 function CommitBuilder.addFooter(self, footer)
-  table.insert(self.footers, footer)
+	table.insert(self.footers, footer)
 end
 
 --- Creates the commit from the given data
 ---@param self CommitBuilder: Data of the commit to create.
 ---@return string: Commit message for the given commit.
 function CommitBuilder.build(self)
-  if self.ticket_id and #self.ticket_id > 0 then
-    self.subject = string.format("[%s] %s", self.ticket_id, self.subject)
-    table.insert(self.footers, string.format("Ticket-Id: %s", self.ticket_id))
-  end
-  if self.ticket_link and #self.ticket_link > 0 then
-    table.insert(self.footers, string.format("Ticket-Link: %s", self.ticket_link))
-  end
-  if self.scope then
-    self.type = string.format("%s(%s)", self.type, self.scope)
-  end
-  if self.breaking then
-    self.type = self.type .. "!"
-    table.insert(self.footers, 1, string.format("BREAKING CHANGE: %s\n", self.breaking))
-  end
-  local message = string.format("%s: %s", self.type, self.subject)
-  if self.body and #self.body > 0 then
-    message = message .. "\n\n" .. self.body
-  end
-  if self.footers and #self.footers > 0 then
-    message = message .. "\n\n" .. table.concat(self.footers, "\n")
-  end
-  return message
+	if self.ticket_id and #self.ticket_id > 0 then
+		self.subject = string.format("[%s] %s", self.ticket_id, self.subject)
+		table.insert(self.footers, string.format("Ticket-Id: %s", self.ticket_id))
+	end
+	if self.ticket_link and #self.ticket_link > 0 then
+		table.insert(self.footers, string.format("Ticket-Link: %s", self.ticket_link))
+	end
+	if self.scope then
+		self.type = string.format("%s(%s)", self.type, self.scope)
+	end
+	if self.breaking then
+		self.type = self.type .. "!"
+		table.insert(self.footers, 1, string.format("BREAKING CHANGE: %s\n", self.breaking))
+	end
+	local message = string.format("%s: %s", self.type, self.subject)
+	if self.body and #self.body > 0 then
+		message = message .. "\n\n" .. self.body
+	end
+	if self.footers and #self.footers > 0 then
+		message = message .. "\n\n" .. table.concat(self.footers, "\n")
+	end
+	return message
 end
 
 return CommitBuilder

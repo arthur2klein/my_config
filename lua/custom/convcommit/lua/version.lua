@@ -98,7 +98,7 @@ end
 local function write_changelog(content)
 	local f = io.open("CHANGELOG.md", "a")
 	if not f then
-		notify("Error creating the changelog file", vim.logs.levels.ERROR)
+		notify("Error creating the changelog file", vim.log.levels.ERROR)
 		return
 	end
 	f:write(content)
@@ -129,10 +129,10 @@ end
 ---@param entries string[] List of entries to add in the CHANGELOG.md file.
 local function ask_for_confirmation(version, entries)
 	multiline({ prompt = "Confirm message:", default = build_changelog(version, entries) }, function(message)
-		notify(create_tag(version), vim.logs.levels.INFO)
+		notify(create_tag(version), vim.log.levels.INFO)
 		write_changelog(message)
 		commit_changelog(version)
-		notify("✅ Changelog created!", vim.logs.levels.INFO)
+		notify("✅ Changelog created!", vim.log.levels.INFO)
 	end)
 end
 
@@ -142,7 +142,7 @@ function M.create_version_tag()
 	local latest_tag = get_latest_tag()
 	local commits = get_changelog_entries_since(latest_tag)
 	if #commits == 0 then
-		notify("No new commits since " .. (latest_tag or "nil"), vim.logs.levels.ERROR)
+		notify("No new commits since " .. (latest_tag or "nil"), vim.log.levels.ERROR)
 		return
 	end
 	local bump = determine_bump(commits)
