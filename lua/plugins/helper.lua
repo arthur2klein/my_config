@@ -7,6 +7,9 @@ return {
 	"nvim-lua/plenary.nvim",
 	{
 		"rcarriga/nvim-notify",
-		config = true,
+		config = function()
+			local notify = require("notify")
+			notify.setup({ background_colour = "#000000" })
+		end,
 	},
 }
