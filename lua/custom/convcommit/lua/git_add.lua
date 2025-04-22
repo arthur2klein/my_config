@@ -39,7 +39,6 @@ function M.git_add()
 							break
 						end
 					end
-
 					refresh_picker(picker, files)
 				end)
 				map("i", "n", function()

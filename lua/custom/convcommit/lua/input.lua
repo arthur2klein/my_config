@@ -1,5 +1,6 @@
 local Input = require("nui.input")
 local Popup = require("nui.popup")
+local event = require("nui.utils.autocmd").event
 
 local M = {}
 
@@ -37,7 +38,12 @@ function M.input(opts, on_submit)
 		input:unmount()
 		print("❌ Cancelled.")
 	end)
-	input:mount()
+	vim.schedule(function()
+		input:mount()
+	end)
+	input:on(event.BufEnter, function()
+		vim.cmd("startinsert")
+	end)
 end
 
 --- Allows the user to input multiple lines of information.
@@ -71,7 +77,9 @@ function M.multiline_input(opts, on_submit)
 			buftype = "acwrite",
 		},
 	})
-	popup:mount()
+	vim.schedule(function()
+		popup:mount()
+	end)
 	vim.api.nvim_buf_set_lines(popup.bufnr, 0, -1, false, lines)
 	vim.keymap.set("n", "<leader><CR>", function()
 		local result = vim.api.nvim_buf_get_lines(popup.bufnr, 0, -1, false)
@@ -82,6 +90,9 @@ function M.multiline_input(opts, on_submit)
 		popup:unmount()
 		print("❌ Cancelled.")
 	end, { buffer = popup.bufnr })
+	popup:on(event.BufEnter, function()
+		vim.cmd("startinsert")
+	end)
 end
 
 return M
