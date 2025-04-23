@@ -1,14 +1,9 @@
 local M = {}
 local notify = require("notify")
-local bit = require("bit")
 
---- Checks whether the given flag is set in a value.
----@param value integer Value to search the flag in.
----@param flag integer Flag to check in the value.
----@return boolean: True iff the given flag is set in the value.
-local function check_flag(value, flag)
-	return bit.band(value, flag) == flag
-end
+---@class PushConfig Configuration of the push() function.
+---@field should_pull boolean? If true, will pull before pushing. Default to true.
+---@field open_pipeline boolean? If true, will open a browser with the new ci. Default to true.
 
 --- Parse a remote url to determine its hosting site, the user and the name of the repo.
 ---@param remote string Remote to parse.
@@ -66,17 +61,12 @@ local function open_url(url)
 	vim.fn.jobstart(cmd, { detach = true })
 end
 
---- If set, will pull before pushing.
-M.SHOULD_PULL = 1
---- If set, will try to open a browser to view the new pipeline.
-M.OPEN_PIPELINE = 2
-
 --- Pushes the local commits.
 --- Also pull remote changes if any.
---- @param flags integer? Flags to pass to the function. Defaults to 3.
-function M.push(flags)
-	if flags == nil then
-		flags = 3
+--- @param config PushConfig? Configuration of the command.
+function M.push(config)
+	if config == nil then
+		config = {}
 	end
 	local function run_git_cmd(cmd, desc, on_done, is_skipped)
 		if not is_skipped then
@@ -94,13 +84,13 @@ function M.push(flags)
 	end
 	run_git_cmd("git pull --rebase", "Git pull", function()
 		run_git_cmd("git push", "Git push")
-		if check_flag(flags, M.OPEN_PIPELINE) then
+		if config.open_pipeline == nil or config.open_pipeline then
 			local ref = get_commit_pipeline_url()
 			if ref then
 				open_url(ref)
 			end
 		end
-	end, check_flag(flags, M.SHOULD_PULL))
+	end, config.should_pull == nil or config.should_pull)
 end
 
 return M
