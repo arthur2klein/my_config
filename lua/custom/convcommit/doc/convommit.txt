@@ -129,10 +129,11 @@ As an example, here is a configuration of the plugin using Lazy.
 }
 ```
 ------------------------------------------------------------------------------
-PushConfig                                              *convcommit-push-config
+PushConfig                                              *convcommit-push-config*
 
 Configuration for |require("convcommit").push()|
 - `should_pull`: boolean? => If true, will pull before pushing. Default to true.
-- `open_pipeline`: boolean? => If true, will open a browser with the new ci. Default to true.
+- `open_pipeline`: boolean? => If true, will open a browser with the new ci.
+  Default to true.
 
 vim:tw=78:ts=8:ft=help:norl:
