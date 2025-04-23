@@ -42,6 +42,8 @@ Pulls remote changes and pushes local commits.
 
 git pull --rebase && git push
 
+Also opens a browser page with the ci of the current commit.
+
 ------------------------------------------------------------------------------
 `require('convcommit').create_commit()`               *convcommit.create_commit()*
 
