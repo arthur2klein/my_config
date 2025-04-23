@@ -13,7 +13,7 @@ return {
 				background_colour = "#000000",
 				timeout = 2000,
 				fps = 24,
-				max_width = 30,
+				max_width = 50,
 				max_height = 5,
 			})
 		end,
