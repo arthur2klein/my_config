@@ -1,5 +1,7 @@
 local M = {}
-local notify = require("notify")
+local notify = function(message, level)
+	require("notify")(message, level, { title = "Push" })
+end
 
 ---@class PushConfig Configuration of the push() function.
 ---@field should_pull boolean? If true, will pull before pushing. Default to true.

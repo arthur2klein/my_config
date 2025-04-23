@@ -1,7 +1,9 @@
 local Input = require("nui.input")
 local Popup = require("nui.popup")
 local event = require("nui.utils.autocmd").event
-local notify = require("notify")
+local notify = function(message, level)
+	require("notify")(message, level, { title = "Input" })
+end
 
 local M = {}
 

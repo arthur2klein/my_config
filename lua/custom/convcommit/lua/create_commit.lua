@@ -4,7 +4,9 @@ local input = require("input").input
 local multiline = require("input").multiline_input
 local select = require("select").select
 local commit_builder = require("commit_builder")
-local notify = require("notify")
+local notify = function(message, level)
+	require("notify")(message, level, { title = "Commit" })
+end
 
 ---@type CommitBuilder
 local builder

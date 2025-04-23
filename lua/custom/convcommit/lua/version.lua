@@ -1,7 +1,9 @@
 local M = {}
 
 local multiline = require("input").multiline_input
-local notify = require("notify")
+local notify = function(message, level)
+	require("notify")(message, level, { title = "Version" })
+end
 
 --- Returns the latest tag of the given project.
 --- @return string | nil: Latest tag of the given project.
