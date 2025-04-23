@@ -9,6 +9,7 @@ return {
 		},
 		config = function()
 			require("telescope").load_extension("dap")
+			require("telescope").load_extension("notify")
 			local builtin = require("telescope.builtin")
 			local actions = require("telescope.actions")
 			local action_state = require("telescope.actions.state")
@@ -27,6 +28,7 @@ return {
 			vim.keymap.set("n", "<leader>fj", builtin.jumplist, {})
 			vim.keymap.set("n", "<leader>fs", builtin.spell_suggest, {})
 			vim.keymap.set("n", "<leader>fr", builtin.lsp_references, {})
+			vim.keymap.set("n", "<leader>fn", require("telescope").extensions.notify.notify, {})
 			-- vim.keymap.set("n", "<leader>fy", builtin.registers, {})
 
 			vim.keymap.set("n", "<leader>fq", require("telescope").extensions.macroscope.default, {})
