@@ -92,7 +92,7 @@ function M.push(config)
 				open_url(ref)
 			end
 		end
-	end, config.should_pull == nil or config.should_pull)
+	end, config.should_pull == false)
 end
 
 return M
