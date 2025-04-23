@@ -54,6 +54,7 @@ end
 ---@param url string: Url to open
 local function open_url(url)
 	local cmd
+	notify(string.format("Opening %s...", url), vim.log.levels.INFO)
 	if vim.fn.has("wsl") == 1 then
 		url = url:gsub("&", "^&")
 		cmd = { "/mnt/c/Windows/System32/cmd.exe", "/C", "start", "", url }
