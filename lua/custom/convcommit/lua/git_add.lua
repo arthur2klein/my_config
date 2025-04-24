@@ -40,6 +40,9 @@ function M.git_add()
 						end
 					end
 					refresh_picker(picker, files)
+					if files == nil or #files == 0 then
+						actions.close(prompt_bufnr)
+					end
 				end)
 				map("i", "n", function()
 					local entry = action_state.get_selected_entry()
@@ -51,6 +54,9 @@ function M.git_add()
 						end
 					end
 					refresh_picker(picker, files)
+					if files == nil or #files == 0 then
+						actions.close(prompt_bufnr)
+					end
 				end)
 				actions.select_default:replace(function()
 					actions.close(prompt_bufnr)
