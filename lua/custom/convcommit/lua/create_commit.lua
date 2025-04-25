@@ -30,13 +30,16 @@ end
 
 --- Adds footers recursively
 local function add_footer()
-  input({ prompt = "Add a footer (key: value) or leave empty to continue:" }, function(footer)
-    footer = vim.trim(footer)
-    if footer and footer ~= "" then
-      commit_builder.add_footer(builder, footer)
-      add_footer()
-    else
+  local footers = { "End creation", "Changelog-Entry", "Release-Note", "Co-Author" }
+  select(footers, { prompt = "Add a footer:", default = "End creation" }, function(key)
+    if key == "End creation" then
       preview()
+    else
+      input({ prompt = string.format("Value for footer %s:", key) }, function(value)
+        value = vim.trim(value)
+        commit_builder.add_footer(builder, string.format("%s: %s", key, value))
+        add_footer()
+      end)
     end
   end)
 end
