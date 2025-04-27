@@ -37,6 +37,7 @@ return {
 		},
 		config = function()
 			local convcommit = require("convcommit")
+			convcommit.setup({})
 			vim.keymap.set("n", "<leader>gg", convcommit.create_commit)
 			vim.keymap.set("n", "<leader>gv", convcommit.create_version_tag)
 			vim.keymap.set("n", "<leader>gp", convcommit.push)
