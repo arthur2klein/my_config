@@ -35,6 +35,7 @@ return {
 			"nvim-lua/plenary.nvim",
 			"rcarriga/nvim-notify",
 		},
+		branch = "master",
 		config = function()
 			local convcommit = require("convcommit")
 			convcommit.setup({})
