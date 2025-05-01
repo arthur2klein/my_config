@@ -49,7 +49,7 @@
   },
   "custom/power": {
     "format": "󰐥",
-    "on-click": "$HOME/.config/scripts/on_power_button.sh"
+    "on-click": "$HOME/scripts/on_power_button.sh"
   },
   "clock": {
     "format": "󰅐 {:%H:%M}",
