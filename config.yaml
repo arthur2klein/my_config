@@ -161,9 +161,6 @@ binding_modes:
         bindings: ['alt+shift+p']
 
 keybindings:
-  - commands: toggle-group
-    keys: ['alt+shift+b']
-    args: ['my-nav']
   # Shift focus in a given direction.
   - commands: ['focus --direction left']
     bindings: ['alt+h', 'alt+left']
@@ -173,7 +170,6 @@ keybindings:
     bindings: ['alt+k', 'alt+up']
   - commands: ['focus --direction down']
     bindings: ['alt+j', 'alt+down']
-    group: 'my-nav'
 
   # Move focused window in a given direction.
   - commands: ['move --direction left']
