@@ -169,7 +169,7 @@ keybindings:
   - commands: ['focus --direction up']
     bindings: ['alt+k', 'alt+up']
   - commands: ['focus --direction down']
-    bindings: ['alt+j', 'alt+down']
+    bindings: ['alt+down']
 
   # Move focused window in a given direction.
   - commands: ['move --direction left']
