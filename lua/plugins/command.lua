@@ -2,6 +2,21 @@ vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true })
 vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true })
 vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true })
 
+if os.getenv("TMUX") then
+	vim.g.clipboard = {
+		name = "tmux",
+		copy = {
+			["+"] = "tmux load-buffer -",
+			["*"] = "tmux load-buffer -",
+		},
+		paste = {
+			["+"] = "tmux save-buffer -",
+			["*"] = "tmux save-buffer -",
+		},
+		cache_enabled = true,
+	}
+end
+
 return {
 	{
 		"vim-scripts/loremipsum",
