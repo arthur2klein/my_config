@@ -34,6 +34,7 @@ if command -v ddcutil >/dev/null 2>&1; then
     DISPLAY_NUM=$(get_display)
     if [[ -n "$DISPLAY_NUM" ]]; then
         CUR_BRIGHT=$(ddcutil getvcp 10 --display "$DISPLAY_NUM" 2>/dev/null | grep -oP 'current value = \K\d+')
+        echo "Current: ${CUR_BRIGHT}"
 
         if [[ "$DIRECTION" == "up" ]]; then
             NEW_BRIGHT=$((CUR_BRIGHT + STEP))
@@ -43,6 +44,7 @@ if command -v ddcutil >/dev/null 2>&1; then
 
         # Clamp between 0 and 100
         NEW_BRIGHT=$(($NEW_BRIGHT < 0 ? 0 : $NEW_BRIGHT > 100 ? 100 : $NEW_BRIGHT))
+        echo "New: ${NEW_BRIGHT}"
 
         ddcutil setvcp 10 "$NEW_BRIGHT" --display "$DISPLAY_NUM"
         exit 0
