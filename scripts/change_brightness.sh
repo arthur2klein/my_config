@@ -33,7 +33,7 @@ get_display() {
 if command -v ddcutil >/dev/null 2>&1; then
     DISPLAY_NUM=$(get_display)
     if [[ -n "$DISPLAY_NUM" ]]; then
-        CUR_BRIGHT=$(ddcutil getvcp 10 --display "$DISPLAY_NUM" 2>/dev/null | grep -oP 'current value = \K\d+')
+        CUR_BRIGHT=$(ddcutil getvcp 10 --display "$DISPLAY_NUM" 2>/dev/null | grep -oP 'current value = *\K\d+')
         echo "Current: ${CUR_BRIGHT}"
 
         if [[ "$DIRECTION" == "up" ]]; then
