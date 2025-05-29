@@ -49,9 +49,10 @@ int adjust_ddc(const char *direction) {
   char line[256];
   int current = -1;
   while (fgets(line, sizeof(line), pipe)) {
-    if (strstr(line, "current value")) {
-      sscanf(line, "  current value = %d,", &current);
-      break;
+    char *ptr = strstr(line, "current value =");
+    if (ptr) {
+        current = atoi(ptr + strlen("current value ="));
+        break;
     }
   }
   pclose(pipe);
