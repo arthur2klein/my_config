@@ -111,9 +111,9 @@ source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-sy
 
 export PATH="$HOME/.local/share/coursier/bin:$PATH"
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
-export PATH="$PATH:/root/.local/bin"
+export PATH="$PATH:${HOME}/.local/bin:${HOME}/bin"
 export PATH="$PATH:/usr/local/go/bin"
-export PATH="$PATH:/root/go/bin"
+export PATH="$PATH:${HOME}/go/bin"
 
 alias _db='docker build -t "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")" .'
 alias _dr='docker run "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")"'
