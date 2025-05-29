@@ -17,4 +17,4 @@ ln -snf ~/my_config/themes/* ~/.oh-my-zsh/themes/.
 ln -snf ~/my_config/bat/ ~/.config/gat
 ln -snf ~/my_config/waybar/ ~/.config/waybar
 ln -snf ~/my_config/.prettierrc.json ~/.prettierrc.json
-gcc -o ~/bin/brightness_control ~/my_config/src/brightness_control.c
+gcc -lddcutil -o ~/bin/brightness_control ~/my_config/src/brightness_control.c
