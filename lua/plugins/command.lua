@@ -1,6 +1,7 @@
 vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true })
 vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true })
 vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>y", ':call system("tmux load-buffer -", getreg(\'"\'))', { noremap = true })
 
 if os.getenv("TMUX") then
 	vim.g.clipboard = {
