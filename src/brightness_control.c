@@ -37,8 +37,8 @@ int adjust_sysfs_brightness(const char *direction, int step_percent) {
     return 0;
   int delta = (max * step_percent) / 100;
   int new_val = current + (strcmp(direction, "up") == 0 ? delta : -delta);
-  if (new_val < 0)
-    new_val = 0;
+  if (new_val < 1)
+    new_val = 1;
   if (new_val > max)
     new_val = max;
   printf("Going from %d/%d to %d/%d", current, max, new_val, max);
