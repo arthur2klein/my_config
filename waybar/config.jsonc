@@ -9,8 +9,7 @@
     "pulseaudio",
     "battery",
     "custom/date",
-    "clock",
-    "custom/power"
+    "clock"
   ],
   // Modules configuration
   "hyprland/workspaces": {
@@ -46,10 +45,6 @@
     "format": "󰸗 {}",
     "interval": 3600,
     "exec": "$HOME/bin/waybar-date.sh"
-  },
-  "custom/power": {
-    "format": "󰐥",
-    "on-click": "$HOME/scripts/on_power_button.sh"
   },
   "clock": {
     "format": "󰅐 {:%H:%M}",
