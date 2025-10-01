@@ -1,3 +1,5 @@
+vim.filetype.add({ extension = { service = 'systemd' } })
+
 function lsp_key_mapping()
   vim.keymap.set("n", "gD", vim.lsp.buf.definition)
   vim.keymap.set("n", "K", vim.lsp.buf.hover)
@@ -78,7 +80,8 @@ return {
           "rust_analyzer",
           "sqlls",
           "terraformls",
-          "ts_ls",
+          -- "ts_ls",
+          "systemd_ls"
         },
       })
 
@@ -146,8 +149,9 @@ return {
       lsp.scala_language_server = nil
       lsp.sonarlint.setup({})
       lsp.sqlls.setup({})
+      lsp.systemd_ls.setup({})
       lsp.terraformls.setup({})
-      lsp.ts_ls.setup({})
+      -- lsp.ts_ls.setup({})
       lsp.eslint.setup({
         settings = {
           format = false,
