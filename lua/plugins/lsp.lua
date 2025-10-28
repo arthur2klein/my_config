@@ -147,7 +147,6 @@ return {
       })
       lsp.rust_analyzer.setup({})
       lsp.scala_language_server = nil
-      lsp.sonarlint.setup({})
       lsp.sqlls.setup({})
       lsp.systemd_ls.setup({})
       lsp.terraformls.setup({})

@@ -7,7 +7,7 @@ return {
       conform.setup({
         default_format_opts = {
           async = false,
-          timeout_ms = 2500,
+          timeout_ms = 5000,
           lsp_fallback = true,
         },
         formatters = {
@@ -37,7 +37,7 @@ return {
       vim.api.nvim_create_autocmd("BufWritePre", {
         pattern = "*",
         callback = function()
-          conform.format({ async = false, lsp_fallback = true })
+          conform.format({ async = false, lsp_fallback = true, timeout_ms = 1000, })
         end,
       })
     end,
