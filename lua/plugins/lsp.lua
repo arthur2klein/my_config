@@ -1,4 +1,5 @@
 vim.filetype.add({ extension = { service = 'systemd' } })
+-- vim.filetype.add({ pattern = { ["swagger.yaml"] = 'swagger' } })
 
 function lsp_key_mapping()
   vim.keymap.set("n", "gD", vim.lsp.buf.definition)
@@ -71,6 +72,7 @@ return {
           "gopls",
           "html",
           "intelephense",
+          "vacuum",
           "jsonls",
           "kotlin_language_server",
           "ltex",
@@ -103,6 +105,7 @@ return {
       lsp.jsonls.setup({})
       lsp.kotlin_language_server.setup({})
       lsp.gopls.setup({})
+      lsp.vacuum.setup({})
       lsp.ltex.setup({
         settings = {
           ltex = {
