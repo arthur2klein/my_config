@@ -156,6 +156,9 @@ return {
       -- lsp.ts_ls.setup({})
       lsp.eslint.setup({
         settings = {
+          rulesCustomizations = {
+            { rule = '@typescript-eslint/no-explicit-any', severity = 'off' }
+          },
           format = false,
         },
       })
