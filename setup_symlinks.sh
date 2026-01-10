@@ -9,6 +9,7 @@ ln -snf ~/my_config/lua/custom ~/.config/nvim/lua/custom
 ln -snf ~/my_config/.tmux.conf ~/.tmux.conf
 ln -snf ~/my_config/.vimrc ~/.vimrc
 ln -snf ~/my_config/hypr/ ~/.config/hypr
+ln -snf ~/my_config/swaync/ ~/.config/swaync
 ln -snf ~/my_config/kitty/ ~/.config/kitty
 ln -snf ~/my_config/rofi/ ~/.config/rofi
 [ ! -h ~/.config/scripts ] && ln -snf ~/my_config/scripts/ ~/.config/scripts
