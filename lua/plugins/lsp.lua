@@ -170,6 +170,9 @@ return {
 					format = false,
 				},
 			}
+			require("render-markdown").setup({
+				completions = { lsp = { enabled = true } },
+			})
 		end,
 	},
 	{
@@ -301,5 +304,12 @@ return {
 				},
 			})
 		end,
+	},
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
 	},
 }
