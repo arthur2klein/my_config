@@ -16,10 +16,12 @@ return {
       local utils = require("telescope.utils")
       local telescope_dap = require("telescope").extensions.dap
       vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
+      vim.keymap.set("n", "<leader>cff", function() builtin.find_files({ cwd = utils.buffer_dir() }) end, {})
       vim.keymap.set("n", "<leader>fa", builtin.diagnostics, {})
       vim.keymap.set("n", "<leader>fc", builtin.git_commits, {})
       vim.keymap.set("n", "<leader>fC", builtin.git_bcommits, {})
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+      vim.keymap.set("n", "<leader>cfg", function() builtin.live_grep({ cwd = utils.buffer_dir() }) end, {})
       vim.keymap.set("n", "<leader>ft", builtin.treesitter, {})
       vim.keymap.set("n", "<leader>f<leader>", builtin.git_status, {})
       vim.keymap.set("n", "<leader>fb", builtin.git_branches, {})
