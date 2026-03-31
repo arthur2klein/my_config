@@ -5,6 +5,7 @@
     "hyprland/workspaces"
   ],
   "modules-right": [
+    "custom/prayer",
     "network",
     "pulseaudio",
     "battery",
@@ -41,6 +42,12 @@
       "10": "󰝚"
     }
   },
+  "custom/prayer": {
+    "exec": "$HOME/.config/scripts/next_prayer.sh",
+    "return-type": "text",
+    "tooltip": true,
+    "interval": 60
+  },
   "custom/date": {
     "format": "󰸗 {}",
     "interval": 3600,
@@ -54,7 +61,7 @@
   "battery": {
     "states": {
       "warning": 30,
-      "critical": 15,
+      "critical": 15
     },
     "format": "{icon} {capacity}%",
     "format-charging": "󰂄 {capacity}%",
@@ -75,8 +82,9 @@
     "format-alt": "{ifname}: {ipaddr}/{cidr}"
   },
   "pulseaudio": {
-    "format": "{icon}  {volume}%",
+    "format": "{icon} {volume}%",
     "format-muted": "󰖁 Muted",
+    "format-bluetooth": "{icon} {volume}%",
     "on-click": "pavucontrol",
     "format-icons": [
       "",

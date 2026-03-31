@@ -38,6 +38,7 @@ window#waybar {
 }
 
 #custom-date,
+#custom-prayer,
 #clock,
 #battery,
 #pulseaudio,
@@ -45,6 +46,11 @@ window#waybar {
   background-color: @base;
   padding: 5px 10px;
   margin: 5px 0px;
+  border-radius: 10px;
+}
+
+#custom-prayer {
+  color: @flamingo;
 }
 
 #custom-date {
