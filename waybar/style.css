@@ -38,6 +38,7 @@ window#waybar {
 }
 
 #custom-date,
+#custom-weather,
 #custom-prayer,
 #clock,
 #battery,
@@ -47,6 +48,11 @@ window#waybar {
   padding: 5px 10px;
   margin: 5px 0px;
   border-radius: 10px;
+  margin: 0px 2px;
+}
+
+#custom-weather {
+  color: @sapphire;
 }
 
 #custom-prayer {

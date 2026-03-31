@@ -5,6 +5,7 @@
     "hyprland/workspaces"
   ],
   "modules-right": [
+    "custom/weather",
     "custom/prayer",
     "network",
     "pulseaudio",
@@ -41,6 +42,12 @@
       "9": "󰕧",
       "10": "󰝚"
     }
+  },
+  "custom/weather": {
+    "exec": "$HOME/.config/scripts/weather.sh",
+    "return-type": "text",
+    "tooltip": true,
+    "interval": 300
   },
   "custom/prayer": {
     "exec": "$HOME/.config/scripts/next_prayer.sh",
