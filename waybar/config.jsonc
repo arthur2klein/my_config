@@ -17,8 +17,8 @@
   "hyprland/workspaces": {
     "disable-scroll": true,
     "all-outputs": true,
-    "format": "{id}",
-    "persistent_workspaces": {
+    "format": "{id} {icon}",
+    "persistent-workspaces": {
       "1": [],
       "2": [],
       "3": [],
@@ -32,27 +32,25 @@
     },
     "format-icons": {
       "1": "󰋜",
-      "2": "󰖟",
-      "3": "󰠮",
-      "4": "󰭹",
-      "5": "󱓷",
+      "2": "󰊢",
+      "3": "󰆍",
+      "4": "",
+      "5": "󰖟",
       "6": "󱇧",
-      "7": "󰊢",
-      "8": "󰖲",
-      "9": "󰕧",
-      "10": "󰝚"
+      "7": "󰌾",
+      "8": "󰭹",
+      "9": "󰌻",
+      "10": "󰖣"
     }
   },
   "custom/weather": {
     "exec": "$HOME/.config/scripts/weather.sh",
     "return-type": "text",
-    "tooltip": true,
     "interval": 300
   },
   "custom/prayer": {
     "exec": "$HOME/.config/scripts/next_prayer.sh",
     "return-type": "text",
-    "tooltip": true,
     "interval": 60
   },
   "custom/date": {

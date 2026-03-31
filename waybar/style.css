@@ -25,6 +25,10 @@ window#waybar {
   color: @text;
 }
 
+#workspaces button.empty {
+  color: @overlay0;
+}
+
 #workspaces button.active {
   color: @base;
   background-color: @mauve;
