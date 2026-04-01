@@ -45,7 +45,7 @@
   },
   "custom/weather": {
     "exec": "$HOME/.config/scripts/weather.sh",
-    "return-type": "text",
+    "return-type": "json",
     "interval": 300
   },
   "custom/prayer": {
