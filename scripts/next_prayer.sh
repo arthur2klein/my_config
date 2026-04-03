@@ -8,7 +8,7 @@ TZ="Europe/Paris"
 
 DATA=$(curl -s "https://api.aladhan.com/v1/timingsByCity/$(date +'%d-%m-%Y')?city=$CITY&country=$COUNTRY&state=$STATE&method=$METHOD&timezonestring=$(printf %s "$TZ" | jq -sRr @uri)")
 
-now=$(date -d "-5 minutes" +%s)
+now=$(date -d "-10 minutes" +%s)
 
 get_time() {
   echo "$DATA" | jq -r ".data.timings.$1"

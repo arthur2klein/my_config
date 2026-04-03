@@ -76,5 +76,5 @@ current_weather_code=$(echo "$data" | jq -r '.current.weather_code')
 current_weather_icon=$(wmo_icon $current_weather_code)
 current_weather_translation=$(wmo_translation $current_weather_code)
 
-text="$current_weather_icon $current_temperature $current_humidity $current_wind"
+text="$current_weather_icon   $current_temperature  $current_humidity   $current_wind"
 echo "{\"text\": \"$text\",\"tooltip\": \"$current_weather_translation\"}"
