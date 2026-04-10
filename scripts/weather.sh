@@ -118,7 +118,7 @@ else
         echo "$cached" | jq --arg err "$error" '
             .text = "⚠️ " + .text |
             .tooltip = "Weather unavailable: \($err)\n\n" + .tooltip
-        '
+        ' | jq -c .
       exit 0
     else
         echo "{\"text\": \"⚠️ N/A\", \"tooltip\": \"Weather error $error\"}"
