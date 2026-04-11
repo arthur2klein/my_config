@@ -104,7 +104,7 @@ if [ -z "$error" ]; then
     current_weather_icon=$(wmo_icon $current_weather_code)
     current_weather_translation=$(wmo_translation $current_weather_code)
 
-    text="$current_weather_icon $current_temperature $current_humidity $current_wind"
+    text="$current_weather_icon  $current_temperature $current_humidity $current_wind"
     tooltip="$current_weather_translation"
 
     echo "{\"text\": \"$text\",\"tooltip\": \"$tooltip\"}" > "$CACHE_FILE"
