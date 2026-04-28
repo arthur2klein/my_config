@@ -30,10 +30,6 @@ end
 
 vim.api.nvim_create_user_command("CheckModifiedGitBuffers", check_modified_git_buffers, {})
 
-
-vim.keymap.set("n", "<leader>ga", function()
-  vim.cmd("!git add %")
-end)
 return {
   {
     "lewis6991/gitsigns.nvim",

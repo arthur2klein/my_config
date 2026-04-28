@@ -6,8 +6,6 @@ return {
       require("lualine").setup({
         options = { theme = "palenight" },
       })
-      vim.g.airline_powerline_fonts = 1
-      vim.g["airline#extensions#tabline#enabled"] = 1
       vim.g.SignatureMarkTextHLDynamic = 1
     end,
   },

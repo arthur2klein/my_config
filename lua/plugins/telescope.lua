@@ -40,7 +40,7 @@ return {
       vim.keymap.set("n", "<leader>fe", function()
         builtin.symbols({ sources = { "emoji", "kaomoji", "gitmoji" } })
       end, {})
-      vim.keymap.set("n", "<leader>fm", function()
+      vim.keymap.set("n", "<leader>fM", function()
         builtin.symbols({ sources = { "math", "latex" } })
       end, {})
       vim.keymap.set("n", "<leader>fo", function()
