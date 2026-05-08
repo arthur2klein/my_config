@@ -34,8 +34,12 @@ end
 
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
-    if vim.lsp.get_client_by_id(args.data.client_id).name ~= "metals" then
-      lsp_key_mapping()
+    lsp_key_mapping()
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client and client.name == "metals" then
+      vim.keymap.set("n", "<leader>le", function()
+        client:request("workspace/executeCommand", { command = "scalafix-run" }, nil, args.buf)
+      end, { buffer = args.buf })
     end
   end,
 })
@@ -77,6 +81,7 @@ return {
           "ltex",
           "lua_ls",
           "markdown_oxide",
+          "metals",
           "pyright",
           "rust_analyzer",
           "sqlls",
@@ -104,6 +109,7 @@ return {
         "ltex",
         "lua_ls",
         "markdown_oxide",
+        "metals",
         "pyright",
         "rust_analyzer",
         "sqlls",
@@ -158,6 +164,28 @@ return {
           },
         },
       }
+      vim.lsp.config.metals = {
+        init_options = {
+          statusBarProvider = "off",
+        },
+        root_markers = {
+          "build.sbt",
+          "build.sc",
+          "build.gradle",
+          "build.gradle.kts",
+          "pom.xml",
+          ".git",
+        },
+        settings = {
+          metals = {
+            showImplicitArguments = true,
+            excludedPackages = {
+              "akka.actor.typed.javadsl",
+              "com.github.swagger.akka.javadsl",
+            },
+          },
+        },
+      }
       vim.lsp.config.eslint = {
         settings = {
           rulesCustomizations = {
@@ -197,45 +225,6 @@ return {
       },
     },
     opts_extend = { "sources.default" },
-  },
-  {
-    "scalameta/nvim-metals",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      {
-        "j-hui/fidget.nvim",
-        opts = {},
-      },
-    },
-    ft = { "scala", "sbt", "java" },
-    opts = function()
-      local metals_config = require("metals").bare_config()
-      metals_config.settings = {
-        showImplicitArguments = true,
-        excludedPackages = { "akka.actor.typed.javadsl", "com.github.swagger.akka.javadsl" },
-      }
-
-      metals_config.init_options.statusBarProvider = "off"
-
-      metals_config.on_attach = function(client, bufnr)
-        local metals = require("metals")
-        lsp_key_mapping()
-        vim.keymap.set("n", "lh", metals.hover_worksheet)
-        vim.keymap.set("n", "<leader>le", metals.run_scalafix)
-        return metals_config
-      end
-    end,
-    config = function(self, metals_config)
-      local nvim_metals_group = vim.api.nvim_create_augroup("nvim-metals", { clear = true })
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = self.ft,
-        callback = function()
-          lsp_key_mapping()
-          require("metals").initialize_or_attach(metals_config)
-        end,
-        group = nvim_metals_group,
-      })
-    end,
   },
   {
     "L3MON4D3/LuaSnip",
