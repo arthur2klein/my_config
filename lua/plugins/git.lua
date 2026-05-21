@@ -30,6 +30,34 @@ end
 
 vim.api.nvim_create_user_command("CheckModifiedGitBuffers", check_modified_git_buffers, {})
 
+local function open_next_conflict_file()
+  local root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+  if vim.v.shell_error ~= 0 or root == nil or root == "" then
+    vim.notify("Not in a git repository", vim.log.levels.WARN)
+    return
+  end
+
+  local files = vim.fn.systemlist({ "git", "-C", root, "diff", "--name-only", "--diff-filter=U" })
+  if vim.v.shell_error ~= 0 or #files == 0 then
+    vim.notify("No conflicted files", vim.log.levels.INFO)
+    return
+  end
+
+  local current = vim.api.nvim_buf_get_name(0)
+  local target_index = 1
+  for i, rel in ipairs(files) do
+    if root .. "/" .. rel == current then
+      target_index = (i % #files) + 1
+      break
+    end
+  end
+
+  vim.cmd("edit " .. vim.fn.fnameescape(root .. "/" .. files[target_index]))
+end
+
+vim.api.nvim_create_user_command("NextConflictFile", open_next_conflict_file, {})
+vim.keymap.set("n", "<leader>gn", open_next_conflict_file, { desc = "Open next conflicted file" })
+
 return {
   {
     "lewis6991/gitsigns.nvim",
