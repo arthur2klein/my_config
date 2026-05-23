@@ -81,7 +81,7 @@ wmo_icon() {
 CACHE_FILE="/tmp/weather_cache.json"
 CURL_RESULT="/tmp/weather.json"
 
-http_code=$(curl -s --max-time 2 -o "$CURL_RESULT" -w "%{http_code}" "https://api.open-meteo.com/v1/forecast?latitude=43.3112&timezone=Europe%2FParis&longitude=-0.3558&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation_probability,weather_code")
+http_code=$(curl -s --max-time 5 -o "$CURL_RESULT" -w "%{http_code}" "https://api.open-meteo.com/v1/forecast?latitude=43.3112&timezone=Europe%2FParis&longitude=-0.3558&current=temperature_2m,relative_humidity_2m,wind_speed_10m,precipitation_probability,weather_code")
 curl_exit=$?
 data=$(cat $CURL_RESULT)
 
