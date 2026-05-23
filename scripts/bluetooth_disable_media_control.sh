@@ -8,20 +8,6 @@ echo "========================================"
 echo
 
 # -----------------------------
-# CHECKS
-# -----------------------------
-
-if ! command -v systemctl >/dev/null 2>&1; then
-    echo "[ERROR] systemctl not found."
-    exit 1
-fi
-
-if ! command -v bluetoothd >/dev/null 2>&1; then
-    echo "[ERROR] bluetoothd not found."
-    exit 1
-fi
-
-# -----------------------------
 # BLUETOOTHD OVERRIDE
 # -----------------------------
 
