@@ -56,6 +56,23 @@ return {
     end,
   },
   {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "php-debug-adapter",
+          "php-cs-fixer",
+          "phpcs",
+          "phpcbf",
+          "phpstan",
+        },
+        auto_update = false,
+        run_on_start = true,
+      })
+    end,
+  },
+  {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "saghen/blink.cmp" },
     config = function()
@@ -120,6 +137,69 @@ return {
 
       vim.lsp.config.slint_lsp = {
         filetypes = { "slint" },
+      }
+      -- Parse the lowest PHP version implied by composer.json `require.php`.
+      -- Returns a string like "7.4.0" or nil if no composer.json / no constraint.
+      local function detect_php_version(root_dir)
+        if not root_dir then
+          return nil
+        end
+        local composer = root_dir .. "/composer.json"
+        if vim.fn.filereadable(composer) ~= 1 then
+          return nil
+        end
+        local ok_read, lines = pcall(vim.fn.readfile, composer)
+        if not ok_read then
+          return nil
+        end
+        local ok_decode, decoded = pcall(vim.json.decode, table.concat(lines, "\n"))
+        if not ok_decode or type(decoded) ~= "table" then
+          return nil
+        end
+        local constraint = decoded.require and decoded.require.php
+        if type(constraint) ~= "string" then
+          return nil
+        end
+        -- Take the first X.Y found: handles "^7.4", "~7.4", ">=7.4", "7.4.*",
+        -- "7.4|8.0" (picks the lower), ">=7.2 <8.2" (picks the lower).
+        local major, minor = constraint:match("(%d+)%.(%d+)")
+        if not major then
+          return nil
+        end
+        return major .. "." .. minor .. ".0"
+      end
+
+      vim.lsp.config.intelephense = {
+        init_options = {
+          -- Pin the cache location so :IntelephensePurgeCache knows where to look.
+          globalStoragePath = vim.fn.stdpath("cache") .. "/intelephense",
+        },
+        before_init = function(params, config)
+          local root
+          if params.workspaceFolders and params.workspaceFolders[1] then
+            root = vim.uri_to_fname(params.workspaceFolders[1].uri)
+          elseif params.rootUri then
+            root = vim.uri_to_fname(params.rootUri)
+          end
+          local php_version = detect_php_version(root) or "8.3.0"
+          config.settings = vim.tbl_deep_extend("force", config.settings or {}, {
+            intelephense = {
+              environment = { phpVersion = php_version },
+            },
+          })
+        end,
+        settings = {
+          intelephense = {
+            environment = {
+              phpVersion = "8.3.0",
+            },
+            files = {
+              -- Big repos: bump from the 5MB default so large generated files
+              -- (factories, fixtures, locale data) don't get silently skipped.
+              maxSize = 5000000,
+            },
+          },
+        },
       }
       vim.lsp.config.elixirls = {
         filetypes = { "elixir", "eelixir", "heex" },
@@ -272,11 +352,26 @@ return {
     end,
     config = function()
       local cspell = require("cspell")
+      local null_ls = require("null-ls")
       require("null-ls").setup({
         fallback_severity = vim.diagnostic.severity.HINT,
         sources = {
           cspell.diagnostics,
           cspell.code_actions,
+          -- PHPStan: only attach if the project ships a phpstan config.
+          -- Prefer vendor/bin/phpstan so the analyzer version matches what
+          -- the team's CI runs.
+          null_ls.builtins.diagnostics.phpstan.with({
+            condition = function(utils)
+              return utils.root_has_file({
+                "phpstan.neon",
+                "phpstan.neon.dist",
+                "phpstan.dist.neon",
+              })
+            end,
+            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+            prefer_local = "vendor/bin",
+          }),
         },
       })
     end,
@@ -288,6 +383,14 @@ return {
     ---@type render.md.UserConfig
     opts = {
       completions = { lsp = { enabled = true } },
+      -- LSP hover floats are buftype=nofile and trigger a known crash in the
+      -- code-block renderer when the doc has irregular fences. Disable plugin
+      -- in those windows; regular .md buffers still render.
+      overrides = {
+        buftype = {
+          nofile = { enabled = false },
+        },
+      },
     },
   },
 }

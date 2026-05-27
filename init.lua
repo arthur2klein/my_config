@@ -46,6 +46,10 @@ vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
 -- Netrw settings
 vim.g.netrw_banner = 0
 
+-- Per-project config: load .nvim.lua / .nvimrc / .exrc from the project root.
+-- Neovim 0.9+ prompts to trust each file the first time (`:trust`), so this is safe.
+vim.o.exrc = true
+
 -- Mouse settigs
 if vim.fn.has("mouse") == 1 then
   vim.opt.mouse = "a"
