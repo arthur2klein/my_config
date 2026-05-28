@@ -1,0 +1,32 @@
+-- Connections used by vim-dadbod / vim-dadbod-ui.
+--
+-- Copy this file to ~/.config/nvim/lua/dbs.lua (outside the repo) and fill in
+-- real credentials. Do NOT commit dbs.lua: it holds secrets.
+--
+-- The dadbod plugin loads it via `require("dbs")` because ~/.config/nvim/lua
+-- is on Neovim's runtimepath.
+
+return {
+  dbs = {
+    -- MariaDB / MySQL: mariadb://user:password@host:port/database
+    { name = "DockerDev",   url = [[mariadb://root:root@localhost:3306]] },
+    { name = "DockerTU",    url = [[mariadb://root:root@localhost:3307]] },
+    { name = "Staging",     url = [[mariadb://USER:PASSWORD@stg-host:3348]] },
+    { name = "Maintenance", url = [[mariadb://USER:PASSWORD@maint-host:3306]] },
+
+    -- MongoDB with TLS. mongosh must be installed and on PATH.
+    -- Pass cert paths via URI options. tlsCertificateKeyFile is the combined
+    -- client cert+key PEM, tlsCAFile is the trust anchor.
+    {
+      name = "MongoStg",
+      url = "mongodb://stg-host:27017/?"
+        .. "tls=true"
+        .. "&tlsCertificateKeyFile=" .. vim.fn.expand("~/certs/mongo-client.pem")
+        .. "&tlsCAFile=" .. vim.fn.expand("~/certs/mongo-ca.pem")
+        .. "&authMechanism=MONGODB-X509"
+        .. "&authSource=$external",
+    },
+    -- Local Mongo without TLS for quick scratch work.
+    { name = "MongoLocal", url = [[mongodb://localhost:27017]] },
+  },
+}
