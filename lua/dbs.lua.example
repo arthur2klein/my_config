@@ -16,15 +16,16 @@ return {
 
     -- MongoDB with TLS. mongosh must be installed and on PATH.
     -- Pass cert paths via URI options. tlsCertificateKeyFile is the combined
-    -- client cert+key PEM, tlsCAFile is the trust anchor.
+    -- client key+cert PEM, tlsCAFile is the trust anchor. Add
+    -- tlsAllowInvalidHostnames=true when the cert is an internal wildcard
+    -- that doesn't list each server's hostname/IP.
     {
       name = "MongoStg",
       url = "mongodb://stg-host:27017/?"
         .. "tls=true"
         .. "&tlsCertificateKeyFile=" .. vim.fn.expand("~/certs/mongo-client.pem")
         .. "&tlsCAFile=" .. vim.fn.expand("~/certs/mongo-ca.pem")
-        .. "&authMechanism=MONGODB-X509"
-        .. "&authSource=$external",
+        .. "&tlsAllowInvalidHostnames=true",
     },
     -- Local Mongo without TLS for quick scratch work.
     { name = "MongoLocal", url = [[mongodb://localhost:27017]] },

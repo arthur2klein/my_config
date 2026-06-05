@@ -16,6 +16,15 @@ local function lsp_key_mapping()
   vim.keymap.set("n", "<leader>lz", function()
     vim.lsp.buf.code_action({ context = { only = { "source" } } })
   end)
+  vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
+  vim.keymap.set("n", "<leader>lh", function()
+    vim.lsp.buf.typehierarchy("supertypes")
+  end, { desc = "Parent classes (supertypes)" })
+  vim.keymap.set("n", "<leader>lH", function()
+    vim.lsp.buf.typehierarchy("subtypes")
+  end, { desc = "Child classes (subtypes)" })
+  vim.keymap.set("n", "<leader>li", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
+  vim.keymap.set("n", "<leader>lo", vim.lsp.buf.outgoing_calls, { desc = "Outgoing calls" })
   vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist)
   vim.keymap.set("n", "<leader>ae", function()
     vim.diagnostic.setqflist({ severity = "E" })
@@ -66,6 +75,7 @@ return {
           "phpcs",
           "phpcbf",
           "phpstan",
+          "phpactor",
         },
         auto_update = false,
         run_on_start = true,
@@ -92,6 +102,7 @@ return {
           "gopls",
           "html",
           "intelephense",
+          "phpactor",
           "vacuum",
           "jsonls",
           "kotlin_language_server",
@@ -119,6 +130,7 @@ return {
         "glsl_analyzer",
         "html",
         "intelephense",
+        "phpactor",
         "jsonls",
         "kotlin_language_server",
         "gopls",
@@ -168,6 +180,30 @@ return {
         end
         return major .. "." .. minor .. ".0"
       end
+
+      -- phpactor runs alongside intelephense purely for its richer PHP
+      -- refactoring code actions (extract method, generate accessors,
+      -- import class, move/copy class, etc.). Strip its overlapping
+      -- features at attach time so completion/hover/definition stay
+      -- intelephense's job and we don't get duplicate results.
+      vim.lsp.config.phpactor = {
+        on_init = function(client)
+          local caps = client.server_capabilities
+          caps.completionProvider = nil
+          caps.hoverProvider = nil
+          caps.definitionProvider = nil
+          caps.implementationProvider = nil
+          caps.referencesProvider = nil
+          caps.documentSymbolProvider = nil
+          caps.workspaceSymbolProvider = nil
+          caps.documentFormattingProvider = nil
+          caps.documentRangeFormattingProvider = nil
+          caps.signatureHelpProvider = nil
+          caps.renameProvider = nil
+          caps.documentHighlightProvider = nil
+          caps.diagnosticProvider = nil
+        end,
+      }
 
       vim.lsp.config.intelephense = {
         init_options = {
