@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-# Bound to prefix-g in .tmux.conf.
+# Bound to prefix-g in .tmux.conf, run inside a display-popup so its
+# progress output is visible while the work happens.
 # Given a branch name and the current pane path:
 # - creates the branch from the repo default branch if it does not exist
 # - adds a git worktree for it next to the main repo checkout
@@ -10,9 +11,17 @@
 
 set -euo pipefail
 
+# The popup closes as soon as we exit, so pause on error to let the
+# message be read instead of flashing away.
 die() {
-  tmux display-message "worktree: $1"
+  printf '\nworktree error: %s\n' "$1" >&2
+  printf 'press enter to close...'
+  read -r _ || true
   exit 1
+}
+
+step() {
+  printf '==> %s\n' "$1"
 }
 
 branch="${1:-}"
@@ -40,6 +49,7 @@ if ! tmux has-session -t "=$session" 2>/dev/null; then
     if git show-ref --verify --quiet "refs/heads/$branch" \
       || git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
       # Existing branch (worktree add tracks origin/<branch> if needed).
+      step "adding worktree for existing branch '$branch'"
       git worktree add "$wt_path" "$branch"
     else
       default="$(git symbolic-ref --quiet --short \
@@ -58,21 +68,29 @@ if ! tmux has-session -t "=$session" 2>/dev/null; then
           || true
       fi
       [ -n "${default:-}" ] || die "cannot determine default branch"
+      step "creating branch '$branch' from '$default' and its worktree"
       git worktree add -b "$branch" "$wt_path" "$default"
     fi
 
     # Bring over everything git does not version so the new worktree is
     # ready to use without reinstalling or reconfiguring anything.
+    step "copying untracked and ignored files"
     git -C "$src_root" ls-files --others --directory -z \
       | rsync -ar --from0 --files-from=- "$src_root/" "$wt_path/"
+  else
+    step "worktree already exists at $wt_path"
   fi
 
+  step "starting session '$session'"
   tmux new-session -d -s "$session" -c "$wt_path"
   tmux rename-window -t "$session:1" "main💻"
   tmux new-window -t "$session:2" -n "exec🚀" -c "$wt_path"
   tmux new-window -t "$session:3" -n "test🎯" -c "$wt_path"
   tmux new-window -t "$session:9" -n "note📝" -c "$wt_path"
   tmux new-window -t "$session:10" -n "edit✍" -c "$wt_path"
+else
+  step "session '$session' already exists"
 fi
 
+step "switching to '$session'"
 tmux switch-client -t "$session"
