@@ -1,3 +1,15 @@
+-- Test runner (neotest).
+--
+-- neotest drives PHPUnit (with Xdebug/DAP), pytest and jest. More test
+-- keymaps (run all, last, output, source/test toggle) live in php.lua.
+--
+-- Keymaps:
+--   <leader>tt   run the nearest test (opens the summary)
+--   <leader>tf   run every test in the current file
+--   <leader>td   debug the nearest test under Xdebug/DAP
+--   <leader>ts   stop the running tests
+--   <leader>to   toggle the test summary panel
+
 return {
   {
     "nvim-neotest/neotest",
@@ -96,36 +108,22 @@ return {
         notify("Running test under cursor")
         neotest.summary.open()
         neotest.run.run()
-      end)
+      end, { desc = "Run nearest test" })
       vim.keymap.set("n", "<leader>tf", function()
         notify("Running file: " .. vim.fn.expand("%:t"))
         neotest.summary.open()
         neotest.run.run(vim.fn.expand("%"))
-      end)
+      end, { desc = "Run tests in current file" })
       vim.keymap.set("n", "<leader>td", function()
         notify("Launching test under DAP (waiting for Xdebug)")
         neotest.summary.open()
         neotest.run.run({ strategy = "dap" })
-      end)
+      end, { desc = "Debug nearest test (DAP)" })
       vim.keymap.set("n", "<leader>ts", function()
         notify("Stopping tests", vim.log.levels.WARN)
         neotest.run.stop()
-      end)
-      vim.keymap.set("n", "<leader>to", neotest.summary.toggle)
-    end,
-  },
-  {
-    "michaelb/sniprun",
-    branch = "master",
-
-    build = "sh install.sh",
-
-    config = function()
-      require("sniprun").setup({
-        repl_enable = { "Python3_original" },
-      })
-      vim.api.nvim_set_keymap("v", "<leader>r", "<Plug>SnipRun", { silent = true })
-      vim.api.nvim_set_keymap("n", "<leader>r", "<Plug>SnipRun", { silent = true })
+      end, { desc = "Stop running tests" })
+      vim.keymap.set("n", "<leader>to", neotest.summary.toggle, { desc = "Toggle test summary" })
     end,
   },
 }

@@ -1,3 +1,13 @@
+-- Diagnostics, symbols and list views (trouble.nvim).
+--
+-- Keymaps:
+--   <leader>xx   toggle the diagnostics list
+--   <leader>xe   toggle the diagnostics list, errors only
+--   <leader>xs   toggle the symbols outline
+--   <leader>xl   toggle LSP definitions / references / ...
+--   <leader>xL   toggle the location list
+--   <leader>xQ   toggle the quickfix list
+
 return {
   {
     "folke/trouble.nvim",

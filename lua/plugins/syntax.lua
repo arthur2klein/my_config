@@ -1,3 +1,6 @@
+-- Syntax: treesitter (parsers + highlighting) and extra language plugins
+-- (kotlin, cypher, css-color, svelte, freemarker). No keymaps.
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",

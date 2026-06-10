@@ -1,10 +1,24 @@
--- PHP-specific glue: branch-switch cache invalidation for intelephense.
+-- PHP workflow glue: source/test toggle, project test runs, PHP
+-- indentation, and intelephense cache management (incl. automatic restart
+-- when the git branch changes).
 --
--- Intelephense indexes the project on first attach and updates incrementally
--- after that. The index goes out of sync after a `git checkout` that moves
--- many files (renames, large diffs, version-bump branches). Restarting the
--- LSP forces a fresh scan; purging its cache forces a full rebuild from
--- scratch when even a restart misses a stale entry.
+-- Keymaps:
+--   <leader>tg   toggle between a source file and its PHPUnit test
+--   <leader>tT   run every test in the project
+--   <leader>tl   re-run the last test
+--   <leader>tp   open the output of the last test
+--   <leader>lR   restart intelephense
+--
+-- Commands:
+--   :IntelephenseRestart      restart intelephense, keep its cache
+--   :IntelephensePurgeCache   wipe the cache and restart (full reindex)
+--
+-- Why the branch watcher: intelephense indexes the project on first attach
+-- and updates incrementally after that. The index goes out of sync after a
+-- `git checkout` that moves many files (renames, large diffs, version-bump
+-- branches). Restarting the LSP forces a fresh scan; purging its cache
+-- forces a full rebuild from scratch when even a restart misses a stale
+-- entry.
 
 local M = {}
 

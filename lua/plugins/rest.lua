@@ -1,3 +1,6 @@
+-- HTTP client (rest.nvim): send the request under the cursor in a .http
+-- file. Bound to <leader>c (`:Rest run`) in terminal.lua.
+
 return {
   {
     "rest-nvim/rest.nvim",

@@ -1,3 +1,24 @@
+-- Debugging: nvim-dap with dap-ui and virtual text. Configured for PHP
+-- via Xdebug (php-debug-adapter listening on port 9003).
+--
+-- Keymaps:
+--   <leader>dd   start / continue
+--   <leader>du   step over
+--   <leader>di   step into
+--   <leader>do   step out
+--   <leader>dm   toggle breakpoint
+--   <leader>dl   open the REPL
+--   <leader>dp   re-run the last debug session
+--   <leader>dj   (n/v) hover the value under the cursor
+--   <leader>dk   (n/v) preview the value under the cursor
+--   <leader>dy   floating window with the call frames
+--   <leader>dh   floating window with the scopes
+--   <leader>dB   list all breakpoints in the quickfix
+--   <leader>dt   toggle the dap-ui panels
+--   <leader>de   (n/v) evaluate an expression
+--
+-- Debugging the test under the cursor (<leader>td) lives in coderunner.lua.
+--
 -- Per-project DAP customization:
 -- A project's `.nvim.lua` can override the Xdebug path mapping by writing
 --   vim.g.php_dap_path_mappings = { ["/container/path"] = vim.fn.getcwd() }
@@ -31,21 +52,21 @@ return {
         },
       }
       local dap_widgets = require("dap.ui.widgets")
-      vim.keymap.set("n", "<leader>dd", dap.continue)
-      vim.keymap.set("n", "<leader>du", dap.step_over)
-      vim.keymap.set("n", "<leader>di", dap.step_into)
-      vim.keymap.set("n", "<leader>do", dap.step_out)
-      vim.keymap.set("n", "<Leader>dm", dap.toggle_breakpoint)
-      vim.keymap.set("n", "<Leader>dl", dap.repl.open)
-      vim.keymap.set("n", "<Leader>dp", dap.run_last)
-      vim.keymap.set({ "n", "v" }, "<Leader>dj", dap_widgets.hover)
-      vim.keymap.set({ "n", "v" }, "<Leader>dk", dap_widgets.preview)
+      vim.keymap.set("n", "<leader>dd", dap.continue, { desc = "Start / continue" })
+      vim.keymap.set("n", "<leader>du", dap.step_over, { desc = "Step over" })
+      vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Step into" })
+      vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out" })
+      vim.keymap.set("n", "<Leader>dm", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+      vim.keymap.set("n", "<Leader>dl", dap.repl.open, { desc = "Open REPL" })
+      vim.keymap.set("n", "<Leader>dp", dap.run_last, { desc = "Re-run last session" })
+      vim.keymap.set({ "n", "v" }, "<Leader>dj", dap_widgets.hover, { desc = "Hover value" })
+      vim.keymap.set({ "n", "v" }, "<Leader>dk", dap_widgets.preview, { desc = "Preview value" })
       vim.keymap.set("n", "<Leader>dy", function()
         dap_widgets.centered_float(dap_widgets.frames)
-      end)
+      end, { desc = "Show call frames" })
       vim.keymap.set("n", "<Leader>dh", function()
         dap_widgets.centered_float(dap_widgets.scopes)
-      end)
+      end, { desc = "Show scopes" })
       vim.keymap.set("n", "<Leader>dB", function()
         require("dap").list_breakpoints()
         vim.cmd("copen")
@@ -110,10 +131,10 @@ return {
       -- Don't auto-close on terminate/exit: fast tests would flash dap-ui
       -- open then closed before you can read it. Toggle manually with <leader>dt.
 
-      vim.keymap.set("n", "<leader>dt", dapui.toggle)
+      vim.keymap.set("n", "<leader>dt", dapui.toggle, { desc = "Toggle dap-ui panels" })
       vim.keymap.set({ "n", "v" }, "<leader>de", function()
         dapui.eval(nil, { enter = true })
-      end)
+      end, { desc = "Evaluate expression" })
     end,
   },
 }

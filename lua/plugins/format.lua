@@ -1,3 +1,12 @@
+-- Formatting (conform.nvim) with format-on-save.
+--
+-- PHP only auto-formats when the project ships a team config
+-- (.php-cs-fixer or phpcs); otherwise save leaves it untouched so you
+-- don't diverge from colleagues. Other filetypes format on every save.
+--
+-- Keymaps:
+--   <leader>lF   force-format the buffer (bypasses the PHP team-config gate)
+
 return {
   {
     "stevearc/conform.nvim",

@@ -1,21 +1,55 @@
+-- LSP stack: lspconfig + mason (servers/tools), blink.cmp (completion),
+-- LuaSnip (snippets), none-ls (cspell + phpstan diagnostics) and
+-- render-markdown. intelephense's PHP version is read from composer.json.
+--
+-- LSP keymaps (set on attach):
+--   gD           go to definition
+--   K            hover documentation
+--   gi           go to implementation
+--   gr           list references
+--   gy           go to type definition
+--   gds / gws    document / workspace symbols
+--   <leader>la   code action
+--   <leader>lz   source-level code action
+--   <leader>lr   rename
+--   <leader>lf   format (conform)
+--   <leader>lc   run code lens
+--   <leader>ls   signature help
+--   <leader>lh / lH   parent (super) / child (sub) types
+--   <leader>li / lo   incoming / outgoing calls
+--   <leader>le   run scalafix (metals only)
+--
+-- Diagnostics:
+--   <leader>aa   send all diagnostics to the quickfix
+--   <leader>ae   send errors to the quickfix
+--   <leader>aw   send warnings to the quickfix
+--   <leader>d    send buffer diagnostics to the location list
+--   [c / ]c      previous / next diagnostic
+--
+-- Completion / snippets:
+--   <Tab>            accept (blink.cmp super-tab); <C-\> also accepts
+--   <C-K>            expand a snippet (LuaSnip)
+--   <C-L> / <C-J>    jump to the next / previous snippet node
+--   <C-E>            cycle the snippet choice
+
 vim.filetype.add({ extension = { service = "systemd" } })
 -- vim.filetype.add({ pattern = { ["swagger.yaml"] = 'swagger' } })
 
 local function lsp_key_mapping()
-  vim.keymap.set("n", "gD", vim.lsp.buf.definition)
-  vim.keymap.set("n", "K", vim.lsp.buf.hover)
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation)
-  vim.keymap.set("n", "gr", vim.lsp.buf.references)
-  vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol)
-  vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol)
-  vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run)
-  vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help)
-  vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename)
-  vim.keymap.set("n", "<leader>lf", require("conform").format)
-  vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action)
+  vim.keymap.set("n", "gD", vim.lsp.buf.definition, { desc = "Go to definition" })
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "List references" })
+  vim.keymap.set("n", "gds", vim.lsp.buf.document_symbol, { desc = "Document symbols" })
+  vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol, { desc = "Workspace symbols" })
+  vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, { desc = "Run code lens" })
+  vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, { desc = "Signature help" })
+  vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+  vim.keymap.set("n", "<leader>lf", require("conform").format, { desc = "Format buffer" })
+  vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action" })
   vim.keymap.set("n", "<leader>lz", function()
     vim.lsp.buf.code_action({ context = { only = { "source" } } })
-  end)
+  end, { desc = "Source-level code action" })
   vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, { desc = "Go to type definition" })
   vim.keymap.set("n", "<leader>lh", function()
     vim.lsp.buf.typehierarchy("supertypes")
@@ -25,20 +59,20 @@ local function lsp_key_mapping()
   end, { desc = "Child classes (subtypes)" })
   vim.keymap.set("n", "<leader>li", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
   vim.keymap.set("n", "<leader>lo", vim.lsp.buf.outgoing_calls, { desc = "Outgoing calls" })
-  vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist)
+  vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist, { desc = "All diagnostics to quickfix" })
   vim.keymap.set("n", "<leader>ae", function()
     vim.diagnostic.setqflist({ severity = "E" })
-  end)
+  end, { desc = "Errors to quickfix" })
   vim.keymap.set("n", "<leader>aw", function()
     vim.diagnostic.setqflist({ severity = "W" })
-  end)
-  vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist)
+  end, { desc = "Warnings to quickfix" })
+  vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Buffer diagnostics to loclist" })
   vim.keymap.set("n", "[c", function()
     vim.diagnostic.goto_prev({ wrap = false })
-  end)
+  end, { desc = "Previous diagnostic" })
   vim.keymap.set("n", "]c", function()
     vim.diagnostic.goto_next({ wrap = false })
-  end)
+  end, { desc = "Next diagnostic" })
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
@@ -48,7 +82,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     if client and client.name == "metals" then
       vim.keymap.set("n", "<leader>le", function()
         client:request("workspace/executeCommand", { command = "scalafix-run" }, nil, args.buf)
-      end, { buffer = args.buf })
+      end, { buffer = args.buf, desc = "Run scalafix (metals)" })
     end
   end,
 })
@@ -114,7 +148,7 @@ return {
           "rust_analyzer",
           "sqlls",
           "terraformls",
-          -- "ts_ls",
+          "vtsls",
           "systemd_ls",
         },
       })
@@ -144,6 +178,7 @@ return {
         "sqlls",
         "systemd_ls",
         "terraformls",
+        "vtsls",
         "eslint",
       })
 
@@ -352,18 +387,18 @@ return {
 
       vim.keymap.set({ "i" }, "<C-K>", function()
         ls.expand()
-      end, { silent = true })
+      end, { silent = true, desc = "Expand snippet" })
       vim.keymap.set({ "i", "s" }, "<C-L>", function()
         ls.jump(1)
-      end, { silent = true })
+      end, { silent = true, desc = "Jump to next snippet node" })
       vim.keymap.set({ "i", "s" }, "<C-J>", function()
         ls.jump(-1)
-      end, { silent = true })
+      end, { silent = true, desc = "Jump to previous snippet node" })
       vim.keymap.set({ "i", "s" }, "<C-E>", function()
         if ls.choice_active() then
           ls.change_choice(1)
         end
-      end, { silent = true })
+      end, { silent = true, desc = "Cycle snippet choice" })
 
       require("luasnip.loaders.from_vscode").lazy_load()
     end,

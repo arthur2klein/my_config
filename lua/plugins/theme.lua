@@ -1,3 +1,6 @@
+-- Look and feel: lualine (statusline), catppuccin-mocha colorscheme with a
+-- transparent background, and a start dashboard. No keymaps.
+
 return {
   {
     "nvim-lualine/lualine.nvim",

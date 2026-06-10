@@ -1,3 +1,11 @@
+-- File explorer (oil.nvim): edit the filesystem like a normal buffer.
+--
+-- Keymaps:
+--   è            open the parent directory in oil
+--
+-- Inside oil, `-` goes up a directory and `:w` applies any
+-- create / rename / delete / move you typed into the buffer.
+
 return {
   {
     "stevearc/oil.nvim",

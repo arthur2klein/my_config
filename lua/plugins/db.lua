@@ -1,3 +1,18 @@
+-- Database client: vim-dadbod with the dadbod-ui drawer and SQL/Mongo
+-- completion. Connections come from lua/dbs.lua (copy dbs.lua.example);
+-- saved queries are version-controlled under ~/my_config/queries.
+--
+-- Keymaps:
+--   <leader>D    toggle the DBUI drawer
+--   <leader>df   find / jump to a DBUI buffer
+--   <leader>dr   rename the current DBUI buffer
+--   <leader>dq   show info on the last query
+--   <leader>r    (n/v, in a query buffer) execute the query / selection
+--   <leader>w    (in a query buffer) save the query
+--
+-- Commands: DBUI, DBUIToggle, DBUIAddConnection, DBUIFindBuffer,
+-- DBUIRenameBuffer, DBUILastQueryInfo.
+
 return {
   "tpope/vim-dadbod",
   {

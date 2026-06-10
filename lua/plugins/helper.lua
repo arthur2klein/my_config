@@ -1,3 +1,7 @@
+-- Shared library and UI dependencies used by other plugins: neodev
+-- (Lua/nvim API types), dressing (nicer vim.ui.select / input), plenary
+-- (Lua utilities) and nvim-notify (notifications). No keymaps.
+
 return {
   "folke/neodev.nvim",
   {

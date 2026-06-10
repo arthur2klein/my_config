@@ -1,10 +1,36 @@
-vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true })
-vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true })
-vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>y", '"+y', { noremap = true })
-vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>p", '"+p', { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>w", ":noautocmd w<CR>", { noremap = true })
+-- Editing and text-manipulation plugins, plus core editing keymaps and
+-- system-clipboard integration (Wayland / X11 / tmux auto-detected).
+--
+-- Plugins: loremipsum, easy-align, nvim-surround, Comment.nvim,
+-- debugprint, treesitter-textobjects, neoclip, tmux-navigator, neogen,
+-- endec, visual-multi, venn, swagger-preview.
+--
+-- Keymaps:
+--   <C-c>          (i) escape to normal mode
+--   <C-l>          fix the last spelling mistake (i and n)
+--   <leader>y      (n/v) yank to the system clipboard
+--   <leader>p      paste from the system clipboard
+--   <leader>w      write without running autocommands
+--   gl             insert a lorem ipsum paragraph
+--   ga             (n/x) align around a delimiter (easy-align)
+--   <leader>v      toggle venn box-drawing mode (then H/J/K/L draw)
+--   <leader>pp/pP  debugprint a plain line below / above
+--   <leader>pv/pV  (n/v) debugprint the variable below / above
+--   <leader>po/pO  debugprint a text object below / above
+--   <leader>sa/sf/sc  swap parameter / function / class with the next
+--   <leader>sA/sF/sC  swap parameter / function / class with the previous
+--   Text objects (treesitter): if/af func, ic/ac class, il/al loop,
+--     ir/ar return, ii/ai conditional, ia/aa parameter, it/at comment;
+--     )f / (f etc. jump to next / previous. nvim-surround (ys/cs/ds) and
+--     Comment.nvim (gcc/gc) use their defaults.
+
+vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true, desc = "Escape to normal mode" })
+vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true, desc = "Fix last spelling mistake" })
+vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true, desc = "Fix last spelling mistake" })
+vim.api.nvim_set_keymap("n", "<leader>y", '"+y', { noremap = true, desc = "Yank to system clipboard" })
+vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true, desc = "Yank to system clipboard" })
+vim.api.nvim_set_keymap("n", "<leader>p", '"+p', { noremap = true, desc = "Paste from system clipboard" })
+vim.api.nvim_set_keymap("n", "<leader>w", ":noautocmd w<CR>", { noremap = true, desc = "Write (no autocommands)" })
 
 if vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 then
   vim.g.clipboard = {
@@ -53,14 +79,14 @@ return {
     config = function()
       vim.keymap.set("n", "gl", function()
         vim.cmd("Loremipsum")
-      end)
+      end, { desc = "Insert lorem ipsum" })
     end,
   },
   {
     "junegunn/vim-easy-align",
     config = function()
-      vim.api.nvim_set_keymap("x", "ga", "<Plug>(EasyAlign)", {})
-      vim.api.nvim_set_keymap("n", "ga", "<Plug>(EasyAlign)", {})
+      vim.api.nvim_set_keymap("x", "ga", "<Plug>(EasyAlign)", { desc = "Align around a delimiter" })
+      vim.api.nvim_set_keymap("n", "ga", "<Plug>(EasyAlign)", { desc = "Align around a delimiter" })
     end,
   },
   {
@@ -190,7 +216,7 @@ return {
     config = function()
       local neogen = require("neogen")
       neogen.setup()
-      vim.keymap.set("n", "<leader>lg", neogen.generate)
+      vim.keymap.set("n", "<leader>lg", neogen.generate, { desc = "Generate doc comment (neogen)" })
     end,
   },
   {
@@ -227,7 +253,7 @@ return {
         end
       end
 
-      vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true })
+      vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true, desc = "Toggle venn box-drawing mode" })
     end,
   },
   {
