@@ -1,0 +1,24 @@
+# Per-machine tmux healthchecks. Copied to ~/.config/tmux/healthchecks.conf
+# by setup_symlinks.sh if that file does not exist yet. NOT tracked once
+# copied: each machine edits its own copy (work vs personal differ), and
+# it may hold local credentials, so it stays out of the repo.
+#
+# Leave it absent (or with an empty `healthchecks` array) to disable the
+# feature entirely; the status bar then shows nothing extra.
+#
+# Each entry is "label|command". The command's exit code decides health:
+#   0        -> healthy, shown as a green ●label
+#   non-zero -> down,     shown as a red   ●label
+# Each command is run under `timeout $TIMEOUT`, so a hung probe cannot
+# wedge the daemon.
+
+INTERVAL=60   # seconds between probe rounds
+TIMEOUT=8     # per-check timeout in seconds
+
+healthchecks=(
+  # Dockerized MariaDB still answering a trivial query:
+  "db|docker exec mydb mariadb -uroot -psecret -e 'select 1'"
+
+  # rabbit-manager health endpoint returns 2xx (-f fails on >=400):
+  "rabbit|curl -fsS http://localhost:8080/health"
+)

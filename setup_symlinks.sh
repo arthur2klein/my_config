@@ -34,6 +34,12 @@ if [ ! -e ~/.config/nvim/lua/dbs.lua ]; then
   cp ~/my_config/lua/dbs.lua.example ~/.config/nvim/lua/dbs.lua
 fi
 
+# tmux healthchecks are opt-in per machine (work vs personal differ, may
+# hold local creds), so they are NOT seeded automatically. To enable on a
+# given machine, copy the template and edit it:
+#   cp ~/my_config/tmux/healthchecks.conf.example ~/.config/tmux/healthchecks.conf
+# Leaving the file absent keeps the status bar unchanged.
+
 # Wayland / desktop
 link ~/my_config/hypr    ~/.config/hypr
 link ~/my_config/swaync  ~/.config/swaync
