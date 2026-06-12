@@ -35,8 +35,33 @@
 vim.filetype.add({ extension = { service = "systemd" } })
 -- vim.filetype.add({ pattern = { ["swagger.yaml"] = 'swagger' } })
 
+-- Some servers (notably vtsls/tsserver for merged value+type declarations or
+-- re-exports) return the same location more than once, and Neovim's default
+-- handler then prompts you to pick between identical entries. Collapse
+-- duplicates by file:line:col so an unambiguous result jumps straight away.
+local function goto_definition()
+  vim.lsp.buf.definition({
+    on_list = function(options)
+      local seen, items = {}, {}
+      for _, item in ipairs(options.items) do
+        local key = ("%s:%d:%d"):format(item.filename, item.lnum, item.col)
+        if not seen[key] then
+          seen[key] = true
+          items[#items + 1] = item
+        end
+      end
+      vim.fn.setqflist({}, " ", { title = options.title, items = items })
+      if #items == 1 then
+        vim.cmd.cfirst()
+      else
+        vim.cmd.copen()
+      end
+    end,
+  })
+end
+
 local function lsp_key_mapping()
-  vim.keymap.set("n", "gD", vim.lsp.buf.definition, { desc = "Go to definition" })
+  vim.keymap.set("n", "gD", goto_definition, { desc = "Go to definition" })
   vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { desc = "Go to implementation" })
   vim.keymap.set("n", "gr", vim.lsp.buf.references, { desc = "List references" })
