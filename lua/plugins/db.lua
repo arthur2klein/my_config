@@ -3,12 +3,12 @@
 -- saved queries are version-controlled under ~/my_config/queries.
 --
 -- Keymaps:
---   <leader>D    toggle the DBUI drawer
---   <leader>df   find / jump to a DBUI buffer
---   <leader>dr   rename the current DBUI buffer
---   <leader>dq   show info on the last query
---   <leader>r    (n/v, in a query buffer) execute the query / selection
---   <leader>w    (in a query buffer) save the query
+--   <leader>bt   toggle the DBUI drawer
+--   <leader>bf   find / jump to a DBUI buffer
+--   <leader>br   rename the current DBUI buffer
+--   <leader>bq   show info on the last query
+--   <leader>be   (n/v, in a query buffer) execute the query / selection
+--   <leader>bw   (in a query buffer) save the query
 --
 -- Commands: DBUI, DBUIToggle, DBUIAddConnection, DBUIFindBuffer,
 -- DBUIRenameBuffer, DBUILastQueryInfo.
@@ -60,10 +60,10 @@ return {
         end)
       end
 
-      vim.keymap.set("n", "<leader>D", "<cmd>DBUIToggle<cr>", { desc = "DBUI: toggle drawer" })
-      vim.keymap.set("n", "<leader>df", "<cmd>DBUIFindBuffer<cr>", { desc = "DBUI: find buffer" })
-      vim.keymap.set("n", "<leader>dr", "<cmd>DBUIRenameBuffer<cr>", { desc = "DBUI: rename buffer" })
-      vim.keymap.set("n", "<leader>dq", "<cmd>DBUILastQueryInfo<cr>", { desc = "DBUI: last query info" })
+      vim.keymap.set("n", "<leader>bt", "<cmd>DBUIToggle<cr>", { desc = "DBUI: toggle drawer" })
+      vim.keymap.set("n", "<leader>bf", "<cmd>DBUIFindBuffer<cr>", { desc = "DBUI: find buffer" })
+      vim.keymap.set("n", "<leader>br", "<cmd>DBUIRenameBuffer<cr>", { desc = "DBUI: rename buffer" })
+      vim.keymap.set("n", "<leader>bq", "<cmd>DBUILastQueryInfo<cr>", { desc = "DBUI: last query info" })
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "dbout",
@@ -77,19 +77,19 @@ return {
         callback = function(args)
           vim.keymap.set(
             "n",
-            "<leader>r",
+            "<leader>be",
             "<Plug>(DBUI_ExecuteQuery)",
             { buffer = args.buf, desc = "DBUI: execute query" }
           )
           vim.keymap.set(
             "v",
-            "<leader>r",
+            "<leader>be",
             "<Plug>(DBUI_ExecuteQuery)",
             { buffer = args.buf, desc = "DBUI: execute selection" }
           )
           vim.keymap.set(
             "n",
-            "<leader>w",
+            "<leader>bw",
             "<Plug>(DBUI_SaveQuery)",
             { buffer = args.buf, desc = "DBUI: save query" }
           )

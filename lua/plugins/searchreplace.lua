@@ -3,9 +3,9 @@
 -- matching file at once (ripgrep under the hood).
 --
 -- Keymaps:
---   <leader>R    open search & replace
---   <leader>R    (visual) search & replace, scoped to the selection
---   <leader>rw   search & replace the word under the cursor
+--   <leader>sr   open search & replace
+--   <leader>sr   (visual) search & replace, scoped to the selection
+--   <leader>sw   search & replace the word under the cursor
 
 return {
   {
@@ -13,7 +13,7 @@ return {
     cmd = "GrugFar",
     keys = {
       {
-        "<leader>R",
+        "<leader>sr",
         function()
           require("grug-far").open()
         end,
@@ -21,7 +21,7 @@ return {
         desc = "Search & replace (project)",
       },
       {
-        "<leader>R",
+        "<leader>sr",
         function()
           require("grug-far").with_visual_selection()
         end,
@@ -29,7 +29,7 @@ return {
         desc = "Search & replace (selection)",
       },
       {
-        "<leader>rw",
+        "<leader>sw",
         function()
           require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
         end,

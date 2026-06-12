@@ -1,8 +1,8 @@
 -- Fuzzy finder (telescope) with DAP, symbols and notify pickers.
 --
 -- Keymaps:
---   <leader>ff   find files          <leader>cff  find files in buffer dir
---   <leader>fg   live grep           <leader>cfg  live grep in buffer dir
+--   <leader>ff   find files          <leader>fF   find files in buffer dir
+--   <leader>fg   live grep           <leader>fG   live grep in buffer dir
 --   <leader>fr   LSP references      <leader>ft   treesitter symbols
 --   <leader>fa   diagnostics         <leader>fb   git branches
 --   <leader>fc   git commits         <leader>fC   git commits (buffer)
@@ -42,12 +42,12 @@ return {
       local utils = require("telescope.utils")
       local telescope_dap = require("telescope").extensions.dap
       vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
-      vim.keymap.set("n", "<leader>cff", function() builtin.find_files({ cwd = utils.buffer_dir() }) end, { desc = "Find files in buffer dir" })
+      vim.keymap.set("n", "<leader>fF", function() builtin.find_files({ cwd = utils.buffer_dir() }) end, { desc = "Find files in buffer dir" })
       vim.keymap.set("n", "<leader>fa", builtin.diagnostics, { desc = "Diagnostics" })
       vim.keymap.set("n", "<leader>fc", builtin.git_commits, { desc = "Git commits" })
       vim.keymap.set("n", "<leader>fC", builtin.git_bcommits, { desc = "Git commits (buffer)" })
       vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
-      vim.keymap.set("n", "<leader>cfg", function() builtin.live_grep({ cwd = utils.buffer_dir() }) end, { desc = "Live grep in buffer dir" })
+      vim.keymap.set("n", "<leader>fG", function() builtin.live_grep({ cwd = utils.buffer_dir() }) end, { desc = "Live grep in buffer dir" })
       vim.keymap.set("n", "<leader>ft", builtin.treesitter, { desc = "Treesitter symbols" })
       vim.keymap.set("n", "<leader>f<leader>", builtin.git_status, { desc = "Git status" })
       vim.keymap.set("n", "<leader>fb", builtin.git_branches, { desc = "Git branches" })

@@ -17,8 +17,9 @@
 --   <leader>pp/pP  debugprint a plain line below / above
 --   <leader>pv/pV  (n/v) debugprint the variable below / above
 --   <leader>po/pO  debugprint a text object below / above
---   <leader>sa/sf/sc  swap parameter / function / class with the next
---   <leader>sA/sF/sC  swap parameter / function / class with the previous
+--   <leader>rn        generate a doc comment (neogen)
+--   <leader>ra/rf/rc  swap parameter / function / class with the next
+--   <leader>rA/rF/rC  swap parameter / function / class with the previous
 --   Text objects (treesitter): if/af func, ic/ac class, il/al loop,
 --     ir/ar return, ii/ai conditional, ia/aa parameter, it/at comment;
 --     )f / (f etc. jump to next / previous. nvim-surround (ys/cs/ds) and
@@ -187,14 +188,14 @@ return {
           swap = {
             enable = true,
             swap_next = {
-              ["<leader>sa"] = "@parameter.inner",
-              ["<leader>sf"] = "@function.outer",
-              ["<leader>sc"] = "@class.outer",
+              ["<leader>ra"] = "@parameter.inner",
+              ["<leader>rf"] = "@function.outer",
+              ["<leader>rc"] = "@class.outer",
             },
             swap_previous = {
-              ["<leader>sA"] = "@parameter.inner",
-              ["<leader>sF"] = "@function.outer",
-              ["<leader>sC"] = "@class.outer",
+              ["<leader>rA"] = "@parameter.inner",
+              ["<leader>rF"] = "@function.outer",
+              ["<leader>rC"] = "@class.outer",
             },
           },
         },
@@ -216,7 +217,7 @@ return {
     config = function()
       local neogen = require("neogen")
       neogen.setup()
-      vim.keymap.set("n", "<leader>lg", neogen.generate, { desc = "Generate doc comment (neogen)" })
+      vim.keymap.set("n", "<leader>rn", neogen.generate, { desc = "Generate doc comment (neogen)" })
     end,
   },
   {

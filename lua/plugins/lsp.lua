@@ -11,7 +11,7 @@
 --   gds / gws    document / workspace symbols
 --   <leader>la   code action
 --   <leader>lz   source-level code action
---   <leader>lr   rename
+--   <leader>rr   rename (refactor namespace)
 --   <leader>lf   format (conform)
 --   <leader>lc   run code lens
 --   <leader>ls   signature help
@@ -19,11 +19,11 @@
 --   <leader>li / lo   incoming / outgoing calls
 --   <leader>le   run scalafix (metals only)
 --
--- Diagnostics:
---   <leader>aa   send all diagnostics to the quickfix
---   <leader>ae   send errors to the quickfix
---   <leader>aw   send warnings to the quickfix
---   <leader>d    send buffer diagnostics to the location list
+-- Diagnostics (the <leader>x list/diagnostics namespace; trouble adds the
+-- rest of <leader>x in diagnostic.lua):
+--   <leader>xa   send all diagnostics to the quickfix
+--   <leader>xw   send warnings to the quickfix
+--   <leader>xd   send buffer diagnostics to the location list
 --   [c / ]c      previous / next diagnostic
 --
 -- Completion / snippets:
@@ -69,7 +69,7 @@ local function lsp_key_mapping()
   vim.keymap.set("n", "gws", vim.lsp.buf.workspace_symbol, { desc = "Workspace symbols" })
   vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.run, { desc = "Run code lens" })
   vim.keymap.set("n", "<leader>ls", vim.lsp.buf.signature_help, { desc = "Signature help" })
-  vim.keymap.set("n", "<leader>lr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+  vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, { desc = "Rename symbol" })
   vim.keymap.set("n", "<leader>lf", require("conform").format, { desc = "Format buffer" })
   vim.keymap.set("n", "<leader>la", vim.lsp.buf.code_action, { desc = "Code action" })
   vim.keymap.set("n", "<leader>lz", function()
@@ -84,14 +84,11 @@ local function lsp_key_mapping()
   end, { desc = "Child classes (subtypes)" })
   vim.keymap.set("n", "<leader>li", vim.lsp.buf.incoming_calls, { desc = "Incoming calls" })
   vim.keymap.set("n", "<leader>lo", vim.lsp.buf.outgoing_calls, { desc = "Outgoing calls" })
-  vim.keymap.set("n", "<leader>aa", vim.diagnostic.setqflist, { desc = "All diagnostics to quickfix" })
-  vim.keymap.set("n", "<leader>ae", function()
-    vim.diagnostic.setqflist({ severity = "E" })
-  end, { desc = "Errors to quickfix" })
-  vim.keymap.set("n", "<leader>aw", function()
+  vim.keymap.set("n", "<leader>xa", vim.diagnostic.setqflist, { desc = "All diagnostics to quickfix" })
+  vim.keymap.set("n", "<leader>xw", function()
     vim.diagnostic.setqflist({ severity = "W" })
   end, { desc = "Warnings to quickfix" })
-  vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Buffer diagnostics to loclist" })
+  vim.keymap.set("n", "<leader>xd", vim.diagnostic.setloclist, { desc = "Buffer diagnostics to loclist" })
   vim.keymap.set("n", "[c", function()
     vim.diagnostic.goto_prev({ wrap = false })
   end, { desc = "Previous diagnostic" })
