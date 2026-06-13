@@ -31,7 +31,9 @@
 
 local function is_git_tracked(filepath)
   local handle = io.popen("git ls-files --error-unmatch " .. vim.fn.shellescape(filepath) .. " 2>/dev/null")
-  if handle == nil then return false end
+  if handle == nil then
+    return false
+  end
   local result = handle:read("*a")
   handle:close()
   return result ~= ""
@@ -174,7 +176,9 @@ return {
       vim.keymap.set("n", "<leader>gg", convcommit.create_commit, { desc = "Create conventional commit" })
       vim.keymap.set("n", "<leader>gv", convcommit.create_version_tag, { desc = "Create version tag" })
       vim.keymap.set("n", "<leader>gp", function()
-        if (not check_modified_git_buffers()) then convcommit.push() end
+        if not check_modified_git_buffers() then
+          convcommit.push()
+        end
       end, { desc = "Push (guard unsaved buffers)" })
       vim.keymap.set("n", "<leader>ga", convcommit.git_add, { desc = "Git add" })
     end,
