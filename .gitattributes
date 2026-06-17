@@ -1,0 +1,30 @@
+# This is a Linux/WSL config repo: every text file must use LF in the
+# repo and in the working tree. CRLF would, among other things, break
+# shell shebangs. eol=lf enforces LF on checkout regardless of a local
+# core.autocrlf setting.
+* text=auto eol=lf
+
+# Be explicit for the file types actually tracked here.
+*.sh        text eol=lf
+*.zsh       text eol=lf
+*.zsh-theme text eol=lf
+.zshrc      text eol=lf
+*.lua       text eol=lf
+*.conf      text eol=lf
+*.css       text eol=lf
+*.rasi      text eol=lf
+*.json      text eol=lf
+*.jsonc     text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.toml      text eol=lf
+*.md        text eol=lf
+*.txt       text eol=lf
+*.c         text eol=lf
+*.example   text eol=lf
+*.tmTheme   text eol=lf
+
+# Binary assets: never touch line endings or try to diff them.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
