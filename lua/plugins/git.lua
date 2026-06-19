@@ -10,7 +10,9 @@
 --   <leader>gd   open diffview on the uncommitted changes
 --   <leader>gc   close diffview
 --   <leader>gg   create a conventional commit
---   <leader>gv   create a version tag
+--   <leader>gv   create a version tag (changelog stored in the tag message;
+--                staging pre-release "-<branch>.<n>" off the default branch)
+--   <leader>gV   rebuild the changelog from tag messages (scratch buffer)
 --   <leader>gp   push (refuses if git-tracked buffers are unsaved)
 --   <leader>ga   git add
 --   <leader>gn   jump to the next merge-conflicted file
@@ -175,6 +177,7 @@ return {
       convcommit.setup({ validate_input_key = "<CR>" })
       vim.keymap.set("n", "<leader>gg", convcommit.create_commit, { desc = "Create conventional commit" })
       vim.keymap.set("n", "<leader>gv", convcommit.create_version_tag, { desc = "Create version tag" })
+      vim.keymap.set("n", "<leader>gV", convcommit.generate_changelog, { desc = "Rebuild changelog from tags" })
       vim.keymap.set("n", "<leader>gp", function()
         if not check_modified_git_buffers() then
           convcommit.push()
