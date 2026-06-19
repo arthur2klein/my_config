@@ -9,6 +9,10 @@
 --   <C-c>          (i) escape to normal mode
 --   <C-l>          fix the last spelling mistake (i and n)
 --   <leader>y      (n/v) yank to the system clipboard
+--   <leader>cl     (n/v) copy a git -L style ref   (20,25:src/file.tsx)
+--   <leader>cf     (n/v) copy a grep/editor ref    (src/file.tsx:20)
+--   <leader>cg     (n/v) copy a web/GitHub ref      (src/file.tsx#L20-L25)
+--                  all cwd-relative, to the system clipboard
 --   <leader>p      paste from the system clipboard
 --   <leader>w      write without running autocommands
 --   gl             insert a lorem ipsum paragraph
@@ -32,6 +36,67 @@ vim.api.nvim_set_keymap("n", "<leader>y", '"+y', { noremap = true, desc = "Yank 
 vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true, desc = "Yank to system clipboard" })
 vim.api.nvim_set_keymap("n", "<leader>p", '"+p', { noremap = true, desc = "Paste from system clipboard" })
 vim.api.nvim_set_keymap("n", "<leader>w", ":noautocmd w<CR>", { noremap = true, desc = "Write (no autocommands)" })
+
+-- Copy a reference to the current line (normal) or the visual selection
+-- (visual) to the + register, in one of three formats. The path is
+-- relative to nvim's current working directory.
+--   formatter(path, start_line, end_line) -> string
+local function copy_reference(visual, formatter)
+  if vim.fn.expand("%") == "" then
+    vim.notify("No file for this buffer", vim.log.levels.WARN)
+    return
+  end
+  local path = vim.fn.expand("%:.")
+
+  local start_line, end_line
+  if visual then
+    start_line, end_line = vim.fn.line("v"), vim.fn.line(".")
+    if start_line > end_line then
+      start_line, end_line = end_line, start_line
+    end
+  else
+    start_line, end_line = vim.fn.line("."), vim.fn.line(".")
+  end
+
+  local ref = formatter(path, start_line, end_line)
+  vim.fn.setreg("+", ref)
+  if visual then
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+  end
+  vim.notify("Copied: " .. ref)
+end
+
+-- git -L style: "20,25:src/file.tsx" (single line -> "20:src/file.tsx").
+local function fmt_git_range(path, s, e)
+  local lines = s == e and tostring(s) or string.format("%d,%d", s, e)
+  return string.format("%s:%s", lines, path)
+end
+
+-- grep / editor style: "src/file.tsx:20" (uses the first selected line).
+local function fmt_file_line(path, s, _)
+  return string.format("%s:%d", path, s)
+end
+
+-- web (GitHub/GitLab) style: "src/file.tsx#L20-L25" (single -> "#L20").
+local function fmt_web_range(path, s, e)
+  if s == e then
+    return string.format("%s#L%d", path, s)
+  end
+  return string.format("%s#L%d-L%d", path, s, e)
+end
+
+local function map_reference(lhs, formatter, label)
+  vim.keymap.set("n", lhs, function()
+    copy_reference(false, formatter)
+  end, { desc = label })
+  vim.keymap.set("x", lhs, function()
+    copy_reference(true, formatter)
+  end, { desc = label })
+end
+
+map_reference("<leader>cl", fmt_git_range, "Copy ref (git -L: start,end:file)")
+map_reference("<leader>cf", fmt_file_line, "Copy ref (file:line)")
+map_reference("<leader>cg", fmt_web_range, "Copy ref (file#Lstart-Lend)")
 
 if vim.env.WAYLAND_DISPLAY ~= nil and vim.fn.executable("wl-copy") == 1 then
   vim.g.clipboard = {
