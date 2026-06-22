@@ -243,7 +243,21 @@ return {
       -- import class, move/copy class, etc.). Strip its overlapping
       -- features at attach time so completion/hover/definition stay
       -- intelephense's job and we don't get duplicate results.
+      --
+      -- Mason's phpactor wrapper invokes `php` from PATH, but on this
+      -- machine that's PHP 7.4 — phpactor needs PHP 8.2+. Pin the cmd to
+      -- a PHP 8.x binary and bypass the wrapper.
+      local function pick_php8()
+        for _, c in ipairs({ "php8.3", "php8.4", "php8.5", "php8.2" }) do
+          if vim.fn.executable(c) == 1 then
+            return c
+          end
+        end
+        return "php"
+      end
+      local phpactor_phar = vim.fn.stdpath("data") .. "/mason/packages/phpactor/phpactor.phar"
       vim.lsp.config.phpactor = {
+        cmd = { pick_php8(), phpactor_phar, "language-server" },
         on_init = function(client)
           local caps = client.server_capabilities
           caps.completionProvider = nil

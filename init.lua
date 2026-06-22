@@ -31,11 +31,24 @@ vim.opt.incsearch = true
 vim.opt.hlsearch = true
 
 -- Save settings
-vim.opt.swapfile = false
 vim.opt.encoding = "utf-8"
 vim.opt.updatetime = 300
-vim.opt.backup = false
-vim.opt.writebackup = false
+vim.opt.swapfile = false
+
+-- Persistent undo: per-file history on disk, recoverable across sessions
+local undodir = vim.fn.stdpath("state") .. "/undo"
+vim.fn.mkdir(undodir, "p")
+vim.opt.undofile = true
+vim.opt.undodir = undodir .. "//"
+vim.opt.undolevels = 10000
+vim.opt.undoreload = 100000
+
+-- Backups: keep a pre-write snapshot per file path
+local backupdir = vim.fn.stdpath("state") .. "/backup"
+vim.fn.mkdir(backupdir, "p")
+vim.opt.backup = true
+vim.opt.writebackup = true
+vim.opt.backupdir = backupdir .. "//"
 
 -- Error notification
 vim.opt.errorbells = false
