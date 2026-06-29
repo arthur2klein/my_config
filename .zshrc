@@ -8,9 +8,9 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="catppuccin"
-CATPUCCIN_FLAVOR="mocha"
-CATPUCCIN_SHOW_TIME=true
+# Prompt is handled by starship (see end of file), so we skip loading an
+# oh-my-zsh theme entirely; it would only be loaded then overridden.
+ZSH_THEME=""
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -72,7 +72,13 @@ CATPUCCIN_SHOW_TIME=true
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git sudo)
+# 'git' plugin only adds aliases we don't use; dropping it removes the bulk
+# of the compdef calls done at startup. 'sudo' is the ESC-ESC feature, not
+# an alias, and is essentially free.
+plugins=(sudo)
+
+# Skip the global insecure-directory audit (compaudit) done by compinit.
+ZSH_DISABLE_COMPFIX="true"
 
 source $ZSH/oh-my-zsh.sh
 
@@ -141,8 +147,18 @@ alias pipeline='wslview "https://gitlab.com/aqs3/$(git remote get-url origin | x
 eval "$(zoxide init zsh --cmd cd)"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# Lazy-load nvm: the real nvm.sh (and its auto-`nvm use`) is only sourced the
+# first time we actually invoke nvm/node/npm/npx. This drops auto .nvmrc
+# switching on shell open, but saves ~400ms per startup.
+_load_nvm() {
+  unset -f nvm node npm npx 2>/dev/null
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+for _cmd in nvm node npm npx; do
+  eval "${_cmd}() { _load_nvm; ${_cmd} \"\$@\"; }"
+done
+unset _cmd
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
 
@@ -170,3 +186,4 @@ alias -s md="cat"
 alias -s png="xdg-open"
 alias -s go="$EDITOR"
 alias -s json="jless"
+alias unitTest="/usr/bin/php vendor/phpunit/phpunit/phpunit --configuration phpunit.xml"
