@@ -1,1 +1,3 @@
 .luarc.json
+nvim-eslint/node_modules
+nvim-eslint/package-lock.json

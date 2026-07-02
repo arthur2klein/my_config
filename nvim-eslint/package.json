@@ -1,0 +1,11 @@
+{
+  "name": "nvim-eslint-fallback",
+  "private": true,
+  "type": "module",
+  "description": "Global ESLint fallback used by Neovim's eslint LSP when a project ships no ESLint config. Flags React hook dependency bugs (react-hooks/exhaustive-deps) that tsserver cannot see.",
+  "dependencies": {
+    "eslint": "^9.0.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}

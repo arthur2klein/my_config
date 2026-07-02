@@ -34,6 +34,12 @@ if [ ! -e ~/.config/nvim/lua/dbs.lua ]; then
   cp ~/my_config/lua/dbs.lua.example ~/.config/nvim/lua/dbs.lua
 fi
 
+# Neovim eslint fallback deps (react-hooks linting without a project config).
+if [ ! -d ~/my_config/nvim-eslint/node_modules ] && command -v npm >/dev/null 2>&1; then
+  (cd ~/my_config/nvim-eslint && npm install --no-audit --no-fund) \
+    || echo "skip: nvim-eslint npm install failed" >&2
+fi
+
 # tmux healthchecks are opt-in per machine (work vs personal differ, may
 # hold local creds), so they are NOT seeded automatically. To enable on a
 # given machine, copy the template and edit it:

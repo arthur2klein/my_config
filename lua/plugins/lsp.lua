@@ -373,7 +373,90 @@ return {
           },
         },
       }
+      -- Attach eslint to any JS/TS project and, when it ships no config of its
+      -- own, lint with the ~/my_config/nvim-eslint fallback (react-hooks rules).
+      local eslint_fallback_dir = vim.fn.expand("~/my_config/nvim-eslint")
+      local eslint_fallback_config = eslint_fallback_dir .. "/eslint.config.mjs"
+      local eslint_fallback_nodepath = eslint_fallback_dir .. "/node_modules"
+
+      local eslint_config_names = {
+        ".eslintrc",
+        ".eslintrc.js",
+        ".eslintrc.cjs",
+        ".eslintrc.yaml",
+        ".eslintrc.yml",
+        ".eslintrc.json",
+        "eslint.config.js",
+        "eslint.config.mjs",
+        "eslint.config.cjs",
+        "eslint.config.ts",
+        "eslint.config.mts",
+        "eslint.config.cts",
+      }
+
+      local function project_has_eslint_config(root)
+        if not root then
+          return false
+        end
+        for _, name in ipairs(eslint_config_names) do
+          if vim.uv.fs_stat(root .. "/" .. name) then
+            return true
+          end
+        end
+        local pkg = root .. "/package.json"
+        if vim.uv.fs_stat(pkg) then
+          local ok, lines = pcall(vim.fn.readfile, pkg)
+          if ok then
+            local ok_decode, decoded = pcall(vim.json.decode, table.concat(lines, "\n"))
+            if ok_decode and type(decoded) == "table" and decoded.eslintConfig ~= nil then
+              return true
+            end
+          end
+        end
+        return false
+      end
+
       vim.lsp.config.eslint = {
+        root_dir = function(bufnr, on_dir)
+          if vim.fs.root(bufnr, { "deno.json", "deno.jsonc", "deno.lock" }) then
+            return
+          end
+          local root = vim.fs.root(bufnr, {
+            "package-lock.json",
+            "yarn.lock",
+            "pnpm-lock.yaml",
+            "bun.lockb",
+            "bun.lock",
+            "package.json",
+            ".git",
+          })
+          if root then
+            on_dir(root)
+          end
+        end,
+        before_init = function(_, config)
+          local root_dir = config.root_dir
+          config.settings = config.settings or {}
+          if root_dir then
+            -- Upstream: workspaceFolder bounds config search; Yarn PnP needs
+            -- the command wrapped in `yarn exec`.
+            config.settings.workspaceFolder = {
+              uri = root_dir,
+              name = vim.fn.fnamemodify(root_dir, ":t"),
+            }
+            if
+              type(config.cmd) == "table"
+              and (vim.uv.fs_stat(root_dir .. "/.pnp.cjs") or vim.uv.fs_stat(root_dir .. "/.pnp.js"))
+            then
+              config.cmd = vim.list_extend({ "yarn", "exec" }, config.cmd)
+            end
+          end
+          if not project_has_eslint_config(root_dir) then
+            config.settings.options = config.settings.options or {}
+            config.settings.options.overrideConfigFile = eslint_fallback_config
+            config.settings.nodePath = eslint_fallback_nodepath
+          end
+        end,
         settings = {
           rulesCustomizations = {
             { rule = "@typescript-eslint/no-explicit-any", severity = "off" },
