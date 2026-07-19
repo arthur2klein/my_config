@@ -1,3 +1,11 @@
+-- Mnomonic: Note memorization tool
+--
+-- Mnemonic keymaps (set on attach):
+--   <leader>na Add a new card
+--   <leader>nr Start a review session
+--   <leader>nt Manage topics
+--   <leader>nm Browse / edit / delete cards
+
 return {
   "Yeijon/mnemonic.nvim",
   dependencies = {
@@ -17,10 +25,10 @@ return {
 
       -- Keymaps (customize as needed)
       keymaps = {
-        new_card = "<leader>nca", -- Add a new card
-        review = "<leader>ncr", -- Start a review session
-        manage = "<leader>nct", -- Manage topics
-        cards = "<leader>ncm", -- Browse / edit / delete cards
+        new_card = "<leader>na", -- Add a new card
+        review = "<leader>nr", -- Start a review session
+        manage = "<leader>nt", -- Manage topics
+        cards = "<leader>nm", -- Browse / edit / delete cards
       },
     })
   end,
