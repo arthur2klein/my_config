@@ -30,6 +30,7 @@ return {
         { "<leader>t", group = "test" },
         { "<leader>p", group = "debugprint / paste" },
         { "<leader>n", group = "mnemonic" },
+        { "<leader>a", group = "arabic" },
       })
     end,
   },

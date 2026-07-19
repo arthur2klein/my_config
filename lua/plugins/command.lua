@@ -30,7 +30,12 @@
 --     Comment.nvim (gcc/gc) use their defaults.
 
 vim.api.nvim_set_keymap("i", "<C-c>", "<Esc>", { noremap = true, desc = "Escape to normal mode" })
-vim.api.nvim_set_keymap("i", "<c-l>", "<c-g>u<Esc>[s1z=]a<c-g>u", { noremap = true, desc = "Fix last spelling mistake" })
+vim.api.nvim_set_keymap(
+  "i",
+  "<c-l>",
+  "<c-g>u<Esc>[s1z=]a<c-g>u",
+  { noremap = true, desc = "Fix last spelling mistake" }
+)
 vim.api.nvim_set_keymap("n", "<c-l>", "[s1z=<c-o>", { noremap = true, desc = "Fix last spelling mistake" })
 vim.api.nvim_set_keymap("n", "<leader>y", '"+y', { noremap = true, desc = "Yank to system clipboard" })
 vim.api.nvim_set_keymap("v", "<leader>y", '"+y', { noremap = true, desc = "Yank to system clipboard" })
@@ -290,7 +295,7 @@ return {
     event = "VeryLazy",
     opts = {
       -- Override default configuration here
-    }
+    },
   },
   "mg979/vim-visual-multi",
   {
@@ -319,7 +324,12 @@ return {
         end
       end
 
-      vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>", { noremap = true, desc = "Toggle venn box-drawing mode" })
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>v",
+        ":lua Toggle_venn()<CR>",
+        { noremap = true, desc = "Toggle venn box-drawing mode" }
+      )
     end,
   },
   {
