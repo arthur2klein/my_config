@@ -159,6 +159,24 @@ for _cmd in nvm node npm npx; do
   eval "${_cmd}() { _load_nvm; ${_cmd} \"\$@\"; }"
 done
 unset _cmd
+# Put the default node version's bin on PATH now, without sourcing nvm.sh, so
+# globally-installed CLIs (openapi-generator-cli, prettier, ...) resolve in a
+# fresh shell. Full nvm still lazy-loads on first nvm/node/npm/npx call.
+if [ -d "$NVM_DIR/versions/node" ]; then
+  _nvm_def="$(cat "$NVM_DIR/alias/default" 2>/dev/null)"
+  _nvm_ver=""
+  case "$_nvm_def" in
+    v[0-9]*) [ -d "$NVM_DIR/versions/node/$_nvm_def" ] && _nvm_ver="$_nvm_def" ;;
+    lts/*)   _nvm_ver="$(cat "$NVM_DIR/alias/$_nvm_def" 2>/dev/null)" ;;
+  esac
+  if [ -z "$_nvm_ver" ]; then          # stable / node / unresolved -> newest
+    _nvm_bins=("$NVM_DIR"/versions/node/*/bin(Nn))
+    (( ${#_nvm_bins} )) && _nvm_ver="${${_nvm_bins[-1]:h}:t}"
+  fi
+  [ -n "$_nvm_ver" ] && [ -d "$NVM_DIR/versions/node/$_nvm_ver/bin" ] && \
+    export PATH="$NVM_DIR/versions/node/$_nvm_ver/bin:$PATH"
+  unset _nvm_def _nvm_ver _nvm_bins
+fi
 eval "$(starship init zsh)"
 export STARSHIP_CONFIG=~/.config/starship.toml
 

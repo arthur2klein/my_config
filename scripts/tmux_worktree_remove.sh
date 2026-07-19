@@ -19,16 +19,38 @@ cd "$cwd" 2>/dev/null || die "cannot cd to $cwd"
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
   || die "$cwd is not inside a git repo"
 
-toplevel="$(git rev-parse --show-toplevel)"
-# Root of the main checkout: worktrees are siblings of it.
-main_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
+toplevel="$(readlink -f "$(git rev-parse --show-toplevel)")"
+common_dir="$(git rev-parse --path-format=absolute --git-common-dir)"
 
-[ "$toplevel" != "$main_root" ] \
-  || die "this is the main checkout, refusing to remove it"
+# Decide what must never be removed, a safe dir to step into, and the git
+# context to run the removal from. Classic layout: the main checkout owns
+# the ".git" dir; it is protected and is itself the safe cwd. Bare layout:
+# no checkout owns the DB, so protect whichever worktree the canonical
+# "<repo>" symlink resolves to (the live dev/IDE/Docker target), and drive
+# the removal from the bare repo.
+if [ "$(basename "$common_dir")" = ".git" ]; then
+  protected="$(dirname "$common_dir")"
+  protected_desc="the main checkout"
+  safe_cwd="$protected"
+  git_ctx="$protected"
+else
+  wt_parent="$(dirname "$common_dir")"
+  repo_name="$(basename "$common_dir")"
+  repo_name="${repo_name%.git}"
+  canonical="$wt_parent/$repo_name"
+  protected=""
+  [ -L "$canonical" ] && protected="$(readlink -f "$canonical")"
+  protected_desc="the worktree '$repo_name' points to"
+  safe_cwd="$wt_parent"
+  git_ctx="$common_dir"
+fi
+
+[ -z "$protected" ] || [ "$toplevel" != "$protected" ] \
+  || die "this is $protected_desc, refusing to remove it"
 
 # Step out of the worktree before deleting it, so our own cwd does not
 # vanish mid-script.
-cd "$main_root"
+cd "$safe_cwd"
 
 # Leave the doomed session before killing it so the client lands
 # somewhere sensible (skip if it is the only session: kill ends the
@@ -39,7 +61,7 @@ fi
 
 # --force: the user confirmed, and the worktree carries copied untracked
 # files that would otherwise block removal.
-git -C "$main_root" worktree remove --force "$toplevel" \
+git -C "$git_ctx" worktree remove --force "$toplevel" \
   || die "git worktree remove failed for $toplevel"
 
 if [ -n "$session" ] && tmux has-session -t "=$session" 2>/dev/null; then

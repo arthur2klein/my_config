@@ -46,12 +46,21 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   die "feature worktree has uncommitted changes; commit or stash first"
 fi
 
-# Root of the main checkout (worktrees are siblings of it, and it stays
-# valid even when prefix-i is used from a linked worktree).
-repo_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
-repo_name="$(basename "$repo_root")"
+# Locate where sibling worktrees live and the repo name. Supports both
+# the classic layout (main checkout holds a real ".git" dir; worktrees
+# are its siblings) and the bare layout (shared DB is a "<repo>.git" bare
+# dir with no owning checkout; every branch is a peer worktree beside it).
+common_dir="$(git rev-parse --path-format=absolute --git-common-dir)"
+if [ "$(basename "$common_dir")" = ".git" ]; then
+  wt_parent="$(dirname "$(dirname "$common_dir")")"
+  repo_name="$(basename "$(dirname "$common_dir")")"
+else
+  wt_parent="$(dirname "$common_dir")"
+  repo_name="$(basename "$common_dir")"
+  repo_name="${repo_name%.git}"
+fi
 safe_staging="$(printf '%s' "$staging" | tr '/:. ' '----')"
-wt_path="$(dirname "$repo_root")/${repo_name}--${safe_staging}"
+wt_path="$wt_parent/${repo_name}--${safe_staging}"
 session="${repo_name}--${safe_staging}"
 
 # Find the worktree that currently holds the staging branch, wherever it

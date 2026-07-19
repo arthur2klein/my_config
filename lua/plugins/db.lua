@@ -54,7 +54,7 @@ return {
         vim.schedule(function()
           vim.notify(
             "dbs.lua not found at ~/.config/nvim/lua/dbs.lua. "
-              .. "Copy lua/dbs.lua.example from this repo to bootstrap.",
+            .. "Copy lua/dbs.lua.example from this repo to bootstrap.",
             vim.log.levels.WARN
           )
         end)

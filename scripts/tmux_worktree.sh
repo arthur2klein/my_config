@@ -32,16 +32,32 @@ cd "$cwd" 2>/dev/null || die "cannot cd to $cwd"
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
   || die "$cwd is not inside a git repo"
 
-# Root of the worktree we were called from (copy source) and root of the
-# main checkout (worktrees are created as siblings of it, and it stays
-# valid even when prefix-g is used from another worktree).
+# Root of the worktree we were called from (copy source).
 src_root="$(git rev-parse --show-toplevel)"
-repo_root="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
-repo_name="$(basename "$repo_root")"
+
+# Locate where sibling worktrees live and the repo name, supporting two
+# layouts:
+#  - classic: the main checkout holds a real ".git" dir; worktrees are
+#    created as siblings of that checkout (main_root non-empty).
+#  - bare: the shared DB is a "<repo>.git" bare dir with no owning
+#    checkout; every branch (including the canonical one) is a peer
+#    worktree living beside the bare dir (main_root empty).
+# In both cases worktrees are named "<wt_parent>/<repo_name>--<branch>".
+common_dir="$(git rev-parse --path-format=absolute --git-common-dir)"
+if [ "$(basename "$common_dir")" = ".git" ]; then
+  main_root="$(dirname "$common_dir")"
+  wt_parent="$(dirname "$main_root")"
+  repo_name="$(basename "$main_root")"
+else
+  main_root=""
+  wt_parent="$(dirname "$common_dir")"
+  repo_name="$(basename "$common_dir")"
+  repo_name="${repo_name%.git}"
+fi
 
 # tmux session names cannot contain '.' or ':'; keep paths flat too.
 safe_branch="$(printf '%s' "$branch" | tr '/:. ' '----')"
-wt_path="$(dirname "$repo_root")/${repo_name}--${safe_branch}"
+wt_path="$wt_parent/${repo_name}--${safe_branch}"
 session="${repo_name}--${safe_branch}"
 
 if ! tmux has-session -t "=$session" 2>/dev/null; then
@@ -62,10 +78,15 @@ if ! tmux has-session -t "=$session" 2>/dev/null; then
           fi
         done
       fi
-      # Last resort (no remote, no main/master): main checkout's branch.
-      if [ -z "$default" ]; then
-        default="$(git -C "$repo_root" symbolic-ref --quiet --short HEAD)" \
+      # Last resort (no remote, no main/master): the branch the main
+      # checkout (classic) or the bare repo's HEAD (bare) points at.
+      if [ -z "$default" ] && [ -n "$main_root" ]; then
+        default="$(git -C "$main_root" symbolic-ref --quiet --short HEAD)" \
           || true
+      fi
+      if [ -z "$default" ]; then
+        default="$(git --git-dir="$common_dir" symbolic-ref --quiet --short \
+          HEAD)" || true
       fi
       [ -n "${default:-}" ] || die "cannot determine default branch"
       step "creating branch '$branch' from '$default' and its worktree"
