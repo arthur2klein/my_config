@@ -8,6 +8,7 @@
     "custom/prayer",
     "network",
     "pulseaudio",
+    "custom/bt-battery",
     "battery",
     "custom/date",
     "clock"
@@ -41,6 +42,13 @@
       "9": "󰌻",
       "10": "󰖣"
     }
+  },
+  "custom/bt-battery": {
+    "exec": "$HOME/.config/scripts/bt-battery.sh",
+    "interval": 30,
+    "return-type": "text",
+    "format": "{}",
+    "tooltip": false
   },
   "custom/weather": {
     "exec": "$HOME/.config/scripts/weather.sh",

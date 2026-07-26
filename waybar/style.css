@@ -42,6 +42,7 @@ window#waybar {
 }
 
 #custom-date,
+#custom-bt-battery,
 #custom-weather,
 #custom-prayer,
 #clock,
@@ -108,5 +109,10 @@ window#waybar {
 }
 
 #pulseaudio {
+  color: @mauve;
+}
+
+#custom-bt-battery {
+  margin-left: 0;
   color: @mauve;
 }
