@@ -47,14 +47,15 @@ fi
 # Leaving the file absent keeps the status bar unchanged.
 
 # Wayland / desktop
-link ~/my_config/hypr    ~/.config/hypr
-link ~/my_config/swaync  ~/.config/swaync
-link ~/my_config/kitty   ~/.config/kitty
-link ~/my_config/rofi    ~/.config/rofi
-link ~/my_config/scripts ~/.config/scripts
-link ~/my_config/theme   ~/.config/theme
-link ~/my_config/waybar  ~/.config/waybar
-link ~/my_config/bat     ~/.config/gat
+link ~/my_config/hypr        ~/.config/hypr
+link ~/my_config/swaync      ~/.config/swaync
+link ~/my_config/kitty       ~/.config/kitty
+link ~/my_config/rofi        ~/.config/rofi
+link ~/my_config/scripts     ~/.config/scripts
+link ~/my_config/theme       ~/.config/theme
+link ~/my_config/waybar      ~/.config/waybar
+link ~/my_config/bat         ~/.config/gat
+link ~/my_config/rofimoji.rc ~/.config/rofimoji.rc
 
 # Oh-my-zsh custom themes (only if oh-my-zsh is installed)
 if [ -d ~/.oh-my-zsh/themes ]; then

@@ -257,6 +257,7 @@ hl.bind("SUPER + DELETE", hl.dsp.exec_cmd(menu))
 
 hl.bind("SUPER + P", hl.dsp.window.pseudo())
 
+hl.bind("SUPER + COMMA", hl.dsp.exec_cmd("rofimoji"))
 -- dwindle
 
 hl.bind("SUPER + V", hl.dsp.layout("togglesplit"))
