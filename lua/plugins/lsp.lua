@@ -204,6 +204,14 @@ return {
         "eslint",
       })
 
+      vim.schedule(function()
+        for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_loaded(bufnr) and vim.bo[bufnr].buflisted then
+            vim.api.nvim_exec_autocmds("FileType", { buffer = bufnr })
+          end
+        end
+      end)
+
       vim.lsp.config.slint_lsp = {
         filetypes = { "slint" },
       }
