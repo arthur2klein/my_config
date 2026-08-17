@@ -171,7 +171,6 @@ return {
           "sqlls",
           "terraformls",
           "vtsls",
-          "systemd_ls",
         },
       })
 
@@ -181,7 +180,6 @@ return {
         "clangd",
         "cssls",
         "dockerls",
-        "slint_lsp",
         "elixirls",
         "glsl_analyzer",
         "html",
@@ -198,7 +196,7 @@ return {
         "pyright",
         "rust_analyzer",
         "sqlls",
-        "systemd_ls",
+        "systemd_lsp",
         "terraformls",
         "vtsls",
         "eslint",
@@ -212,8 +210,8 @@ return {
         end
       end)
 
-      vim.lsp.config.slint_lsp = {
-        filetypes = { "slint" },
+      vim.lsp.config.systemd_lsp = {
+        cmd = { "systemd-language-server" },
       }
       -- Parse the lowest PHP version implied by composer.json `require.php`.
       -- Returns a string like "7.4.0" or nil if no composer.json / no constraint.
@@ -312,6 +310,19 @@ return {
               -- Big repos: bump from the 5MB default so large generated files
               -- (factories, fixtures, locale data) don't get silently skipped.
               maxSize = 5000000,
+              exclude = {
+                "**/.git/**",
+                "**/.svn/**",
+                "**/.hg/**",
+                "**/CVS/**",
+                "**/.DS_Store/**",
+                "**/node_modules/**",
+                "**/bower_components/**",
+                "**/vendor/**/{Tests,tests}/**",
+                "**/.history/**",
+                "**/vendor/**/vendor/**",
+                "**/var/cache/**",
+              },
             },
           },
         },
@@ -453,8 +464,8 @@ return {
               name = vim.fn.fnamemodify(root_dir, ":t"),
             }
             if
-              type(config.cmd) == "table"
-              and (vim.uv.fs_stat(root_dir .. "/.pnp.cjs") or vim.uv.fs_stat(root_dir .. "/.pnp.js"))
+                type(config.cmd) == "table"
+                and (vim.uv.fs_stat(root_dir .. "/.pnp.cjs") or vim.uv.fs_stat(root_dir .. "/.pnp.js"))
             then
               config.cmd = vim.list_extend({ "yarn", "exec" }, config.cmd)
             end
@@ -535,26 +546,18 @@ return {
     "nvimtools/none-ls.nvim",
     event = "VeryLazy",
     depends = { "davidmh/cspell.nvim" },
-    opts = function(_, opts)
-      local cspell = require("cspell")
-      opts.sources = opts.sources or {}
-      table.insert(
-        opts.sources,
-        cspell.diagnostics.with({
-          diagnostics_postprocess = function(diagnostic)
-            diagnostic.severity = vim.diagnostic.severity.HINT
-          end,
-        })
-      )
-      table.insert(opts.sources, cspell.code_actions)
-    end,
     config = function()
       local cspell = require("cspell")
       local null_ls = require("null-ls")
       require("null-ls").setup({
         fallback_severity = vim.diagnostic.severity.HINT,
         sources = {
-          cspell.diagnostics,
+          cspell.diagnostics.with({
+            method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+            diagnostics_postprocess = function(diagnostic)
+              diagnostic.severity = vim.diagnostic.severity.HINT
+            end,
+          }),
           cspell.code_actions,
           -- PHPStan: only attach if the project ships a phpstan config.
           -- Prefer vendor/bin/phpstan so the analyzer version matches what

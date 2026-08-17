@@ -41,6 +41,7 @@ return {
         },
         highlight = {
           enable = true,
+          disable = { "php" },
         },
       })
     end,

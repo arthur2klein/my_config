@@ -28,6 +28,19 @@ local function notify(msg, level)
   vim.notify(msg, level or vim.log.levels.INFO, { title = "intelephense" })
 end
 
+local function reattach_php_buffers()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if
+        vim.api.nvim_buf_is_loaded(buf)
+        and vim.bo[buf].buflisted
+        and vim.bo[buf].filetype == "php"
+        and #vim.lsp.get_clients({ bufnr = buf, name = "intelephense" }) == 0
+    then
+      vim.api.nvim_exec_autocmds("FileType", { buffer = buf })
+    end
+  end
+end
+
 local function restart_intelephense()
   local clients = vim.lsp.get_clients({ name = "intelephense" })
   if #clients == 0 then
@@ -36,11 +49,8 @@ local function restart_intelephense()
   for _, c in ipairs(clients) do
     vim.lsp.stop_client(c.id, true)
   end
-  -- LspStart is provided by nvim-lspconfig; schedule so the stop completes
-  -- before we re-attach.
-  vim.defer_fn(function()
-    pcall(vim.cmd, "LspStart intelephense")
-  end, 200)
+  -- Schedule so the stop completes before we re-attach.
+  vim.defer_fn(reattach_php_buffers, 200)
   return true
 end
 
@@ -57,9 +67,7 @@ local function purge_intelephense_cache()
     end
     notify("Cache wiped at " .. intelephense_cache_dir)
   end
-  vim.defer_fn(function()
-    pcall(vim.cmd, "LspStart intelephense")
-  end, 200)
+  vim.defer_fn(reattach_php_buffers, 200)
 end
 
 -- One filesystem watcher per git dir; restart all matching LSPs when HEAD
