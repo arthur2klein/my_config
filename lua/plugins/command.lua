@@ -324,12 +324,8 @@ return {
         end
       end
 
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>v",
-        ":lua Toggle_venn()<CR>",
-        { noremap = true, desc = "Toggle venn box-drawing mode" }
-      )
+      vim.api.nvim_set_keymap("n", "<leader>v", ":lua Toggle_venn()<CR>",
+        { noremap = true, desc = "Toggle venn box-drawing mode" })
     end,
   },
   {

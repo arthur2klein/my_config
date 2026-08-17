@@ -150,13 +150,16 @@ export NVM_DIR="$HOME/.nvm"
 # Lazy-load nvm: the real nvm.sh (and its auto-`nvm use`) is only sourced the
 # first time we actually invoke nvm/node/npm/npx. This drops auto .nvmrc
 # switching on shell open, but saves ~400ms per startup.
-_load_nvm() {
-  unset -f nvm node npm npx 2>/dev/null
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-}
+# The loader is inlined in each wrapper rather than kept in a shared helper:
+# tools that snapshot the shell (Claude Code) restore these functions without
+# the helper, and the wrapper then recursed into itself until FUNCNEST.
 for _cmd in nvm node npm npx; do
-  eval "${_cmd}() { _load_nvm; ${_cmd} \"\$@\"; }"
+  eval "${_cmd}() {
+  unset -f nvm node npm npx 2>/dev/null
+  [ -s \"\$NVM_DIR/nvm.sh\" ] && \\. \"\$NVM_DIR/nvm.sh\"
+  [ -s \"\$NVM_DIR/bash_completion\" ] && \\. \"\$NVM_DIR/bash_completion\"
+  ${_cmd} \"\$@\"
+}"
 done
 unset _cmd
 # Put the default node version's bin on PATH now, without sourcing nvm.sh, so

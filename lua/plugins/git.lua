@@ -164,14 +164,14 @@ return {
     end,
   },
   {
-    "arthur2klein/convcommit",
+    -- Local checkout instead of the remote "arthur2klein/convcommit".
+    dir = "/root/sandbox/lua/convcommit",
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-telescope/telescope.nvim",
       "nvim-lua/plenary.nvim",
       "rcarriga/nvim-notify",
     },
-    branch = "master",
     config = function()
       local convcommit = require("convcommit")
       convcommit.setup({ validate_input_key = "<CR>" })
