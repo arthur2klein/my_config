@@ -9,27 +9,17 @@
 -- TODO: convert mocha.conf to .lua and use require()
 
 -- This is an example Hyprland config file.
-
 -- Refer to the wiki for more information.
-
 -- https://wiki.hyprland.org/Configuring/Configuring-Hyprland/
-
 -- Please note not all available settings / options are set here.
-
 -- For a full list, see the wiki
-
 -- You can split this configuration into multiple files
-
 -- Create your files separately and then link them to this file like this:
-
 -- source = ~/.config/hypr/myColors.conf
 
 --###############
-
 --## MONITORS ###
-
 --###############
-
 -- See https://wiki.hyprland.org/Configuring/Monitors/
 
 -- monitor=desc:WSX W210 0x00000321,preferred,auto,2,mirror,DP-2
@@ -58,55 +48,29 @@ hl.monitor({
 })
 
 --##################
-
 --## MY PROGRAMS ###
-
 --##################
-
 -- See https://wiki.hyprland.org/Configuring/Keywords/
-
 -- Set programs that you use
 
 local terminal = "kitty"
-
 local fileManager = "dolphin"
-
 local browser = "gtk-launch google-chrome"
-
 local menu = "rofi -show drun"
 
---################
-
---## AUTOSTART ###
-
---################
-
--- Autostart necessary processes (like notifications daemons, status bars, etc.)
-
--- Or execute your favorite apps at launch like this:
-
 --############################
-
 --## ENVIRONMENT VARIABLES ###
-
 --############################
-
 -- See https://wiki.hyprland.org/Configuring/Environment-variables/
 
 hl.env("XCURSOR_SIZE", 24)
-
 hl.env("HYPRCURSOR_SIZE", 24)
-
 hl.env("HYPRCURSOR_THEME", "rose-pine-hyprcursor")
 
 --####################
-
 --## LOOK AND FEEL ###
-
 --####################
-
 -- Refer to https://wiki.hyprland.org/Configuring/Variables/
-
 -- https://wiki.hyprland.org/Configuring/Variables/#general
 
 hl.config({
@@ -188,11 +152,8 @@ hl.config({
 })
 
 --############
-
 --## INPUT ###
-
 --############
-
 -- https://wiki.hyprland.org/Configuring/Variables/#input
 
 hl.config({
@@ -213,7 +174,6 @@ hl.config({
 })
 
 -- Example per-device config
-
 -- See https://wiki.hyprland.org/Configuring/Keywords/#per-device-input-configs for more
 
 hl.device({
@@ -230,166 +190,84 @@ hl.device({
 -- Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
 
 hl.bind("SUPER + AMPERSAND", hl.dsp.exec_cmd(terminal))
-
 hl.bind("SUPER + PARENLEFT", hl.dsp.exec_cmd(browser))
-
 hl.bind("SUPER + EGRAVE", hl.dsp.exec_cmd("keepassxc"))
-
 hl.bind("SUPER + UNDERSCORE", hl.dsp.exec_cmd("APP=Messages sh ~/scripts/openApp.sh"))
-
 hl.bind("SUPER + CCEDILLA", hl.dsp.exec_cmd("APP=LinkedIn sh ~/scripts/openApp.sh"))
-
 hl.bind("SUPER + AGRAVE", hl.dsp.exec_cmd("APP=WhatsApp sh ~/scripts/openApp.sh"))
-
 hl.bind("ALT + F3", hl.dsp.exec_cmd("~/.config/scripts/quick_terminal.sh kitty"))
-
 hl.bind("ALT + SHIFT + Q", hl.dsp.window.close())
-
 hl.bind("SUPER + M", hl.dsp.exit())
-
 hl.bind("SUPER + E", hl.dsp.exec_cmd(fileManager))
-
 hl.bind("SUPER + F", hl.dsp.window.float())
-
 hl.bind("SUPER + G", hl.dsp.window.fullscreen())
-
 hl.bind("SUPER + DELETE", hl.dsp.exec_cmd(menu))
-
 hl.bind("SUPER + P", hl.dsp.window.pseudo())
-
 hl.bind("SUPER + COMMA", hl.dsp.exec_cmd("rofimoji"))
 -- dwindle
-
 hl.bind("SUPER + V", hl.dsp.layout("togglesplit"))
-
 hl.bind("SUPER + L", hl.dsp.exec_cmd("hyprlock"))
-
 hl.bind("SUPER + F3", hl.dsp.exec_cmd("sh ~/.config/scripts/reload_waybar.sh"))
-
 hl.bind("SUPER + N", hl.dsp.exec_cmd("hyprshot -m region"))
-
 hl.bind("SUPER + S", hl.dsp.exec_cmd("swaync-client -C"))
-
 hl.bind("SUPER + B", hl.dsp.exec_cmd("hyprshot -m window"))
-
 hl.bind("PRINT", hl.dsp.exec_cmd("hyprshot -m region"))
-
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"))
-
 -- Move focus with toggleWindow + arrow keys
-
 hl.bind("ALT + H", hl.dsp.focus({ direction = "left" }))
-
 hl.bind("ALT + J", hl.dsp.focus({ direction = "down" }))
-
 hl.bind("ALT + K", hl.dsp.focus({ direction = "up" }))
-
 hl.bind("ALT + L", hl.dsp.focus({ direction = "right" }))
-
 hl.bind("ALT + SHIFT + H", hl.dsp.window.move({ direction = "l" }))
-
 hl.bind("ALT + SHIFT + J", hl.dsp.window.move({ direction = "d" }))
-
 hl.bind("ALT + SHIFT + K", hl.dsp.window.move({ direction = "u" }))
-
 hl.bind("ALT + SHIFT + L", hl.dsp.window.move({ direction = "r" }))
-
 -- Switch workspaces with toggleWindow + [0-9]
-
 hl.bind("ALT + AMPERSAND", hl.dsp.focus({ workspace = 1 }))
-
 hl.bind("ALT + EACUTE", hl.dsp.focus({ workspace = 2 }))
-
 hl.bind("ALT + QUOTEDBL", hl.dsp.focus({ workspace = 3 }))
-
 hl.bind("ALT + APOSTROPHE", hl.dsp.focus({ workspace = 4 }))
-
 hl.bind("ALT + PARENLEFT", hl.dsp.focus({ workspace = 5 }))
-
 hl.bind("ALT + MINUS", hl.dsp.focus({ workspace = 6 }))
-
 hl.bind("ALT + EGRAVE", hl.dsp.focus({ workspace = 7 }))
-
 hl.bind("ALT + UNDERSCORE", hl.dsp.focus({ workspace = 8 }))
-
 hl.bind("ALT + CCEDILLA", hl.dsp.focus({ workspace = 9 }))
-
 hl.bind("ALT + AGRAVE", hl.dsp.focus({ workspace = 10 }))
-
 hl.bind("ALT + F2", hl.dsp.window.move({ workspace = "special:magic_scratchpad" }))
-
 -- Move active window to a workspace with toggleWindow + SHIFT + [0-9]
-
 hl.bind("ALT + SHIFT + AMPERSAND", hl.dsp.window.move({ workspace = 1 }))
-
 hl.bind("ALT + SHIFT + EACUTE", hl.dsp.window.move({ workspace = 2 }))
-
 hl.bind("ALT + SHIFT + QUOTEDBL", hl.dsp.window.move({ workspace = 3 }))
-
 hl.bind("ALT + SHIFT + APOSTROPHE", hl.dsp.window.move({ workspace = 4 }))
-
 hl.bind("ALT + SHIFT + PARENLEFT", hl.dsp.window.move({ workspace = 5 }))
-
 hl.bind("ALT + SHIFT + MINUS", hl.dsp.window.move({ workspace = 6 }))
-
 hl.bind("ALT + SHIFT + EGRAVE", hl.dsp.window.move({ workspace = 7 }))
-
 hl.bind("ALT + SHIFT + UNDERSCORE", hl.dsp.window.move({ workspace = 8 }))
-
 hl.bind("ALT + SHIFT + CCEDILLA", hl.dsp.window.move({ workspace = 9 }))
-
 hl.bind("ALT + SHIFT + AGRAVE", hl.dsp.window.move({ workspace = 10 }))
-
 -- Scroll through existing workspaces with mainMod + scroll
-
 hl.bind("SUPER + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-
 hl.bind("SUPER + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
-
 -- Move/resize windows with mainmod + lmb/rmb and dragging
-
 hl.bind("ALT + mouse:272", hl.dsp.window.drag(), { mouse = true })
-
 hl.bind("ALT + mouse:273", hl.dsp.window.resize(), { mouse = true })
-
 -- laptop multimedia keys for volume and LCD brightness
-
 hl.bind("SUPER + up", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true })
-
 hl.bind("SUPER + down", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true })
-
 hl.bind("SUPER + right", hl.dsp.exec_cmd("~/bin/brightness_control up"), { locked = true })
-
 hl.bind("SUPER + left", hl.dsp.exec_cmd("~/bin/brightness_control down"), { locked = true })
-
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true })
-
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true })
-
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true })
-
 hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true })
-
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("~/bin/brightness_control up"), { locked = true })
-
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("~/bin/brightness_control down"), { locked = true })
-
--- === Focus Mode Toggle ===
-
--- Uses hyprctl to read and modify settings, and pkill to toggle Waybar
-
--- Bind SUPER+SHIFT+F to toggle both gaps and Waybar
-
 hl.bind("ALT + SHIFT + G", hl.dsp.exec_cmd("bash ~/.config/scripts/toggle_gap.sh"))
-
 hl.bind("SUPER + O", hl.dsp.exec_cmd("bash ~/.config/scripts/switch_audio.sh sink"))
-
 hl.bind("SUPER + I", hl.dsp.exec_cmd("bash ~/.config/scripts/switch_audio.sh source"))
 
 --#############################
-
 --## WINDOWS AND WORKSPACES ###
-
 --#############################
 
 hl.window_rule({
