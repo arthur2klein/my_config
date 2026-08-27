@@ -79,6 +79,7 @@ return {
           php = php_formatters,
           rust = { "rustfmt" },
           sql = { "sql_formatter" },
+          json = { "jq" },
           tex = { "latexindent" },
           markdown = { "markdownlint-cli2" },
           javascript = { "prettier", stop_after_first = true },

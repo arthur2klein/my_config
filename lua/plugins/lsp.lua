@@ -464,8 +464,8 @@ return {
               name = vim.fn.fnamemodify(root_dir, ":t"),
             }
             if
-                type(config.cmd) == "table"
-                and (vim.uv.fs_stat(root_dir .. "/.pnp.cjs") or vim.uv.fs_stat(root_dir .. "/.pnp.js"))
+              type(config.cmd) == "table"
+              and (vim.uv.fs_stat(root_dir .. "/.pnp.cjs") or vim.uv.fs_stat(root_dir .. "/.pnp.js"))
             then
               config.cmd = vim.list_extend({ "yarn", "exec" }, config.cmd)
             end
@@ -511,6 +511,23 @@ return {
         providers = {
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
+      },
+
+      cmdline = {
+        sources = function()
+          local type = vim.fn.getcmdtype()
+          if type == "/" or type == "?" then
+            return { "buffer" }
+          end
+          -- disable completions for :! commands
+          if type == ":" and not vim.fn.getcmdline():match("^!") then
+            return { "cmdline" }
+          end
+          if type == "@" then
+            return { "cmdline" }
+          end
+          return {}
+        end,
       },
     },
     opts_extend = { "sources.default" },
@@ -592,6 +609,8 @@ return {
           nofile = { enabled = false },
         },
       },
+      -- No latex2text/utftex on this machine to render LaTeX math previews.
+      latex = { enabled = false },
     },
   },
 }
