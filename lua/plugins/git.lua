@@ -164,8 +164,7 @@ return {
     end,
   },
   {
-    -- Local checkout instead of the remote "arthur2klein/convcommit".
-    dir = "/root/sandbox/lua/convcommit",
+    "arthur2klein/convcommit",
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-telescope/telescope.nvim",
