@@ -23,6 +23,7 @@ link ~/my_config/.p10k.zsh       ~/.p10k.zsh
 link ~/my_config/.tmux.conf      ~/.tmux.conf
 link ~/my_config/.vimrc          ~/.vimrc
 link ~/my_config/.prettierrc.json ~/.prettierrc.json
+link ~/my_config/.sqlintrc.json  ~/.config/sql-language-server/.sqlintrc.json
 
 # Neovim
 link ~/my_config/init.lua    ~/.config/nvim/init.lua
