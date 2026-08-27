@@ -59,6 +59,10 @@ vim.opt_global.completeopt = { "menuone", "noinsert", "noselect" }
 -- Netrw settings
 vim.g.netrw_banner = 0
 
+-- Providers not in use on this machine
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+
 -- Per-project config: load .nvim.lua / .nvimrc / .exrc from the project root.
 -- Neovim 0.9+ prompts to trust each file the first time (`:trust`), so this is safe.
 vim.o.exrc = true
