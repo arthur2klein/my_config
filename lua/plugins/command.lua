@@ -191,85 +191,104 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        textobjects = {
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["it"] = "@comment.inner",
-              ["if"] = "@function.inner",
-              ["ic"] = "@class.inner",
-              ["il"] = "@loop.inner",
-              ["ir"] = "@return.inner",
-              ["ii"] = "@conditional.inner",
-              ["ia"] = "@parameter.inner",
-              ["at"] = "@comment.outer",
-              ["af"] = "@function.outer",
-              ["ac"] = "@class.outer",
-              ["al"] = "@loop.outer",
-              ["ar"] = "@return.outer",
-              ["ai"] = "@conditional.outer",
-              ["aa"] = "@parameter.outer",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-              [")t"] = "@comment.outer",
-              [")f"] = "@function.outer",
-              [")c"] = "@class.outer",
-              [")l"] = "@loop.outer",
-              [")r"] = "@return.inner",
-              [")i"] = "@conditional.outer",
-              [")a"] = "@parameter.outer",
-            },
-            goto_next_end = {
-              [")T"] = "@comment.outer",
-              [")F"] = "@function.outer",
-              [")C"] = "@class.outer",
-              [")L"] = "@loop.outer",
-              [")R"] = "@return.inner",
-              [")I"] = "@conditional.outer",
-              [")A"] = "@parameter.outer",
-            },
-            goto_previous_start = {
-              ["(t"] = "@comment.outer",
-              ["(f"] = "@function.outer",
-              ["(c"] = "@class.outer",
-              ["(l"] = "@loop.outer",
-              ["(r"] = "@return.inner",
-              ["(i"] = "@conditional.outer",
-              ["(a"] = "@parameter.outer",
-            },
-            goto_previous_end = {
-              ["(T"] = "@comment.outer",
-              ["(F"] = "@function.outer",
-              ["(C"] = "@class.outer",
-              ["(L"] = "@loop.outer",
-              ["(R"] = "@return.inner",
-              ["(I"] = "@conditional.outer",
-              ["(A"] = "@parameter.outer",
-            },
-          },
-          swap = {
-            enable = true,
-            swap_next = {
-              ["<leader>ra"] = "@parameter.inner",
-              ["<leader>rf"] = "@function.outer",
-              ["<leader>rc"] = "@class.outer",
-            },
-            swap_previous = {
-              ["<leader>rA"] = "@parameter.inner",
-              ["<leader>rF"] = "@function.outer",
-              ["<leader>rC"] = "@class.outer",
-            },
-          },
-        },
+      require("nvim-treesitter-textobjects").setup({
+        select = { lookahead = true },
+        move = { set_jumps = true },
       })
+
+      local select_textobject = require("nvim-treesitter-textobjects.select").select_textobject
+      local selections = {
+        ["it"] = "@comment.inner",
+        ["if"] = "@function.inner",
+        ["ic"] = "@class.inner",
+        ["il"] = "@loop.inner",
+        ["ir"] = "@return.inner",
+        ["ii"] = "@conditional.inner",
+        ["ia"] = "@parameter.inner",
+        ["at"] = "@comment.outer",
+        ["af"] = "@function.outer",
+        ["ac"] = "@class.outer",
+        ["al"] = "@loop.outer",
+        ["ar"] = "@return.outer",
+        ["ai"] = "@conditional.outer",
+        ["aa"] = "@parameter.outer",
+      }
+      for lhs, query in pairs(selections) do
+        vim.keymap.set({ "x", "o" }, lhs, function()
+          select_textobject(query, "textobjects")
+        end)
+      end
+
+      local move = require("nvim-treesitter-textobjects.move")
+      local moves = {
+        goto_next_start = {
+          [")t"] = "@comment.outer",
+          [")f"] = "@function.outer",
+          [")c"] = "@class.outer",
+          [")l"] = "@loop.outer",
+          [")r"] = "@return.inner",
+          [")i"] = "@conditional.outer",
+          [")a"] = "@parameter.outer",
+        },
+        goto_next_end = {
+          [")T"] = "@comment.outer",
+          [")F"] = "@function.outer",
+          [")C"] = "@class.outer",
+          [")L"] = "@loop.outer",
+          [")R"] = "@return.inner",
+          [")I"] = "@conditional.outer",
+          [")A"] = "@parameter.outer",
+        },
+        goto_previous_start = {
+          ["(t"] = "@comment.outer",
+          ["(f"] = "@function.outer",
+          ["(c"] = "@class.outer",
+          ["(l"] = "@loop.outer",
+          ["(r"] = "@return.inner",
+          ["(i"] = "@conditional.outer",
+          ["(a"] = "@parameter.outer",
+        },
+        goto_previous_end = {
+          ["(T"] = "@comment.outer",
+          ["(F"] = "@function.outer",
+          ["(C"] = "@class.outer",
+          ["(L"] = "@loop.outer",
+          ["(R"] = "@return.inner",
+          ["(I"] = "@conditional.outer",
+          ["(A"] = "@parameter.outer",
+        },
+      }
+      for method, keymaps in pairs(moves) do
+        for lhs, query in pairs(keymaps) do
+          vim.keymap.set({ "n", "x", "o" }, lhs, function()
+            move[method](query, "textobjects")
+          end)
+        end
+      end
+
+      local swap = require("nvim-treesitter-textobjects.swap")
+      local swaps = {
+        swap_next = {
+          ["<leader>ra"] = "@parameter.inner",
+          ["<leader>rf"] = "@function.outer",
+          ["<leader>rc"] = "@class.outer",
+        },
+        swap_previous = {
+          ["<leader>rA"] = "@parameter.inner",
+          ["<leader>rF"] = "@function.outer",
+          ["<leader>rC"] = "@class.outer",
+        },
+      }
+      for method, keymaps in pairs(swaps) do
+        for lhs, query in pairs(keymaps) do
+          vim.keymap.set("n", lhs, function()
+            swap[method](query)
+          end)
+        end
+      end
     end,
   },
   {

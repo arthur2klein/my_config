@@ -147,6 +147,7 @@ return {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
       })
       require("mason-lspconfig").setup({
+        automatic_enable = false,
         ensure_installed = {
           "ansiblels",
           "bashls",
