@@ -35,6 +35,7 @@ return {
         "typescript",
         "vim",
         "vimdoc",
+        "yaml",
       })
 
       local highlight_disabled_filetypes = { php = true }
