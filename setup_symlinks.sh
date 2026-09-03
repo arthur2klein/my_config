@@ -55,7 +55,7 @@ link ~/my_config/rofi        ~/.config/rofi
 link ~/my_config/scripts     ~/.config/scripts
 link ~/my_config/theme       ~/.config/theme
 link ~/my_config/waybar      ~/.config/waybar
-link ~/my_config/bat         ~/.config/gat
+link ~/my_config/bat         ~/.config/bat
 link ~/my_config/rofimoji.rc ~/.config/rofimoji.rc
 
 # Oh-my-zsh custom themes (only if oh-my-zsh is installed)
