@@ -125,9 +125,14 @@ alias _db='docker build -t "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")" .'
 alias _dr='docker run "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")"'
 alias _dri='docker run -it "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")"'
 alias _dris='docker run -it --entrypoint=sh "$(basename "$PWD" | tr "[:upper:]" "[:lower:]")"'
-alias _tn='tmux new-session -s `basename $PWD`'
-alias _ta='tmux a -t `basename $PWD`'
-alias _tk='tmux kill-session `basename $PWD`'
+_tmux_name() {
+  local name
+  name=$(basename "$PWD")
+  print -r -- "${name//[.:]/_}"
+}
+_tn() { tmux new-session -s "$(_tmux_name)" }
+_ta() { tmux a -t "$(_tmux_name)" }
+_tk() { tmux kill-session -t "$(_tmux_name)" }
 alias ls='exa --icons --group-directories-first'
 alias muttmail='mutt -f "$MAIL_CONNECTION"'
 if grep -qi 'arch' /etc/os-release; then
