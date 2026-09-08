@@ -192,6 +192,7 @@ hl.device({
 hl.bind("SUPER + AMPERSAND", hl.dsp.exec_cmd(terminal))
 hl.bind("SUPER + PARENLEFT", hl.dsp.exec_cmd(browser))
 hl.bind("SUPER + EGRAVE", hl.dsp.exec_cmd("keepassxc"))
+hl.bind("SUPER + MINUS", hl.dsp.exec_cmd("QT_QPA_PLATFORM=wayland krita"))
 hl.bind("SUPER + UNDERSCORE", hl.dsp.exec_cmd("APP=Messages sh ~/scripts/openApp.sh"))
 hl.bind("SUPER + CCEDILLA", hl.dsp.exec_cmd("APP=LinkedIn sh ~/scripts/openApp.sh"))
 hl.bind("SUPER + AGRAVE", hl.dsp.exec_cmd("APP=WhatsApp sh ~/scripts/openApp.sh"))
@@ -292,6 +293,15 @@ hl.window_rule({
     title = "^(.*(YouTube|Meet|VLC|Media|Netflix|Maps|Picture in picture).*)$",
   },
   opacity = "1.0 1.0",
+})
+
+hl.window_rule({
+  name = "Krita",
+  match = {
+    title = "Krita",
+  },
+  opacity = "1.0 1.0",
+  fullscreen_state = "2 2",
 })
 
 hl.window_rule({
