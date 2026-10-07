@@ -25,12 +25,14 @@
 -- monitor=desc:WSX W210 0x00000321,preferred,auto,2,mirror,DP-2
 
 local mocha = require("mocha")
+local transform = 0
 
 hl.monitor({
   output = "desc:WSX W210 0x00000321",
   mode = "preferred",
   position = "auto-left",
   scale = 1.6,
+  transform = transform,
 })
 
 hl.monitor({
@@ -38,6 +40,7 @@ hl.monitor({
   mode = "preferred",
   position = "auto-left",
   scale = 4,
+  transform = transform,
 })
 
 hl.monitor({
@@ -45,6 +48,7 @@ hl.monitor({
   mode = "preferred",
   position = "auto",
   scale = "auto",
+  transform = transform,
 })
 
 --##################
