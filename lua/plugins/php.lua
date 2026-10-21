@@ -199,6 +199,24 @@ local function counterparts_for(file)
   return out
 end
 
+-- Create a new PHPUnit test file for `file` under a "tests" dir and open it.
+local function create_test_file(file)
+  local base = file:gsub("%.php$", "Test.php")
+  local target = nil
+  for _, from in ipairs(SRC_DIRS) do
+    local c = base:gsub(from, "/tests/", 1)
+    if c ~= base then
+      target = c
+      break
+    end
+  end
+  if not target then
+    target = vim.fs.joinpath(vim.fn.getcwd(), "tests", vim.fs.basename(base))
+  end
+  vim.fn.mkdir(vim.fs.dirname(target), "p")
+  vim.cmd.edit(vim.fn.fnameescape(target))
+end
+
 local function toggle_source_test()
   local file = vim.api.nvim_buf_get_name(0)
   if file == "" or not file:match("%.php$") then
@@ -207,7 +225,11 @@ local function toggle_source_test()
   end
   local candidates = counterparts_for(file)
   if #candidates == 0 then
-    vim.notify("No counterpart found for " .. vim.fs.basename(file), vim.log.levels.WARN)
+    if file:match("Test%.php$") then
+      vim.notify("No counterpart found for " .. vim.fs.basename(file), vim.log.levels.WARN)
+      return
+    end
+    create_test_file(file)
     return
   end
   if #candidates == 1 then

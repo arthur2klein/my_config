@@ -88,6 +88,14 @@ if vim.fn.has("unix") == 1 then
   end
 end
 
+-- Insert current filename without path/extension
+vim.keymap.set("i", "<C-f>", function()
+  return vim.fn.expand("%:t:r")
+end, { expr = true, desc = "Insert filename without path/extension" })
+vim.keymap.set("n", "<C-f>", function()
+  vim.api.nvim_put({ vim.fn.expand("%:t:r") }, "c", true, true)
+end, { desc = "Insert filename without path/extension" })
+
 -- Setup lazy.nvim
 require("lazy").setup({
   specs = {},
