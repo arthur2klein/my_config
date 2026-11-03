@@ -213,3 +213,18 @@ alias -s png="xdg-open"
 alias -s go="$EDITOR"
 alias -s json="jless"
 alias unitTest="/usr/bin/php vendor/phpunit/phpunit/phpunit --configuration phpunit.xml"
+
+# Report command status (running/ok/fail) to tmux for the window tabs
+if [[ -n $TMUX ]]; then
+  _tmux_cmd_status() { tmux set-option -pt "$TMUX_PANE" @cmd_status "$1" 2>/dev/null }
+  _tmux_cmd_preexec() { _tmux_cmd_ran=1; _tmux_cmd_status running }
+  _tmux_cmd_precmd() {
+    local rc=$?
+    [[ -z $_tmux_cmd_ran ]] && return
+    unset _tmux_cmd_ran
+    if (( rc == 0 || rc == 130 )); then _tmux_cmd_status ok; else _tmux_cmd_status fail; fi
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook preexec _tmux_cmd_preexec
+  add-zsh-hook precmd _tmux_cmd_precmd
+fi
