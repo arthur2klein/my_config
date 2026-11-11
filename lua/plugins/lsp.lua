@@ -28,7 +28,6 @@
 --
 -- Completion / snippets:
 --   <Tab>            accept (blink.cmp super-tab); <C-\> also accepts
---   <C-K>            expand a snippet (LuaSnip)
 --   <C-L> / <C-J>    jump to the next / previous snippet node
 --   <C-E>            cycle the snippet choice
 
@@ -541,9 +540,6 @@ return {
     config = function()
       local ls = require("luasnip")
 
-      vim.keymap.set({ "i" }, "<C-K>", function()
-        ls.expand()
-      end, { silent = true, desc = "Expand snippet" })
       vim.keymap.set({ "i", "s" }, "<C-L>", function()
         ls.jump(1)
       end, { silent = true, desc = "Jump to next snippet node" })
