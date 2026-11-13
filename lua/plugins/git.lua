@@ -18,7 +18,8 @@
 --   <leader>gn   jump to the next merge-conflicted file
 --
 -- Hunks (gitsigns, buffer-local):
---   ]h / [h      next / previous hunk
+--   ]h / [h      next / previous unstaged hunk
+--   ]H / [H      next / previous staged hunk
 --   <leader>hs   stage hunk (visual: stage selected lines)
 --   <leader>hr   reset hunk (visual: reset selected lines)
 --   <leader>hS   stage the whole buffer
@@ -120,6 +121,12 @@ return {
               gitsigns.nav_hunk("prev")
             end
           end, "Previous hunk")
+          map("n", "]H", function()
+            gitsigns.nav_hunk("next", { target = "staged" })
+          end, "Next staged hunk")
+          map("n", "[H", function()
+            gitsigns.nav_hunk("prev", { target = "staged" })
+          end, "Previous staged hunk")
 
           -- Stage / reset hunks (visual mode acts on the selected lines).
           map("n", "<leader>hs", gitsigns.stage_hunk, "Stage hunk")
