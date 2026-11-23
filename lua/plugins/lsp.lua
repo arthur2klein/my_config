@@ -489,7 +489,7 @@ return {
     "saghen/blink.cmp",
     lazy = false,
     dependencies = "rafamadriz/friendly-snippets",
-    version = "v0.*",
+    version = "1.*",
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -519,11 +519,7 @@ return {
           if type == "/" or type == "?" then
             return { "buffer" }
           end
-          -- disable completions for :! commands
-          if type == ":" and not vim.fn.getcmdline():match("^!") then
-            return { "cmdline" }
-          end
-          if type == "@" then
+          if type == ":" or type == "@" then
             return { "cmdline" }
           end
           return {}
