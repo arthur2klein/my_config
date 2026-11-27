@@ -200,6 +200,9 @@ return {
         "terraformls",
         "vtsls",
         "eslint",
+        -- Only attaches where an .oxlintrc.json (or oxlint in package.json)
+        -- exists, using the project-local node_modules/.bin/oxlint.
+        "oxlint",
       })
 
       vim.schedule(function()
@@ -449,9 +452,16 @@ return {
             "package.json",
             ".git",
           })
-          if root then
-            on_dir(root)
+          if not root then
+            return
           end
+          if
+            vim.fs.root(bufnr, { ".oxlintrc.json", ".oxlintrc.jsonc", "oxlint.config.ts" })
+            and not project_has_eslint_config(root)
+          then
+            return
+          end
+          on_dir(root)
         end,
         before_init = function(_, config)
           local root_dir = config.root_dir
@@ -511,19 +521,6 @@ return {
         providers = {
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
         },
-      },
-
-      cmdline = {
-        sources = function()
-          local type = vim.fn.getcmdtype()
-          if type == "/" or type == "?" then
-            return { "buffer" }
-          end
-          if type == ":" or type == "@" then
-            return { "cmdline" }
-          end
-          return {}
-        end,
       },
     },
     opts_extend = { "sources.default" },
